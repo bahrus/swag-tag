@@ -1,0 +1,19 @@
+{
+  "name": "swag-tag",
+  "version": "0.0.0",
+  "description": "TBD",
+  "main": "swag-tag.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bahrus/swag-tag.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bahrus/swag-tag/issues"
+  },
+  "homepage": "https://github.com/bahrus/swag-tag#readme"
+}
