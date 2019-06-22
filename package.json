@@ -10,6 +10,16 @@
     "type": "git",
     "url": "git+https://github.com/bahrus/swag-tag.git"
   },
+  "dependencies": {
+    "wired-input": "1.0.0",
+    "wc-info": "0.0.53"
+  },
+  "peerDependencies": {
+    "trans-render": "0.0.115"
+  },
+  "devDependencies": {
+    "xtal-test": "0.0.19"
+  },
   "author": "",
   "license": "MIT",
   "bugs": {
