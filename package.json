@@ -14,7 +14,8 @@
   "dependencies": {
     "wc-info": "0.0.53",
     "trans-render": "0.0.117",
-    "xtal-element": "0.0.63"
+    "xtal-element": "0.0.63",
+    "p-et-alia": "0.0.10"
   },
   "devDependencies": {
     "xtal-test": "0.0.19"

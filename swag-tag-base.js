@@ -3,8 +3,12 @@ import { define } from "trans-render/define.js";
 import { repeat } from "trans-render/repeat.js";
 import { createTemplate, newRenderContext } from "xtal-element/utils.js";
 import { XtalViewElement } from "xtal-element/xtal-view-element.js";
+import "p-et-alia/p-d.js";
 const fieldEditorTemplate = createTemplate(/* html */ `
-  <input>
+  <div>
+    <label></label><input>
+    <p-d on="input" from="details"></p-d>
+  </div>
 `);
 const mainTemplate = createTemplate(/* html */ `
 <header>
@@ -39,7 +43,14 @@ export class SwagTagBase extends XtalViewElement {
                     h3: this._wcInfo.name
                 },
                 details: {
-                    form: ({ target }) => repeat(fieldEditorTemplate, this._initRenderContext, this._wcInfo.properties.length, target, {}),
+                    form: ({ target }) => repeat(fieldEditorTemplate, this._initRenderContext, this._wcInfo.properties.length, target, {
+                        div: ({ idx }) => {
+                            const prop = this._wcInfo.properties[idx];
+                            return {
+                                label: prop.name
+                            };
+                        }
+                    }),
                 },
                 main: ({ target }) => {
                     const el = document.createElement(this._wcInfo.name);
