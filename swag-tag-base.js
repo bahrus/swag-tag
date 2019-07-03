@@ -22,10 +22,15 @@ export class SwagTagBase extends XtalViewElement {
         return "swag-tag-base";
     }
     get initRenderContext() {
+        import(this._wcInfo.selfResolvingModulePath);
         if (this._initRenderContext === undefined) {
             this._initRenderContext = newRenderContext({
                 header: {
                     h3: this._wcInfo.name
+                },
+                main: ({ target }) => {
+                    const el = document.createElement(this._wcInfo.name);
+                    target.appendChild(el);
                 }
             });
         }

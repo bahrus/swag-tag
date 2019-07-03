@@ -24,10 +24,15 @@ export class SwagTagBase extends XtalViewElement<WCSuiteInfo> {
   }
   _initRenderContext: RenderContext | undefined;
   get initRenderContext() {
+    import(this._wcInfo.selfResolvingModulePath!);
     if(this._initRenderContext === undefined){
       this._initRenderContext = newRenderContext({
         header:{
           h3: this._wcInfo.name
+        },
+        main:({target}) =>{
+          const el = document.createElement(this._wcInfo.name);
+          target.appendChild(el);
         }
       });
     }
@@ -112,7 +117,7 @@ export class SwagTagBase extends XtalViewElement<WCSuiteInfo> {
     this._wcInfo = nv.tags.find(t => t.name === this._tag)!;
   }
 
-  _wcInfo : WCInfo;
+  _wcInfo! : WCInfo;
   get WCInfo(){
     return this._wcInfo;
   }
