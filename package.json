@@ -4,18 +4,17 @@
   "description": "TBD",
   "main": "swag-tag.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "serve": "node node_modules/xtal-test/serve.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/bahrus/swag-tag.git"
   },
   "dependencies": {
-    "wired-input": "1.0.0",
-    "wc-info": "0.0.53"
-  },
-  "peerDependencies": {
-    "trans-render": "0.0.115"
+    "wc-info": "0.0.53",
+    "trans-render": "0.0.117",
+    "xtal-element": "0.0.63"
   },
   "devDependencies": {
     "xtal-test": "0.0.19"
