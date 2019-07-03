@@ -1,6 +1,11 @@
 import { define } from "trans-render/define.js";
+//import {init} from "trans-render/init.js";
+import { repeat } from "trans-render/repeat.js";
 import { createTemplate, newRenderContext } from "xtal-element/utils.js";
 import { XtalViewElement } from "xtal-element/xtal-view-element.js";
+const fieldEditorTemplate = createTemplate(/* html */ `
+  <input>
+`);
 const mainTemplate = createTemplate(/* html */ `
 <header>
   <h3></h3>
@@ -8,6 +13,11 @@ const mainTemplate = createTemplate(/* html */ `
     <a target="_blank">📜</a>
   </nav>
 </header>
+<details>
+  <summary>Editor</summary>
+  <form>
+  </form>
+</details>
 <main></main>
 `);
 const href = 'href';
@@ -27,6 +37,9 @@ export class SwagTagBase extends XtalViewElement {
             this._initRenderContext = newRenderContext({
                 header: {
                     h3: this._wcInfo.name
+                },
+                details: {
+                    form: ({ target }) => repeat(fieldEditorTemplate, this._initRenderContext, this._wcInfo.properties.length, target, {}),
                 },
                 main: ({ target }) => {
                     const el = document.createElement(this._wcInfo.name);

@@ -1,9 +1,14 @@
 import { WCSuiteInfo, WCInfo } from "wc-info/types.js";
 import { define } from "trans-render/define.js";
-import {init} from "trans-render/init.js";
+//import {init} from "trans-render/init.js";
+import {repeat} from "trans-render/repeat.js";
 import {createTemplate, newRenderContext} from "xtal-element/utils.js";
-import { RenderContext, RenderOptions } from "trans-render/init.d.js";
+import { RenderContext, RenderOptions, TransformRules } from "trans-render/init.d.js";
 import {XtalViewElement} from "xtal-element/xtal-view-element.js";
+
+const fieldEditorTemplate = createTemplate(/* html */`
+  <input>
+`);
 
 const mainTemplate = createTemplate(/* html */ `
 <header>
@@ -12,6 +17,11 @@ const mainTemplate = createTemplate(/* html */ `
     <a target="_blank">📜</a>
   </nav>
 </header>
+<details>
+  <summary>Editor</summary>
+  <form>
+  </form>
+</details>
 <main></main>
 `);
 
@@ -29,6 +39,11 @@ export class SwagTagBase extends XtalViewElement<WCSuiteInfo> {
       this._initRenderContext = newRenderContext({
         header:{
           h3: this._wcInfo.name
+        },
+        details:{
+          form: ({target}) => repeat(fieldEditorTemplate, this._initRenderContext!, this._wcInfo.properties!.length, target, {
+            
+          }) as TransformRules,
         },
         main:({target}) =>{
           const el = document.createElement(this._wcInfo.name);
