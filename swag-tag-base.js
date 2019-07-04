@@ -42,7 +42,9 @@ export class SwagTagBase extends XtalViewElement {
                 header: {
                     h3: this._wcInfo.name
                 },
-                details: x => {
+                details: ({ target }) => {
+                    const el = document.createElement(this._wcInfo.name);
+                    target.insertAdjacentElement('afterend', el);
                     const properties = this._wcInfo.properties;
                     if (properties === undefined)
                         return false;
@@ -51,23 +53,23 @@ export class SwagTagBase extends XtalViewElement {
                             div: ({ idx }) => {
                                 const prop = properties[idx];
                                 return {
-                                    label: prop.name,
+                                    label: prop.name + ': ',
                                     input: ({ target }) => {
                                         switch (prop.type) {
                                             case 'boolean':
                                                 target.setAttribute('type', 'checkbox');
                                                 break;
                                         }
+                                    },
+                                    'p-d': ({ target }) => {
+                                        target.setAttribute('to', this._wcInfo.name);
+                                        target.setAttribute('prop', prop.name);
                                     }
                                 };
                             }
                         }),
                     };
                 },
-                main: ({ target }) => {
-                    const el = document.createElement(this._wcInfo.name);
-                    target.appendChild(el);
-                }
             });
         }
         return this._initRenderContext;
