@@ -42,15 +42,27 @@ export class SwagTagBase extends XtalViewElement {
                 header: {
                     h3: this._wcInfo.name
                 },
-                details: {
-                    form: ({ target }) => repeat(fieldEditorTemplate, this._initRenderContext, this._wcInfo.properties.length, target, {
-                        div: ({ idx }) => {
-                            const prop = this._wcInfo.properties[idx];
-                            return {
-                                label: prop.name
-                            };
-                        }
-                    }),
+                details: x => {
+                    const properties = this._wcInfo.properties;
+                    if (properties === undefined)
+                        return false;
+                    return {
+                        form: ({ target }) => repeat(fieldEditorTemplate, this._initRenderContext, properties.length, target, {
+                            div: ({ idx }) => {
+                                const prop = properties[idx];
+                                return {
+                                    label: prop.name,
+                                    input: ({ target }) => {
+                                        switch (prop.type) {
+                                            case 'boolean':
+                                                target.setAttribute('type', 'checkbox');
+                                                break;
+                                        }
+                                    }
+                                };
+                            }
+                        }),
+                    };
                 },
                 main: ({ target }) => {
                     const el = document.createElement(this._wcInfo.name);
