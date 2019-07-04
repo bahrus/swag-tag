@@ -64,6 +64,8 @@ export class SwagTagBase extends XtalViewElement {
                                     'p-d': ({ target }) => {
                                         target.setAttribute('to', this._wcInfo.name);
                                         target.setAttribute('prop', prop.name);
+                                        target.setAttribute('val', 'target.value');
+                                        target.setAttribute('skip-init', 'true');
                                     }
                                 };
                             }
