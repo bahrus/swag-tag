@@ -2,15 +2,16 @@ import { WCSuiteInfo, WCInfo } from "wc-info/types.js";
 import { define } from "trans-render/define.js";
 //import {init} from "trans-render/init.js";
 import {repeat} from "trans-render/repeat.js";
+import {decorate} from "trans-render/decorate.js";
 import {createTemplate, newRenderContext} from "xtal-element/utils.js";
 import { RenderContext, RenderOptions, TransformRules } from "trans-render/init.d.js";
 import {XtalViewElement} from "xtal-element/xtal-view-element.js";
-import "p-et-alia/p-d.js";
+import {PD} from "p-et-alia/p-d.js";
 
 const fieldEditorTemplate = createTemplate(/* html */`
   <div>
     <label></label><input>
-    <p-d on="input" from="details"></p-d>
+    <p-d on="input" from="details" val="target.value" skip-init></p-d>
   </div>
 `);
 
@@ -62,12 +63,18 @@ export class SwagTagBase extends XtalViewElement<WCSuiteInfo> {
                         break;
                     }
                   },
-                  'p-d': ({target}) =>{
-                    target.setAttribute('to', this._wcInfo.name);
-                    target.setAttribute('prop', prop.name);
-                    target.setAttribute('val', 'target.value');
-                    target.setAttribute('skip-init', 'true');
-                  }
+                  [PD.is]: ({target}) => decorate(target as HTMLElement, {
+                    propVals:{
+                      to: this._wcInfo.name,
+                      prop: prop.name
+                    } as PD 
+                  }),
+                  // {
+                  //   target.setAttribute('to', );
+                  //   target.setAttribute('prop', );
+                  //   target.setAttribute('val', );
+                  //   target.setAttribute('skip-init', 'true');
+                  // }
                 }
               }
             }) as TransformRules,

@@ -1,13 +1,14 @@
 import { define } from "trans-render/define.js";
 //import {init} from "trans-render/init.js";
 import { repeat } from "trans-render/repeat.js";
+import { decorate } from "trans-render/decorate.js";
 import { createTemplate, newRenderContext } from "xtal-element/utils.js";
 import { XtalViewElement } from "xtal-element/xtal-view-element.js";
-import "p-et-alia/p-d.js";
+import { PD } from "p-et-alia/p-d.js";
 const fieldEditorTemplate = createTemplate(/* html */ `
   <div>
     <label></label><input>
-    <p-d on="input" from="details"></p-d>
+    <p-d on="input" from="details" val="target.value" skip-init></p-d>
   </div>
 `);
 const mainTemplate = createTemplate(/* html */ `
@@ -61,12 +62,12 @@ export class SwagTagBase extends XtalViewElement {
                                                 break;
                                         }
                                     },
-                                    'p-d': ({ target }) => {
-                                        target.setAttribute('to', this._wcInfo.name);
-                                        target.setAttribute('prop', prop.name);
-                                        target.setAttribute('val', 'target.value');
-                                        target.setAttribute('skip-init', 'true');
-                                    }
+                                    [PD.is]: ({ target }) => decorate(target, {
+                                        propVals: {
+                                            to: this._wcInfo.name,
+                                            prop: prop.name
+                                        }
+                                    }),
                                 };
                             }
                         }),
