@@ -5,6 +5,7 @@ import { decorate } from "trans-render/decorate.js";
 import { createTemplate, newRenderContext } from "xtal-element/utils.js";
 import { XtalViewElement } from "xtal-element/xtal-view-element.js";
 import { PD } from "p-et-alia/p-d.js";
+import { XtalJsonEditor } from "xtal-json-editor/xtal-json-editor.js";
 const fieldEditorTemplate = createTemplate(/* html */ `
   <div>
     <label></label><input>
@@ -14,15 +15,14 @@ const fieldEditorTemplate = createTemplate(/* html */ `
 const mainTemplate = createTemplate(/* html */ `
 <header>
   <h3></h3>
-  <!-- <nav>
-    <a target="_blank">📜</a>
-  </nav> -->
+
 </header>
 <details open>
   <summary>✏️Editor</summary>
   <form>
   </form>
 </details>
+<xtal-json-editor options="{}"  height="300px"></xtal-json-editor>
 <main></main>
 `);
 const href = 'href';
@@ -46,6 +46,22 @@ export class SwagTagBase extends XtalViewElement {
                 details: ({ target }) => {
                     const el = document.createElement(this._wcInfo.name);
                     target.insertAdjacentElement('afterend', el);
+                    let leaf = el;
+                    const ces = this._wcInfo.customEvents;
+                    if (ces !== undefined) {
+                        ces.forEach(ce => {
+                            const pd = document.createElement(PD.is);
+                            decorate(pd, {
+                                propVals: {
+                                    on: ce.name,
+                                    prop: 'input',
+                                    m: 1
+                                }
+                            });
+                            leaf.insertAdjacentElement('afterend', pd);
+                            leaf = pd;
+                        });
+                    }
                     const properties = this._wcInfo.properties;
                     if (properties === undefined)
                         return false;
@@ -73,6 +89,7 @@ export class SwagTagBase extends XtalViewElement {
                         }),
                     };
                 },
+                [XtalJsonEditor.is]: {}
             });
         }
         return this._initRenderContext;

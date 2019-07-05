@@ -7,6 +7,7 @@ import {createTemplate, newRenderContext} from "xtal-element/utils.js";
 import { RenderContext, RenderOptions, TransformRules } from "trans-render/init.d.js";
 import {XtalViewElement} from "xtal-element/xtal-view-element.js";
 import {PD} from "p-et-alia/p-d.js";
+import {XtalJsonEditor} from "xtal-json-editor/xtal-json-editor.js";
 
 const fieldEditorTemplate = createTemplate(/* html */`
   <div>
@@ -15,18 +16,18 @@ const fieldEditorTemplate = createTemplate(/* html */`
   </div>
 `);
 
+
 const mainTemplate = createTemplate(/* html */ `
 <header>
   <h3></h3>
-  <!-- <nav>
-    <a target="_blank">📜</a>
-  </nav> -->
+
 </header>
 <details open>
   <summary>✏️Editor</summary>
   <form>
   </form>
 </details>
+<xtal-json-editor options="{}"  height="300px"></xtal-json-editor>
 <main></main>
 `);
 
@@ -48,6 +49,22 @@ export class SwagTagBase extends XtalViewElement<WCSuiteInfo> {
         details: ({target}) => {
           const el = document.createElement(this._wcInfo.name);
           target.insertAdjacentElement('afterend', el);
+          let leaf = el;
+          const ces = this._wcInfo.customEvents;
+          if(ces !== undefined){
+            ces.forEach(ce =>{
+              const pd = document.createElement(PD.is);
+              decorate(pd, {
+                propVals:{
+                  on:ce.name,
+                  prop:'input',
+                  m: 1
+                } as PD
+              });
+              leaf.insertAdjacentElement('afterend', pd);
+              leaf = pd;
+            })
+          }
           const properties = this._wcInfo.properties;
           if(properties === undefined) return false;
           return {
@@ -69,21 +86,15 @@ export class SwagTagBase extends XtalViewElement<WCSuiteInfo> {
                       prop: prop.name
                     } as PD 
                   }),
-                  // {
-                  //   target.setAttribute('to', );
-                  //   target.setAttribute('prop', );
-                  //   target.setAttribute('val', );
-                  //   target.setAttribute('skip-init', 'true');
-                  // }
+                  
                 }
               }
             }) as TransformRules,
           } as TransformRules
         },
-        // main:({target}) =>{
-        //   const el = document.createElement(this._wcInfo.name);
-        //   target.appendChild(el);
-        // }
+        [XtalJsonEditor.is]:{
+
+        }
       });
     }
     return this._initRenderContext;
