@@ -7,7 +7,15 @@ import {createTemplate, newRenderContext} from "xtal-element/utils.js";
 import { RenderContext, RenderOptions, TransformRules } from "trans-render/init.d.js";
 import {XtalViewElement} from "xtal-element/xtal-view-element.js";
 import {PD} from "p-et-alia/p-d.js";
+import {extend} from "p-et-alia/p-d-x.js";
 import {XtalJsonEditor} from "xtal-json-editor/xtal-json-editor.js";
+
+extend('event', {
+  valFromEvent : e =>({
+    type: e.type,
+    detail: (<any>e).detail
+  })
+});
 
 const fieldEditorTemplate = createTemplate(/* html */`
   <div>
@@ -53,16 +61,16 @@ export class SwagTagBase extends XtalViewElement<WCSuiteInfo> {
           const ces = this._wcInfo.customEvents;
           if(ces !== undefined){
             ces.forEach(ce =>{
-              const pd = document.createElement(PD.is);
-              decorate(pd, {
+              const pdEvent = document.createElement('p-d-x-event');
+              decorate(pdEvent, {
                 propVals:{
                   on:ce.name,
                   prop:'input',
-                  m: 1
+                  m: 1,
                 } as PD
               });
-              leaf.insertAdjacentElement('afterend', pd);
-              leaf = pd;
+              leaf.insertAdjacentElement('afterend', pdEvent);
+              leaf = pdEvent;
             })
           }
           const properties = this._wcInfo.properties;
