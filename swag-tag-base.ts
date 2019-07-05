@@ -18,12 +18,12 @@ const fieldEditorTemplate = createTemplate(/* html */`
 const mainTemplate = createTemplate(/* html */ `
 <header>
   <h3></h3>
-  <nav>
+  <!-- <nav>
     <a target="_blank">📜</a>
-  </nav>
+  </nav> -->
 </header>
-<details>
-  <summary>Editor</summary>
+<details open>
+  <summary>✏️Editor</summary>
   <form>
   </form>
 </details>
