@@ -29,6 +29,7 @@ const mainTemplate = createTemplate(/* html */ `
   <form>
   </form>
 </details>
+<h4>Event Monitoring</h4>
 <xtal-json-editor options="{}"  height="300px"></xtal-json-editor>
 <main></main>
 `);
@@ -61,6 +62,7 @@ export class SwagTagBase extends XtalViewElement {
                             decorate(pdEvent, {
                                 propVals: {
                                     on: ce.name,
+                                    to: XtalJsonEditor.is,
                                     prop: 'input',
                                     m: 1,
                                 }
