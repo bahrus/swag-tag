@@ -16,7 +16,7 @@ extend('event', {
 const fieldEditorTemplate = createTemplate(/* html */ `
   <div>
     <label></label><input>
-    <p-d on="input" from="details" val="target.value" skip-init></p-d>
+    <p-d on="input" from="details" val="target.value"></p-d>
   </div>
 `);
 const mainTemplate = createTemplate(/* html */ `
@@ -35,11 +35,13 @@ const mainTemplate = createTemplate(/* html */ `
 `);
 const href = 'href';
 const tag = 'tag';
+const test = 'test';
 export class SwagTagBase extends XtalViewElement {
     constructor() {
         super(...arguments);
         this._href = null;
         this._tag = null;
+        this._test = null;
     }
     static get is() {
         return "swag-tag-base";
@@ -53,9 +55,12 @@ export class SwagTagBase extends XtalViewElement {
                 },
                 details: ({ target }) => {
                     const el = document.createElement(this._wcInfo.name);
+                    const ces = this._wcInfo.customEvents;
+                    if (ces !== undefined)
+                        el.setAttribute('disabled', ces.length.toString());
                     target.insertAdjacentElement('afterend', el);
                     let leaf = el;
-                    const ces = this._wcInfo.customEvents;
+                    //const testCase = this._wcInfo.
                     if (ces !== undefined) {
                         ces.forEach(ce => {
                             const pdEvent = document.createElement('p-d-x-event');
@@ -78,13 +83,24 @@ export class SwagTagBase extends XtalViewElement {
                         form: ({ target }) => repeat(fieldEditorTemplate, this._initRenderContext, properties.length, target, {
                             div: ({ idx }) => {
                                 const prop = properties[idx];
+                                let propVal = undefined;
+                                if (this._test && prop.testValues) {
+                                    propVal = prop.testValues[this._test];
+                                }
                                 return {
                                     label: prop.name + ': ',
                                     input: ({ target }) => {
                                         switch (prop.type) {
                                             case 'boolean':
                                                 target.setAttribute('type', 'checkbox');
+                                                if (propVal)
+                                                    target.setAttribute('checked', '');
                                                 break;
+                                            default:
+                                                if (propVal)
+                                                    target.setAttribute('value', propVal);
+                                        }
+                                        if (this._test && prop.testValues && prop.testValues[this._test]) {
                                         }
                                     },
                                     [PD.is]: ({ target }) => decorate(target, {
@@ -136,12 +152,13 @@ export class SwagTagBase extends XtalViewElement {
         return super.onPropsChange();
     }
     static get observedAttributes() {
-        return super.observedAttributes.concat([href, tag]);
+        return super.observedAttributes.concat([href, tag, test]);
     }
     attributeChangedCallback(n, ov, nv) {
         switch (n) {
             case href:
             case tag:
+            case test:
                 this['_' + n] = nv;
                 break;
         }
@@ -159,12 +176,18 @@ export class SwagTagBase extends XtalViewElement {
     set tag(nv) {
         this.attr(tag, nv);
     }
+    get test() {
+        return this._test;
+    }
+    set test(nv) {
+        this.attr(test, nv);
+    }
     get mainTemplate() {
         return mainTemplate;
     }
     //_c = false;
     connectedCallback() {
-        this.propUp([href, tag]);
+        this.propUp([href, tag, test]);
         super.connectedCallback();
     }
     set viewModel(nv) {
