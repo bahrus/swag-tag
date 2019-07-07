@@ -102,8 +102,12 @@ export class SwagTagBase extends XtalViewElement<WCSuiteInfo> {
             }) as TransformRules,
           } as TransformRules
         },
-        [XtalJsonEditor.is]:{
-
+        [XtalJsonEditor.is]: ({target}) => {
+          decorate(target as HTMLElement, {
+            propVals:{
+              archive: true
+            } as XtalJsonEditor
+          })
         }
       });
     }

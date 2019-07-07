@@ -98,7 +98,13 @@ export class SwagTagBase extends XtalViewElement {
                         }),
                     };
                 },
-                [XtalJsonEditor.is]: {}
+                [XtalJsonEditor.is]: ({ target }) => {
+                    decorate(target, {
+                        propVals: {
+                            archive: true
+                        }
+                    });
+                }
             });
         }
         return this._initRenderContext;
