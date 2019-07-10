@@ -1,8 +1,9 @@
 import { SwagTagBase } from "./swag-tag-base.js";
 import { define } from "trans-render/define.js";
-import {RenderOptions, RenderContext} from 'trans-render/init.d.js';
+import {RenderOptions, RenderContext, TransformRules} from 'trans-render/init.d.js';
 import {append} from 'trans-render/append.js';
 import { createTemplate } from "xtal-element/utils.js";
+import {init} from 'trans-render/init.js';
 
 const styleTemplate = createTemplate(
 /* html */ `
@@ -34,6 +35,16 @@ export class SwagTag extends SwagTagBase {
       if(this._renderOptions === undefined){
           this._renderOptions = {
             initializedCallback:(ctx: RenderContext, target: HTMLElement | DocumentFragment) =>{
+                init(target,{
+                  Transform:{
+                    '*':{
+                      Select: '*'
+                    } as TransformRules,
+                    'input':({target}) =>{
+                      (target as HTMLElement).style.backgroundColor = 'red';
+                    }
+                  }
+                })
                 append(target, styleTemplate)
             }
           } as RenderOptions;

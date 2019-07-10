@@ -2,6 +2,7 @@ import { SwagTagBase } from "./swag-tag-base.js";
 import { define } from "trans-render/define.js";
 import { append } from 'trans-render/append.js';
 import { createTemplate } from "xtal-element/utils.js";
+import { init } from 'trans-render/init.js';
 const styleTemplate = createTemplate(
 /* html */ `
 <style>
@@ -29,6 +30,16 @@ export class SwagTag extends SwagTagBase {
         if (this._renderOptions === undefined) {
             this._renderOptions = {
                 initializedCallback: (ctx, target) => {
+                    init(target, {
+                        Transform: {
+                            '*': {
+                                Select: '*'
+                            },
+                            'input': ({ target }) => {
+                                target.style.backgroundColor = 'red';
+                            }
+                        }
+                    });
                     append(target, styleTemplate);
                 }
             };
