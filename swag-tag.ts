@@ -4,6 +4,8 @@ import {RenderOptions, RenderContext, TransformRules} from 'trans-render/init.d.
 import {append} from 'trans-render/append.js';
 import { createTemplate } from "xtal-element/utils.js";
 import {init} from 'trans-render/init.js';
+import {replaceTargetWithTag} from 'trans-render/replaceTargetWithTag.js';
+import {XtalTextInputMD} from 'xtal-text-input-md/xtal-text-input-md.js';
 
 const styleTemplate = createTemplate(
 /* html */ `
@@ -40,8 +42,24 @@ export class SwagTag extends SwagTagBase {
                     '*':{
                       Select: '*'
                     } as TransformRules,
-                    'input':({target}) =>{
-                      (target as HTMLElement).style.backgroundColor = 'red';
+                    'input':({ctx, target}) =>{
+                      const t = target as HTMLInputElement;
+                      replaceTargetWithTag(t, XtalTextInputMD.is, ctx, (repl) => {
+                        const x = repl as XtalTextInputMD;
+                        x.value = t.value; 
+                        for (let i = 0, ii = t.attributes.length; i < ii; i++) {
+                          const attrib = t.attributes[i];
+                          //const inp = clonedNode.querySelector('input');
+                          if (attrib.name === "type") continue;
+                          x.setAttribute(attrib.name, attrib.value);
+                          const s = document.createElement('span');
+                          s.setAttribute('slot', 'label');
+                          s.textContent = t.getAttribute('placeholder');
+                          t.setAttribute('placeholder', '');
+                          x.appendChild(s);
+                        }
+                      });
+                      //(target as HTMLElement).style.backgroundColor = 'red';
                     }
                   }
                 })

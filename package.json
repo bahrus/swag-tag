@@ -13,10 +13,11 @@
   },
   "dependencies": {
     "wc-info": "0.0.53",
-    "trans-render": "0.0.118",
+    "trans-render": "0.0.124",
     "xtal-element": "0.0.63",
     "p-et-alia": "0.0.10",
-    "xtal-json-editor": "0.0.38"
+    "xtal-json-editor": "0.0.38",
+    "xtal-text-input-md": "0.0.2"
   },
   "devDependencies": {
     "xtal-test": "0.0.19"

@@ -15,7 +15,7 @@ extend('event', {
 });
 const fieldEditorTemplate = createTemplate(/* html */ `
   <div>
-    <label></label><input>
+    <input>
     <p-d on="input" from="details" val="target.value"></p-d>
   </div>
 `);
@@ -88,7 +88,7 @@ export class SwagTagBase extends XtalViewElement {
                                     propVal = prop.testValues[this._test];
                                 }
                                 return {
-                                    label: prop.name + ': ',
+                                    //label: prop.name + ': ',
                                     input: ({ target }) => {
                                         switch (prop.type) {
                                             case 'boolean':
@@ -97,8 +97,10 @@ export class SwagTagBase extends XtalViewElement {
                                                     target.setAttribute('checked', '');
                                                 break;
                                             default:
-                                                if (propVal)
+                                                if (propVal) {
                                                     target.setAttribute('value', propVal);
+                                                    target.setAttribute('placeholder', prop.name);
+                                                }
                                         }
                                         if (this._test && prop.testValues && prop.testValues[this._test]) {
                                         }
