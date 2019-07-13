@@ -97,9 +97,10 @@ export class SwagTagBase extends XtalViewElement {
                                                     target.setAttribute('checked', '');
                                                 break;
                                             default:
+                                                target.setAttribute('placeholder', prop.name);
+                                                target.setAttribute('type', 'text');
                                                 if (propVal) {
                                                     target.setAttribute('value', propVal);
-                                                    target.setAttribute('placeholder', prop.name);
                                                 }
                                         }
                                         if (this._test && prop.testValues && prop.testValues[this._test]) {

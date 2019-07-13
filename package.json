@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "wc-info": "0.0.53",
-    "trans-render": "0.0.124",
+    "trans-render": "0.0.125",
     "xtal-element": "0.0.63",
     "p-et-alia": "0.0.10",
     "xtal-json-editor": "0.0.38",
