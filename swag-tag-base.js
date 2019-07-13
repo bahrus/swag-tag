@@ -47,8 +47,8 @@ export class SwagTagBase extends XtalViewElement {
         return "swag-tag-base";
     }
     get initRenderContext() {
-        import(this._wcInfo.selfResolvingModulePath);
         if (this._initRenderContext === undefined) {
+            import(this._wcInfo.selfResolvingModulePath);
             this._initRenderContext = newRenderContext({
                 header: {
                     h3: this._wcInfo.name

@@ -23,7 +23,7 @@ details>summary::-webkit-details-marker{
 </style>
 `);
 const inputTemplate = createTemplate(/* html */ `
-<xtal-text-input-md>
+<xtal-text-input-md disabled>
   <span slot="label"></span>
 </xtal-text-input-md>
 `);
@@ -72,6 +72,7 @@ export class SwagTag extends SwagTagBase {
                                         continue;
                                     target.setAttribute(attrib.name, attrib.value);
                                 }
+                                target.value = inp.value;
                                 return {
                                     'span': inp.getAttribute('placeholder'),
                                 };

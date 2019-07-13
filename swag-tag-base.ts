@@ -49,8 +49,9 @@ export class SwagTagBase extends XtalViewElement<WCSuiteInfo> {
   }
   _initRenderContext: RenderContext | undefined;
   get initRenderContext() {
-    import(this._wcInfo.selfResolvingModulePath!);
+    
     if(this._initRenderContext === undefined){
+      import(this._wcInfo.selfResolvingModulePath!);
       this._initRenderContext = newRenderContext({
         header:{
           h3: this._wcInfo.name
@@ -92,6 +93,7 @@ export class SwagTagBase extends XtalViewElement<WCSuiteInfo> {
                   //label: prop.name + ': ',
                   input: ({target}) =>{
                     switch(prop.type){
+                      
                       case 'boolean':
                         target.setAttribute('type', 'checkbox');
                         if(propVal) target.setAttribute('checked', '');
