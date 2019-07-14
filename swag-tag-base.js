@@ -95,8 +95,10 @@ export class SwagTagBase extends XtalViewElement {
                                         switch (prop.type) {
                                             case 'boolean':
                                                 target.setAttribute('type', 'checkbox');
-                                                if (propVal)
+                                                if (propVal) {
                                                     target.setAttribute('checked', '');
+                                                    inp.value = 'on';
+                                                }
                                                 break;
                                             default:
                                                 inp.placeholder = prop.name;

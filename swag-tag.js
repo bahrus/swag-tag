@@ -76,6 +76,7 @@ export class SwagTag extends SwagTagBase {
                                 }
                             }),
                             [XtalCheckboxInputMD.is]: ({ ctx, target }) => {
+                                const xci = target;
                                 const inp = ctx.replacedElement;
                                 for (let i = 0, ii = inp.attributes.length; i < ii; i++) {
                                     const attrib = inp.attributes[i];
@@ -84,7 +85,8 @@ export class SwagTag extends SwagTagBase {
                                         continue;
                                     target.setAttribute(attrib.name, attrib.value);
                                 }
-                                target.value = inp.value;
+                                xci.value = inp.value;
+                                xci.boolValue = inp.value === 'on';
                                 return {
                                     span: inp.dataset.propName,
                                 };
