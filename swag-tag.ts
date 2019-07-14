@@ -8,6 +8,8 @@ import {init} from 'trans-render/init.js';
 import {replaceElementWithTemplate} from 'trans-render/replaceElementWithTemplate.js';
 import {XtalTextInputMD} from 'xtal-text-input-md/xtal-text-input-md.js';
 import {XtalCheckboxInputMD} from 'xtal-checkbox-input-md/xtal-checkbox-input-md.js';
+import { decorate } from "trans-render/decorate.js";
+import {PD} from "p-et-alia/p-d.js";
 
 const styleTemplate = createTemplate(
 /* html */ `
@@ -73,6 +75,11 @@ export class SwagTag extends SwagTagBase {
                         span:inp.dataset.propName,
                       }
                     },
+                    'p-d[data-type="boolean"]':({target}) => decorate(target as HTMLElement, {
+                      propVals: {
+                        val: "target.boolValue"
+                      } as PD
+                    }),
                     [XtalCheckboxInputMD.is]:({ctx,target}) => {
                       const inp = ctx.replacedElement as HTMLInputElement;
                       for(let i = 0, ii= inp.attributes.length; i < ii; i++){

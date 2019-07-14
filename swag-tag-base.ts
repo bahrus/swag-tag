@@ -114,8 +114,13 @@ export class SwagTagBase extends XtalViewElement<WCSuiteInfo> {
                   [PD.is]: ({target}) => decorate(target as HTMLElement, {
                     propVals:{
                       to: this._wcInfo.name,
-                      prop: prop.name
-                    } as PD 
+                      prop: prop.name,
+                      //dataset: prop,
+                      //val: prop.type === 'boolean' ? 'target.boolValue' : undefined
+                    } as PD,
+                    attribs:{
+                      'data-type':prop.type
+                    } 
                   }),
                   
                 }
