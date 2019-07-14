@@ -86,7 +86,7 @@ export class SwagTag extends SwagTagBase {
                                     target.setAttribute(attrib.name, attrib.value);
                                 }
                                 xci.value = inp.value;
-                                xci.boolValue = inp.value === 'on';
+                                xci.boolValue = inp.hasAttribute('checked');
                                 return {
                                     span: inp.dataset.propName,
                                 };
