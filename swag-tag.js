@@ -74,7 +74,7 @@ export class SwagTag extends SwagTagBase {
                                 }
                                 target.value = inp.value;
                                 return {
-                                    'span': inp.getAttribute('placeholder'),
+                                    span: inp.dataset.propName,
                                 };
                             }
                         }

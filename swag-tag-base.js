@@ -90,6 +90,8 @@ export class SwagTagBase extends XtalViewElement {
                                 return {
                                     //label: prop.name + ': ',
                                     input: ({ target }) => {
+                                        const inp = target;
+                                        inp.dataset.propName = prop.name;
                                         switch (prop.type) {
                                             case 'boolean':
                                                 target.setAttribute('type', 'checkbox');
@@ -97,10 +99,10 @@ export class SwagTagBase extends XtalViewElement {
                                                     target.setAttribute('checked', '');
                                                 break;
                                             default:
-                                                target.setAttribute('placeholder', prop.name);
-                                                target.setAttribute('type', 'text');
+                                                inp.placeholder = prop.name;
+                                                inp.type = 'text';
                                                 if (propVal) {
-                                                    target.setAttribute('value', propVal);
+                                                    inp.value = propVal;
                                                 }
                                         }
                                         if (this._test && prop.testValues && prop.testValues[this._test]) {
