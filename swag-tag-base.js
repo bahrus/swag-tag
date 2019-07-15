@@ -20,12 +20,9 @@ const fieldEditorTemplate = createTemplate(/* html */ `
   </div>
 `);
 const mainTemplate = createTemplate(/* html */ `
-<!-- <header>
-  <h3></h3>
 
-</header> -->
 <details open>
-  <summary>✏️Edit <label></label>'s Properties</summary>
+  <summary>✏️Edit <var></var>'s properties</summary>
   <form>
   </form>
 </details>
@@ -50,9 +47,6 @@ export class SwagTagBase extends XtalViewElement {
         if (this._initRenderContext === undefined) {
             import(this._wcInfo.selfResolvingModulePath);
             this._initRenderContext = newRenderContext({
-                // header:{
-                //   h3: this._wcInfo.name
-                // },
                 details: ({ target }) => {
                     const el = document.createElement(this._wcInfo.name);
                     const ces = this._wcInfo.customEvents;
@@ -60,7 +54,6 @@ export class SwagTagBase extends XtalViewElement {
                         el.setAttribute('disabled', ces.length.toString());
                     target.insertAdjacentElement('afterend', el);
                     let leaf = el;
-                    //const testCase = this._wcInfo.
                     if (ces !== undefined) {
                         ces.forEach(ce => {
                             const pdEvent = document.createElement('p-d-x-event');
@@ -81,7 +74,7 @@ export class SwagTagBase extends XtalViewElement {
                         return false;
                     return {
                         summary: {
-                            label: this._wcInfo.name
+                            var: this._wcInfo.name
                         },
                         form: ({ target }) => repeat(fieldEditorTemplate, this._initRenderContext, properties.length, target, {
                             div: ({ idx }) => {
