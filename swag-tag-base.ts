@@ -94,6 +94,7 @@ export class SwagTagBase extends XtalViewElement<WCSuiteInfo> {
                   input: ({target}) =>{
                     const inp = target as HTMLInputElement;
                     inp.dataset.propName = prop.name;
+                    inp.dataset.propType = prop.type;
                     switch(prop.type){
                       
                       case 'boolean':
