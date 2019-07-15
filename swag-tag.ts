@@ -101,17 +101,19 @@ export class SwagTag extends SwagTagBase {
               [XtalTextAreaMD.is]:({ctx, target}) => {
                 const xta = target as XtalTextAreaMD;
                 const inp = ctx.replacedElement as HTMLInputElement;
+                xta.coerceToJSON = true;
                 xta.value = inp.value;
                 return {
                   span: inp.dataset.propName
                 }
               },
-              'p-d[data-type="boolean"]': ({ target }) =>
-                decorate(target as HTMLElement, {
+              'p-d[data-type="object"]': ({ target }) =>decorate(target as HTMLElement, {
                   propVals: {
-                    val: "target.boolValue"
+                    on: "object-value-changed",
+                    val: "target.objectValue"
                   } as PD
-                }),
+              }),
+
               [XtalCheckboxInputMD.is]: ({ ctx, target }) => {
                 const xci = target as XtalCheckboxInputMD;
                 const inp = ctx.replacedElement as HTMLInputElement;
@@ -121,7 +123,12 @@ export class SwagTag extends SwagTagBase {
                 return {
                   span: inp.dataset.propName
                 };
-              }
+              },
+              'p-d[data-type="boolean"]': ({ target }) => decorate(target as HTMLElement, {
+                propVals: {
+                  val: "target.boolValue"
+                } as PD
+              }),
             }
           });
           append(target, styleTemplate);
