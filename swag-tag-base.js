@@ -20,12 +20,12 @@ const fieldEditorTemplate = createTemplate(/* html */ `
   </div>
 `);
 const mainTemplate = createTemplate(/* html */ `
-<header>
+<!-- <header>
   <h3></h3>
 
-</header>
+</header> -->
 <details open>
-  <summary>✏️Editor</summary>
+  <summary>✏️Edit <label></label>'s Properties</summary>
   <form>
   </form>
 </details>
@@ -50,9 +50,9 @@ export class SwagTagBase extends XtalViewElement {
         if (this._initRenderContext === undefined) {
             import(this._wcInfo.selfResolvingModulePath);
             this._initRenderContext = newRenderContext({
-                header: {
-                    h3: this._wcInfo.name
-                },
+                // header:{
+                //   h3: this._wcInfo.name
+                // },
                 details: ({ target }) => {
                     const el = document.createElement(this._wcInfo.name);
                     const ces = this._wcInfo.customEvents;
@@ -80,6 +80,9 @@ export class SwagTagBase extends XtalViewElement {
                     if (properties === undefined)
                         return false;
                     return {
+                        summary: {
+                            label: this._wcInfo.name
+                        },
                         form: ({ target }) => repeat(fieldEditorTemplate, this._initRenderContext, properties.length, target, {
                             div: ({ idx }) => {
                                 const prop = properties[idx];

@@ -86,7 +86,7 @@ export class SwagTag extends SwagTagBase {
                                 xta.coerceToJSON = true;
                                 xta.value = inp.value;
                                 return {
-                                    span: inp.dataset.propName
+                                    span: inp.dataset.propName + " (JSON required)"
                                 };
                             },
                             'p-d[data-type="object"]': ({ target }) => decorate(target, {
