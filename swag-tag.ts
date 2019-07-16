@@ -55,7 +55,7 @@ export class SwagTag extends SwagTagBase {
     return false;
   }
 
-  _renderOptions: RenderOptions | undefined;
+  //_renderOptions: RenderOptions;
   copyAttribs(inp: HTMLElement, target: Element) {
     for (let i = 0, ii = inp.attributes.length; i < ii; i++) {
       const attrib = inp.attributes[i];
@@ -63,79 +63,71 @@ export class SwagTag extends SwagTagBase {
       target.setAttribute(attrib.name, attrib.value);
     }
   }
-  get renderOptions(): RenderOptions {
-    if (this._renderOptions === undefined) {
-      this._renderOptions = {
-        initializedCallback: (
-          ctx: RenderContext,
-          target: HTMLElement | DocumentFragment
-        ) => {
-          init(target, {
-            Transform: {
-              "*": {
-                Select: "*"
-              } as TransformRules,
-              'input[type="text"][data-prop-type="string"]': ({
-                ctx,
-                target
-              }) => {
-                replaceElementWithTemplate(target, stringInputTemplate, ctx);
-              },
-              'input[type="text"][data-prop-type="object"]': ({
-                ctx,
-                target
-              }) => {
-                replaceElementWithTemplate(target, objectInputTemplate, ctx);
-              },
-              'input[type="checkbox"]': ({ ctx, target }) => {
-                replaceElementWithTemplate(target, boolInputTemplate, ctx);
-              },
-              [XtalTextInputMD.is]: ({ ctx, target }) => {
-                const inp = ctx.replacedElement as HTMLInputElement;
-                this.copyAttribs(inp, target);
-                (<any>target).value = inp.value;
-                return {
-                  span: inp.dataset.propName
-                };
-              },
-              [XtalTextAreaMD.is]:({ctx, target}) => {
-                const xta = target as XtalTextAreaMD;
-                const inp = ctx.replacedElement as HTMLInputElement;
-                xta.coerceToJSON = true;
-                xta.value = inp.value;
-                return {
-                  span: inp.dataset.propName + " (JSON required)"
-                }
-              },
-              'p-d[data-type="object"]': ({ target }) =>decorate(target as HTMLElement, {
-                  propVals: {
-                    on: "object-value-changed",
-                    val: "target.objectValue"
-                  } as PD
-              }),
+  initCallback(ctx: RenderContext, target: Element | DocumentFragment){
+    super.initCallback(ctx, target);
+    init(target as DocumentFragment, {
+      Transform: {
+        "*": {
+          Select: "*"
+        } as TransformRules,
+        'input[type="text"][data-prop-type="string"]': ({
+          ctx,
+          target
+        }) => {
+          replaceElementWithTemplate(target, stringInputTemplate, ctx);
+        },
+        'input[type="text"][data-prop-type="object"]': ({
+          ctx,
+          target
+        }) => {
+          replaceElementWithTemplate(target, objectInputTemplate, ctx);
+        },
+        'input[type="checkbox"]': ({ ctx, target }) => {
+          replaceElementWithTemplate(target, boolInputTemplate, ctx);
+        },
+        [XtalTextInputMD.is]: ({ ctx, target }) => {
+          const inp = ctx.replacedElement as HTMLInputElement;
+          this.copyAttribs(inp, target);
+          (<any>target).value = inp.value;
+          return {
+            span: inp.dataset.propName
+          };
+        },
+        [XtalTextAreaMD.is]:({ctx, target}) => {
+          const xta = target as XtalTextAreaMD;
+          const inp = ctx.replacedElement as HTMLInputElement;
+          xta.coerceToJSON = true;
+          xta.value = inp.value;
+          return {
+            span: inp.dataset.propName + " (JSON required)"
+          }
+        },
+        'p-d[data-type="object"]': ({ target }) =>decorate(target as HTMLElement, {
+            propVals: {
+              on: "object-value-changed",
+              val: "target.objectValue"
+            } as PD
+        }),
 
-              [XtalCheckboxInputMD.is]: ({ ctx, target }) => {
-                const xci = target as XtalCheckboxInputMD;
-                const inp = ctx.replacedElement as HTMLInputElement;
-                this.copyAttribs(inp, target);
-                xci.value = inp.value;
-                xci.boolValue = inp.hasAttribute("checked");
-                return {
-                  span: inp.dataset.propName
-                };
-              },
-              'p-d[data-type="boolean"]': ({ target }) => decorate(target as HTMLElement, {
-                propVals: {
-                  val: "target.boolValue"
-                } as PD
-              }),
-            }
-          });
-          append(target, styleTemplate);
-        }
-      } as RenderOptions;
-    }
-    return this._renderOptions;
+        [XtalCheckboxInputMD.is]: ({ ctx, target }) => {
+          const xci = target as XtalCheckboxInputMD;
+          const inp = ctx.replacedElement as HTMLInputElement;
+          this.copyAttribs(inp, target);
+          xci.value = inp.value;
+          xci.boolValue = inp.hasAttribute("checked");
+          return {
+            span: inp.dataset.propName
+          };
+        },
+        'p-d[data-type="boolean"]': ({ target }) => decorate(target as HTMLElement, {
+          propVals: {
+            val: "target.boolValue"
+          } as PD
+        }),
+      }
+    });
+    append(target as DocumentFragment, styleTemplate);
   }
+
 }
 define(SwagTag);

@@ -46,6 +46,7 @@ export class SwagTag extends SwagTagBase {
     get noShadow() {
         return false;
     }
+    //_renderOptions: RenderOptions;
     copyAttribs(inp, target) {
         for (let i = 0, ii = inp.attributes.length; i < ii; i++) {
             const attrib = inp.attributes[i];
@@ -54,69 +55,63 @@ export class SwagTag extends SwagTagBase {
             target.setAttribute(attrib.name, attrib.value);
         }
     }
-    get renderOptions() {
-        if (this._renderOptions === undefined) {
-            this._renderOptions = {
-                initializedCallback: (ctx, target) => {
-                    init(target, {
-                        Transform: {
-                            "*": {
-                                Select: "*"
-                            },
-                            'input[type="text"][data-prop-type="string"]': ({ ctx, target }) => {
-                                replaceElementWithTemplate(target, stringInputTemplate, ctx);
-                            },
-                            'input[type="text"][data-prop-type="object"]': ({ ctx, target }) => {
-                                replaceElementWithTemplate(target, objectInputTemplate, ctx);
-                            },
-                            'input[type="checkbox"]': ({ ctx, target }) => {
-                                replaceElementWithTemplate(target, boolInputTemplate, ctx);
-                            },
-                            [XtalTextInputMD.is]: ({ ctx, target }) => {
-                                const inp = ctx.replacedElement;
-                                this.copyAttribs(inp, target);
-                                target.value = inp.value;
-                                return {
-                                    span: inp.dataset.propName
-                                };
-                            },
-                            [XtalTextAreaMD.is]: ({ ctx, target }) => {
-                                const xta = target;
-                                const inp = ctx.replacedElement;
-                                xta.coerceToJSON = true;
-                                xta.value = inp.value;
-                                return {
-                                    span: inp.dataset.propName + " (JSON required)"
-                                };
-                            },
-                            'p-d[data-type="object"]': ({ target }) => decorate(target, {
-                                propVals: {
-                                    on: "object-value-changed",
-                                    val: "target.objectValue"
-                                }
-                            }),
-                            [XtalCheckboxInputMD.is]: ({ ctx, target }) => {
-                                const xci = target;
-                                const inp = ctx.replacedElement;
-                                this.copyAttribs(inp, target);
-                                xci.value = inp.value;
-                                xci.boolValue = inp.hasAttribute("checked");
-                                return {
-                                    span: inp.dataset.propName
-                                };
-                            },
-                            'p-d[data-type="boolean"]': ({ target }) => decorate(target, {
-                                propVals: {
-                                    val: "target.boolValue"
-                                }
-                            }),
-                        }
-                    });
-                    append(target, styleTemplate);
-                }
-            };
-        }
-        return this._renderOptions;
+    initCallback(ctx, target) {
+        super.initCallback(ctx, target);
+        init(target, {
+            Transform: {
+                "*": {
+                    Select: "*"
+                },
+                'input[type="text"][data-prop-type="string"]': ({ ctx, target }) => {
+                    replaceElementWithTemplate(target, stringInputTemplate, ctx);
+                },
+                'input[type="text"][data-prop-type="object"]': ({ ctx, target }) => {
+                    replaceElementWithTemplate(target, objectInputTemplate, ctx);
+                },
+                'input[type="checkbox"]': ({ ctx, target }) => {
+                    replaceElementWithTemplate(target, boolInputTemplate, ctx);
+                },
+                [XtalTextInputMD.is]: ({ ctx, target }) => {
+                    const inp = ctx.replacedElement;
+                    this.copyAttribs(inp, target);
+                    target.value = inp.value;
+                    return {
+                        span: inp.dataset.propName
+                    };
+                },
+                [XtalTextAreaMD.is]: ({ ctx, target }) => {
+                    const xta = target;
+                    const inp = ctx.replacedElement;
+                    xta.coerceToJSON = true;
+                    xta.value = inp.value;
+                    return {
+                        span: inp.dataset.propName + " (JSON required)"
+                    };
+                },
+                'p-d[data-type="object"]': ({ target }) => decorate(target, {
+                    propVals: {
+                        on: "object-value-changed",
+                        val: "target.objectValue"
+                    }
+                }),
+                [XtalCheckboxInputMD.is]: ({ ctx, target }) => {
+                    const xci = target;
+                    const inp = ctx.replacedElement;
+                    this.copyAttribs(inp, target);
+                    xci.value = inp.value;
+                    xci.boolValue = inp.hasAttribute("checked");
+                    return {
+                        span: inp.dataset.propName
+                    };
+                },
+                'p-d[data-type="boolean"]': ({ target }) => decorate(target, {
+                    propVals: {
+                        val: "target.boolValue"
+                    }
+                }),
+            }
+        });
+        append(target, styleTemplate);
     }
 }
 define(SwagTag);
