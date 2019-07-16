@@ -7,7 +7,7 @@ import { XtalViewElement } from "xtal-element/xtal-view-element.js";
 import { PD } from "p-et-alia/p-d.js";
 import { extend } from "p-et-alia/p-d-x.js";
 import { XtalJsonEditor } from "xtal-json-editor/xtal-json-editor.js";
-extend('event', {
+extend("event", {
     valFromEvent: e => ({
         type: e.type,
         detail: e.detail
@@ -30,9 +30,9 @@ const mainTemplate = createTemplate(/* html */ `
 <xtal-json-editor options="{}"  height="300px"></xtal-json-editor>
 <main></main>
 `);
-const href = 'href';
-const tag = 'tag';
-const test = 'test';
+const href = "href";
+const tag = "tag";
+const test = "test";
 export class SwagTagBase extends XtalViewElement {
     constructor() {
         super(...arguments);
@@ -43,30 +43,28 @@ export class SwagTagBase extends XtalViewElement {
     static get is() {
         return "swag-tag-base";
     }
-    //_initRenderContext: RenderContext | undefined;
     get initRenderContext() {
-        //if(this._initRenderContext === undefined){
         import(this._wcInfo.selfResolvingModulePath);
         return newRenderContext({
             details: ({ target }) => {
                 const el = document.createElement(this._wcInfo.name);
                 const ces = this._wcInfo.customEvents;
                 if (ces !== undefined)
-                    el.setAttribute('disabled', ces.length.toString());
-                target.insertAdjacentElement('afterend', el);
+                    el.setAttribute("disabled", ces.length.toString());
+                target.insertAdjacentElement("afterend", el);
                 let leaf = el;
                 if (ces !== undefined) {
                     ces.forEach(ce => {
-                        const pdEvent = document.createElement('p-d-x-event');
+                        const pdEvent = document.createElement("p-d-x-event");
                         decorate(pdEvent, {
                             propVals: {
                                 on: ce.name,
                                 to: XtalJsonEditor.is,
-                                prop: 'input',
-                                m: 1,
+                                prop: "input",
+                                m: 1
                             }
                         });
-                        leaf.insertAdjacentElement('afterend', pdEvent);
+                        leaf.insertAdjacentElement("afterend", pdEvent);
                         leaf = pdEvent;
                     });
                 }
@@ -91,35 +89,33 @@ export class SwagTagBase extends XtalViewElement {
                                     inp.dataset.propName = prop.name;
                                     inp.dataset.propType = prop.type;
                                     switch (prop.type) {
-                                        case 'boolean':
-                                            target.setAttribute('type', 'checkbox');
+                                        case "boolean":
+                                            target.setAttribute("type", "checkbox");
                                             if (propVal) {
-                                                target.setAttribute('checked', '');
-                                                inp.value = 'on';
+                                                target.setAttribute("checked", "");
+                                                inp.value = "on";
                                             }
                                             break;
                                         default:
                                             inp.placeholder = prop.name;
-                                            inp.type = 'text';
+                                            inp.type = "text";
                                             if (propVal) {
                                                 inp.value = propVal;
                                             }
                                     }
-                                    // if(this._test && prop.testValues && prop.testValues[this._test]){
-                                    // } 
                                 },
                                 [PD.is]: ({ target }) => decorate(target, {
                                     propVals: {
                                         to: this._wcInfo.name,
-                                        prop: prop.name,
+                                        prop: prop.name
                                     },
                                     attribs: {
-                                        'data-type': prop.type
+                                        "data-type": prop.type
                                     }
-                                }),
+                                })
                             };
                         }
-                    }),
+                    })
                 };
             },
             [XtalJsonEditor.is]: ({ target }) => {
@@ -130,8 +126,6 @@ export class SwagTagBase extends XtalViewElement {
                 });
             }
         });
-        //}
-        //return this._initRenderContext;
     }
     get noShadow() {
         return true;
@@ -167,7 +161,7 @@ export class SwagTagBase extends XtalViewElement {
             case href:
             case tag:
             case test:
-                this['_' + n] = nv;
+                this["_" + n] = nv;
                 break;
         }
         super.attributeChangedCallback(n, ov, nv);
