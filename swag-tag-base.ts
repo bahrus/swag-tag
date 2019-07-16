@@ -44,12 +44,12 @@ export class SwagTagBase extends XtalViewElement<WCSuiteInfo> {
   static get is() {
     return "swag-tag-base";
   }
-  _initRenderContext: RenderContext | undefined;
+  //_initRenderContext: RenderContext | undefined;
   get initRenderContext() {
     
-    if(this._initRenderContext === undefined){
+    //if(this._initRenderContext === undefined){
       import(this._wcInfo.selfResolvingModulePath!);
-      this._initRenderContext = newRenderContext({
+      return newRenderContext({
         details: ({target}) => {
           const el = document.createElement(this._wcInfo.name);
           const ces = this._wcInfo.customEvents;
@@ -78,7 +78,7 @@ export class SwagTagBase extends XtalViewElement<WCSuiteInfo> {
             summary:{
               var: this._wcInfo.name
             },
-            form: ({target}) => repeat(fieldEditorTemplate, this._initRenderContext!, properties.length, target, {
+            form: ({target, ctx}) => repeat(fieldEditorTemplate, ctx, properties.length, target, {
               div: ({idx}) =>{
                 const prop = properties[idx];
                 let propVal: any = undefined;
@@ -136,8 +136,8 @@ export class SwagTagBase extends XtalViewElement<WCSuiteInfo> {
           })
         }
       });
-    }
-    return this._initRenderContext;
+    //}
+    //return this._initRenderContext;
   }
 
   get noShadow() {

@@ -43,94 +43,95 @@ export class SwagTagBase extends XtalViewElement {
     static get is() {
         return "swag-tag-base";
     }
+    //_initRenderContext: RenderContext | undefined;
     get initRenderContext() {
-        if (this._initRenderContext === undefined) {
-            import(this._wcInfo.selfResolvingModulePath);
-            this._initRenderContext = newRenderContext({
-                details: ({ target }) => {
-                    const el = document.createElement(this._wcInfo.name);
-                    const ces = this._wcInfo.customEvents;
-                    if (ces !== undefined)
-                        el.setAttribute('disabled', ces.length.toString());
-                    target.insertAdjacentElement('afterend', el);
-                    let leaf = el;
-                    if (ces !== undefined) {
-                        ces.forEach(ce => {
-                            const pdEvent = document.createElement('p-d-x-event');
-                            decorate(pdEvent, {
-                                propVals: {
-                                    on: ce.name,
-                                    to: XtalJsonEditor.is,
-                                    prop: 'input',
-                                    m: 1,
-                                }
-                            });
-                            leaf.insertAdjacentElement('afterend', pdEvent);
-                            leaf = pdEvent;
-                        });
-                    }
-                    const properties = this._wcInfo.properties;
-                    if (properties === undefined)
-                        return false;
-                    return {
-                        summary: {
-                            var: this._wcInfo.name
-                        },
-                        form: ({ target }) => repeat(fieldEditorTemplate, this._initRenderContext, properties.length, target, {
-                            div: ({ idx }) => {
-                                const prop = properties[idx];
-                                let propVal = undefined;
-                                if (this._test && prop.testValues) {
-                                    propVal = prop.testValues[this._test];
-                                }
-                                return {
-                                    //label: prop.name + ': ',
-                                    input: ({ target }) => {
-                                        const inp = target;
-                                        inp.dataset.propName = prop.name;
-                                        inp.dataset.propType = prop.type;
-                                        switch (prop.type) {
-                                            case 'boolean':
-                                                target.setAttribute('type', 'checkbox');
-                                                if (propVal) {
-                                                    target.setAttribute('checked', '');
-                                                    inp.value = 'on';
-                                                }
-                                                break;
-                                            default:
-                                                inp.placeholder = prop.name;
-                                                inp.type = 'text';
-                                                if (propVal) {
-                                                    inp.value = propVal;
-                                                }
-                                        }
-                                        // if(this._test && prop.testValues && prop.testValues[this._test]){
-                                        // } 
-                                    },
-                                    [PD.is]: ({ target }) => decorate(target, {
-                                        propVals: {
-                                            to: this._wcInfo.name,
-                                            prop: prop.name,
-                                        },
-                                        attribs: {
-                                            'data-type': prop.type
-                                        }
-                                    }),
-                                };
+        //if(this._initRenderContext === undefined){
+        import(this._wcInfo.selfResolvingModulePath);
+        return newRenderContext({
+            details: ({ target }) => {
+                const el = document.createElement(this._wcInfo.name);
+                const ces = this._wcInfo.customEvents;
+                if (ces !== undefined)
+                    el.setAttribute('disabled', ces.length.toString());
+                target.insertAdjacentElement('afterend', el);
+                let leaf = el;
+                if (ces !== undefined) {
+                    ces.forEach(ce => {
+                        const pdEvent = document.createElement('p-d-x-event');
+                        decorate(pdEvent, {
+                            propVals: {
+                                on: ce.name,
+                                to: XtalJsonEditor.is,
+                                prop: 'input',
+                                m: 1,
                             }
-                        }),
-                    };
-                },
-                [XtalJsonEditor.is]: ({ target }) => {
-                    decorate(target, {
-                        propVals: {
-                            archive: true
-                        }
+                        });
+                        leaf.insertAdjacentElement('afterend', pdEvent);
+                        leaf = pdEvent;
                     });
                 }
-            });
-        }
-        return this._initRenderContext;
+                const properties = this._wcInfo.properties;
+                if (properties === undefined)
+                    return false;
+                return {
+                    summary: {
+                        var: this._wcInfo.name
+                    },
+                    form: ({ target, ctx }) => repeat(fieldEditorTemplate, ctx, properties.length, target, {
+                        div: ({ idx }) => {
+                            const prop = properties[idx];
+                            let propVal = undefined;
+                            if (this._test && prop.testValues) {
+                                propVal = prop.testValues[this._test];
+                            }
+                            return {
+                                //label: prop.name + ': ',
+                                input: ({ target }) => {
+                                    const inp = target;
+                                    inp.dataset.propName = prop.name;
+                                    inp.dataset.propType = prop.type;
+                                    switch (prop.type) {
+                                        case 'boolean':
+                                            target.setAttribute('type', 'checkbox');
+                                            if (propVal) {
+                                                target.setAttribute('checked', '');
+                                                inp.value = 'on';
+                                            }
+                                            break;
+                                        default:
+                                            inp.placeholder = prop.name;
+                                            inp.type = 'text';
+                                            if (propVal) {
+                                                inp.value = propVal;
+                                            }
+                                    }
+                                    // if(this._test && prop.testValues && prop.testValues[this._test]){
+                                    // } 
+                                },
+                                [PD.is]: ({ target }) => decorate(target, {
+                                    propVals: {
+                                        to: this._wcInfo.name,
+                                        prop: prop.name,
+                                    },
+                                    attribs: {
+                                        'data-type': prop.type
+                                    }
+                                }),
+                            };
+                        }
+                    }),
+                };
+            },
+            [XtalJsonEditor.is]: ({ target }) => {
+                decorate(target, {
+                    propVals: {
+                        archive: true
+                    }
+                });
+            }
+        });
+        //}
+        //return this._initRenderContext;
     }
     get noShadow() {
         return true;
