@@ -32,7 +32,7 @@ const mainTemplate = createTemplate(/* html */ `
   <form>
   </form>
 </details>
-<h4>Event Monitoring</h4>
+<h4>Live Events Fired</h4>
 <xtal-json-editor options="{}"  height="300px"></xtal-json-editor>
 <main></main>
 `);
@@ -107,9 +107,9 @@ export class SwagTagBase extends XtalViewElement<WCSuiteInfo> {
                             inp.value = propVal;
                           }
                     }
-                    if(this._test && prop.testValues && prop.testValues[this._test]){
+                    // if(this._test && prop.testValues && prop.testValues[this._test]){
 
-                    } 
+                    // } 
                   },
                   [PD.is]: ({target}) => decorate(target as HTMLElement, {
                     propVals:{
