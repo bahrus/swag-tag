@@ -63,8 +63,8 @@ export class SwagTag extends SwagTagBase {
       target.setAttribute(attrib.name, attrib.value);
     }
   }
-  initCallback(ctx: RenderContext, target: Element | DocumentFragment){
-    super.initCallback(ctx, target);
+  initRenderCallback(ctx: RenderContext, target: HTMLElement | DocumentFragment){
+    super.initRenderCallback(ctx, target);
     init(target as DocumentFragment, {
       Transform: {
         "*": {
