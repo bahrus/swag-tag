@@ -133,7 +133,7 @@ export class SwagTagBase extends XtalViewElement {
     get eventContext() {
         return {};
     }
-    get ready() {
+    get readyToInit() {
         return this._href !== undefined;
     }
     init() {
