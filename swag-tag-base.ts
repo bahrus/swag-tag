@@ -138,9 +138,9 @@ export class SwagTagBase extends XtalViewElement<WCSuiteInfo> {
     return true;
   }
 
-  get eventContext() {
-    return {};
-  }
+  // get eventContext() {
+  //   return {};
+  // }
   get readyToInit() {
     return this._href !== undefined;
   }
