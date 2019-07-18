@@ -108,29 +108,21 @@ export class SwagTagBase extends XtalViewElement<WCSuiteInfo> {
                       attribs:{
                         "type": prop.type === 'boolean' ? 'checkbox' : 'text'
                       }
-                    })
-                    switch (prop.type) {
-                      case "boolean":
-                        //target.setAttribute("type", "checkbox");
-                        if (propVal) {
-                          target.setAttribute("checked", "");
-                          inp.value = "on";
-                        }
-                        break;
-                      case "object":
-                          //inp.placeholder = prop.name;
-                          inp.type = "text";
-                          if (propVal) {
-                            inp.value = JSON.stringify(propVal);
-                          }
+                    });
+                    if(propVal){
+                      switch (prop.type) {
+                        case "boolean":
+                            target.setAttribute("checked", "");
+                            inp.value = "on";
                           break;
-                      default:
-                        //inp.placeholder = prop.name;
-                        //inp.type = "text";
-                        if (propVal) {
-                          inp.value = propVal;
-                        }
+                        case "object":
+                            inp.value = JSON.stringify(propVal);
+                            break;
+                        default:
+                            inp.value = propVal;
+                      }
                     }
+
                   },
                   [PD.is]: ({ target }) =>
                     decorate(target as HTMLElement, {

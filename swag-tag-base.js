@@ -104,27 +104,18 @@ export class SwagTagBase extends XtalViewElement {
                                             "type": prop.type === 'boolean' ? 'checkbox' : 'text'
                                         }
                                     });
-                                    switch (prop.type) {
-                                        case "boolean":
-                                            //target.setAttribute("type", "checkbox");
-                                            if (propVal) {
+                                    if (propVal) {
+                                        switch (prop.type) {
+                                            case "boolean":
                                                 target.setAttribute("checked", "");
                                                 inp.value = "on";
-                                            }
-                                            break;
-                                        case "object":
-                                            //inp.placeholder = prop.name;
-                                            inp.type = "text";
-                                            if (propVal) {
+                                                break;
+                                            case "object":
                                                 inp.value = JSON.stringify(propVal);
-                                            }
-                                            break;
-                                        default:
-                                            //inp.placeholder = prop.name;
-                                            //inp.type = "text";
-                                            if (propVal) {
+                                                break;
+                                            default:
                                                 inp.value = propVal;
-                                            }
+                                        }
                                     }
                                 },
                                 [PD.is]: ({ target }) => decorate(target, {
