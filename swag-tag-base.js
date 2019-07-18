@@ -44,6 +44,10 @@ export class SwagTagBase extends XtalViewElement {
         return "swag-tag-base";
     }
     get initRenderContext() {
+        if (this._wcInfo.selfResolvingModulePath === undefined) {
+            console.warn("No self resolving module path found in " + this._href + ' tag: ' + this._tag);
+            return {};
+        }
         import(this._wcInfo.selfResolvingModulePath);
         return newRenderContext({
             details: ({ target }) => {
