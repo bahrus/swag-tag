@@ -16,8 +16,8 @@
     "xtal-element": "0.0.78",
     "p-et-alia": "0.0.11",
     "xtal-json-editor": "0.0.39",
-    "xtal-text-input-md": "0.0.10",
-    "xtal-text-area-md": "0.0.17",
+    "xtal-text-input-md": "0.0.11",
+    "xtal-text-area-md": "0.0.18",
     "xtal-checkbox-input-md": "0.0.3"
   },
   "devDependencies": {
