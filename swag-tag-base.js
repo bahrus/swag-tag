@@ -72,16 +72,17 @@ export class SwagTagBase extends XtalViewElement {
                         leaf = pdEvent;
                     });
                 }
-                const properties = this._wcInfo.properties;
-                if (properties === undefined)
+                const allProperties = this._wcInfo.properties;
+                if (allProperties === undefined)
                     return false;
+                const writeableProps = allProperties.filter(prop => !prop.readOnly);
                 return {
                     summary: {
                         var: this._wcInfo.name
                     },
-                    form: ({ target, ctx }) => repeat(fieldEditorTemplate, ctx, properties.length, target, {
+                    form: ({ target, ctx }) => repeat(fieldEditorTemplate, ctx, writeableProps.length, target, {
                         div: ({ idx }) => {
-                            const prop = properties[idx];
+                            const prop = writeableProps[idx];
                             let propVal = undefined;
                             if (this._test && prop.testValues) {
                                 propVal = prop.testValues[this._test];
@@ -99,6 +100,13 @@ export class SwagTagBase extends XtalViewElement {
                                             if (propVal) {
                                                 target.setAttribute("checked", "");
                                                 inp.value = "on";
+                                            }
+                                            break;
+                                        case "object":
+                                            inp.placeholder = prop.name;
+                                            inp.type = "text";
+                                            if (propVal) {
+                                                inp.value = JSON.stringify(propVal);
                                             }
                                             break;
                                         default:

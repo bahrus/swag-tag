@@ -77,16 +77,17 @@ export class SwagTagBase extends XtalViewElement<WCSuiteInfo> {
             leaf = pdEvent;
           });
         }
-        const properties = this._wcInfo.properties;
-        if (properties === undefined) return false;
+        const allProperties = this._wcInfo.properties;
+        if (allProperties === undefined) return false;
+        const writeableProps = allProperties.filter(prop => !prop.readOnly);
         return {
           summary: {
             var: this._wcInfo.name
           },
           form: ({ target, ctx }) =>
-            repeat(fieldEditorTemplate, ctx, properties.length, target, {
+            repeat(fieldEditorTemplate, ctx, writeableProps.length, target, {
               div: ({ idx }) => {
-                const prop = properties[idx];
+                const prop = writeableProps[idx];
                 let propVal: any = undefined;
                 if (this._test && prop.testValues) {
                   propVal = prop.testValues[this._test];
@@ -106,6 +107,13 @@ export class SwagTagBase extends XtalViewElement<WCSuiteInfo> {
                           inp.value = "on";
                         }
                         break;
+                      case "object":
+                          inp.placeholder = prop.name;
+                          inp.type = "text";
+                          if (propVal) {
+                            inp.value = JSON.stringify(propVal);
+                          }
+                          break;
                       default:
                         inp.placeholder = prop.name;
                         inp.type = "text";

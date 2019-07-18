@@ -21,7 +21,7 @@
     "xtal-checkbox-input-md": "0.0.3"
   },
   "devDependencies": {
-    "wc-info": "0.0.53",
+    "wc-info": "0.0.65",
     "xtal-test": "0.0.19"
   },
   "author": "",
