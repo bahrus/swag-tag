@@ -91,27 +91,37 @@ export class SwagTagBase extends XtalViewElement {
                                 //label: prop.name + ': ',
                                 input: ({ target }) => {
                                     const inp = target;
-                                    inp.dataset.propName = prop.name;
-                                    inp.dataset.propType = prop.type;
-                                    inp.dataset.description = prop.description;
+                                    decorate(inp, {
+                                        propVals: {
+                                            dataset: {
+                                                propName: prop.name,
+                                                propType: prop.type,
+                                                description: prop.description
+                                            },
+                                            placeholder: prop.name
+                                        },
+                                        attribs: {
+                                            "type": prop.type === 'boolean' ? 'checkbox' : 'text'
+                                        }
+                                    });
                                     switch (prop.type) {
                                         case "boolean":
-                                            target.setAttribute("type", "checkbox");
+                                            //target.setAttribute("type", "checkbox");
                                             if (propVal) {
                                                 target.setAttribute("checked", "");
                                                 inp.value = "on";
                                             }
                                             break;
                                         case "object":
-                                            inp.placeholder = prop.name;
+                                            //inp.placeholder = prop.name;
                                             inp.type = "text";
                                             if (propVal) {
                                                 inp.value = JSON.stringify(propVal);
                                             }
                                             break;
                                         default:
-                                            inp.placeholder = prop.name;
-                                            inp.type = "text";
+                                            //inp.placeholder = prop.name;
+                                            //inp.type = "text";
                                             if (propVal) {
                                                 inp.value = propVal;
                                             }
