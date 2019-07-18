@@ -39,6 +39,22 @@ const boolInputTemplate = createTemplate(/* html */ `
   <span slot="label"></span>
 </xtal-checkbox-input-md>
 `);
+function decorateSpan(target, inp) {
+    decorate(target, {
+        propVals: {
+            textContent: inp.dataset.propName + " (JSON required)",
+            title: inp.dataset.description
+        }
+    });
+}
+function decorateSpanForObject(target, inp) {
+    decorate(target, {
+        propVals: {
+            textContent: inp.dataset.propName + " (JSON required)",
+            title: inp.dataset.description
+        }
+    });
+}
 export class SwagTag extends SwagTagBase {
     static get is() {
         return "swag-tag";
@@ -76,7 +92,7 @@ export class SwagTag extends SwagTagBase {
                     this.copyAttribs(inp, target);
                     target.value = inp.value;
                     return {
-                        span: inp.dataset.propName
+                        span: ({ target }) => decorateSpan(target, inp)
                     };
                 },
                 [XtalTextAreaMD.is]: ({ ctx, target }) => {
@@ -85,7 +101,7 @@ export class SwagTag extends SwagTagBase {
                     xta.coerceToJSON = true;
                     xta.value = inp.value;
                     return {
-                        span: inp.dataset.propName + " (JSON required)"
+                        span: ({ target }) => decorateSpanForObject(target, inp)
                     };
                 },
                 'p-d[data-type="object"]': ({ target }) => decorate(target, {
@@ -101,7 +117,7 @@ export class SwagTag extends SwagTagBase {
                     xci.value = inp.value;
                     xci.boolValue = inp.hasAttribute("checked");
                     return {
-                        span: inp.dataset.propName
+                        span: ({ target }) => decorateSpan(target, inp)
                     };
                 },
                 'p-d[data-type="boolean"]': ({ target }) => decorate(target, {

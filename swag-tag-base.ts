@@ -97,6 +97,7 @@ export class SwagTagBase extends XtalViewElement<WCSuiteInfo> {
                     const inp = target as HTMLInputElement;
                     inp.dataset.propName = prop.name;
                     inp.dataset.propType = prop.type;
+                    inp.dataset.description = prop.description;
                     switch (prop.type) {
                       case "boolean":
                         target.setAttribute("type", "checkbox");
