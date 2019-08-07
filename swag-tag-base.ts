@@ -24,17 +24,17 @@ extend("event", {
 const fieldEditorTemplate = createTemplate(/* html */ `
   <div>
     <input>
-    <p-d on="input" from="details" val="target.value"></p-d>
+    <p-d on="input" from="fieldset" val="target.value"></p-d>
   </div>
 `);
 
 const mainTemplate = createTemplate(/* html */ `
 
-<details open>
-  <summary>✏️Edit <var></var>'s properties</summary>
+<fieldset>
+  <legend>✏️Edit <var></var>'s properties</legend>
   <form>
   </form>
-</details>
+</fieldset>
 <h4>Live Events Fired</h4>
 <xtal-json-editor options="{}"  height="300px"></xtal-json-editor>
 <main></main>
@@ -54,7 +54,7 @@ export class SwagTagBase extends XtalViewElement<WCSuiteInfo> {
     }
     import(this._wcInfo.selfResolvingModulePath!);
     return newRenderContext({
-      details: ({ target }) => {
+      fieldset: ({ target }) => {
         const el = document.createElement(this._wcInfo.name);
         const ces = this._wcInfo.customEvents;
         if (ces !== undefined)
@@ -81,7 +81,7 @@ export class SwagTagBase extends XtalViewElement<WCSuiteInfo> {
         if (allProperties === undefined) return false;
         const writeableProps = allProperties.filter(prop => !prop.readOnly);
         return {
-          summary: {
+          legend: {
             var: this._wcInfo.name
           },
           form: ({ target, ctx }) =>
