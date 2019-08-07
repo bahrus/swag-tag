@@ -23,11 +23,11 @@ const styleTemplate = createTemplate(/* html */ `
 }
 details>summary {
     margin-top: 20px;
-    list-style: none;
+    /*list-style: none;*/
     cursor:pointer;
 }
 details>summary::-webkit-details-marker{
-    display:none;
+    /*display:none;*/
 }
 </style>
 `);

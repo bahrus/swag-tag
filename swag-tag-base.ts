@@ -24,7 +24,7 @@ extend("event", {
 const fieldEditorTemplate = createTemplate(/* html */ `
   <div>
     <input>
-    <p-d on="input" from="fieldset" val="target.value"></p-d>
+    <p-d on=input from=fieldset to=details val=target.value m=1></p-d>
   </div>
 `);
 
@@ -35,6 +35,9 @@ const mainTemplate = createTemplate(/* html */ `
   <form>
   </form>
 </fieldset>
+<details open>
+  <summary></summary>
+</details>
 <h4>Live Events Fired</h4>
 <xtal-json-editor options="{}"  height="300px"></xtal-json-editor>
 <main></main>
@@ -55,28 +58,7 @@ export class SwagTagBase extends XtalViewElement<WCSuiteInfo> {
     import(this._wcInfo.selfResolvingModulePath!);
     return newRenderContext({
       fieldset: ({ target }) => {
-        const el = document.createElement(this._wcInfo.name);
-        const ces = this._wcInfo.customEvents;
-        if (ces !== undefined)
-          el.setAttribute("disabled", ces.length.toString());
-        target.insertAdjacentElement("afterend", el);
-        let leaf = el;
 
-        if (ces !== undefined) {
-          ces.forEach(ce => {
-            const pdEvent = document.createElement("p-d-x-event");
-            decorate(pdEvent, {
-              propVals: {
-                on: ce.name,
-                to: XtalJsonEditor.is,
-                prop: "input",
-                m: 1
-              } as PD
-            });
-            leaf.insertAdjacentElement("afterend", pdEvent);
-            leaf = pdEvent;
-          });
-        }
         const allProperties = this._wcInfo.properties;
         if (allProperties === undefined) return false;
         const writeableProps = allProperties.filter(prop => !prop.readOnly);
@@ -127,7 +109,7 @@ export class SwagTagBase extends XtalViewElement<WCSuiteInfo> {
                   [PD.is]: ({ target }) =>
                     decorate(target as HTMLElement, {
                       propVals: {
-                        to: this._wcInfo.name,
+                        careOf: this._wcInfo.name,
                         prop: prop.name
                       } as PD,
                       attribs: {
@@ -138,6 +120,32 @@ export class SwagTagBase extends XtalViewElement<WCSuiteInfo> {
               }
             }) as TransformRules
         } as TransformRules;
+      },
+      details: ({target}) =>{
+        const el = document.createElement(this._wcInfo.name);
+        const ces = this._wcInfo.customEvents;
+        if (ces !== undefined) el.setAttribute("disabled", ces.length.toString());
+        target.appendChild(el);
+        //let leaf = el;
+
+        if (ces !== undefined) {
+          ces.forEach(ce => {
+            const pdEvent = document.createElement("p-d-x-event");
+            decorate(pdEvent, {
+              propVals: {
+                on: ce.name,
+                from: 'details',
+                to: XtalJsonEditor.is,
+                prop: "input",
+                m: 1
+              } as PD
+            });
+            target.appendChild(pdEvent);
+          });
+        }
+        return {
+          summary: this._wcInfo.name + ''
+        }
       },
       [XtalJsonEditor.is]: ({ target }) => {
         decorate(target as HTMLElement, {
@@ -153,9 +161,7 @@ export class SwagTagBase extends XtalViewElement<WCSuiteInfo> {
     return true;
   }
 
-  // get eventContext() {
-  //   return {};
-  // }
+
   get readyToInit() {
     return this._href !== undefined;
   }
