@@ -42,7 +42,7 @@ const boolInputTemplate = createTemplate(/* html */ `
 function decorateSpan(target, inp) {
     decorate(target, {
         propVals: {
-            textContent: inp.dataset.propName + " (JSON required)",
+            textContent: inp.dataset.propName,
             title: inp.dataset.description
         }
     });
