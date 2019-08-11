@@ -30,7 +30,7 @@ const stringInputTemplate = createTemplate(/* html */ `
 </xtal-text-input-md>
 `);
 const objectInputTemplate = createTemplate(/* html */ `
-<xtal-text-area-md disabled>
+<xtal-text-area-md rows=8 disabled>
   <span slot="label"></span>
 </xtal-text-area-md>
 `);
