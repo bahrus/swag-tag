@@ -12,9 +12,9 @@
     "url": "git+https://github.com/bahrus/swag-tag.git"
   },
   "dependencies": {
-    "trans-render": "0.0.126",
-    "xtal-element": "0.0.80",
-    "p-et-alia": "0.0.19",
+    "trans-render": "0.0.131",
+    "xtal-element": "0.0.82",
+    "p-et-alia": "0.0.43",
     "xtal-json-editor": "0.0.39",
     "xtal-text-input-md": "0.0.11",
     "xtal-text-area-md": "0.0.18",
@@ -23,7 +23,7 @@
   },
   "devDependencies": {
     "wc-info": "0.0.65",
-    "xtal-test": "0.0.19"
+    "xtal-test": "0.0.20"
   },
   "author": "",
   "license": "MIT",
