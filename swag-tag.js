@@ -62,14 +62,19 @@ export class SwagTag extends SwagTagBase {
     get noShadow() {
         return false;
     }
-    //_renderOptions: RenderOptions;
-    copyAttribs(inp, target) {
-        for (let i = 0, ii = inp.attributes.length; i < ii; i++) {
-            const attrib = inp.attributes[i];
-            if (attrib.name === "type")
-                continue;
-            target.setAttribute(attrib.name, attrib.value);
-        }
+    // //_renderOptions: RenderOptions;
+    // copyAttribs(inp: HTMLElement, target: Element) {
+    //   for (let i = 0, ii = inp.attributes.length; i < ii; i++) {
+    //     const attrib = inp.attributes[i];
+    //     if (attrib.name === "type") continue;
+    //     target.setAttribute(attrib.name, attrib.value);
+    //   }
+    // }
+    copyAttr(inp, target) {
+        inp.getAttributeNames().forEach(name => {
+            if (name !== 'type')
+                target.setAttribute(name, inp.getAttribute(name));
+        });
     }
     initRenderCallback(ctx, target) {
         super.initRenderCallback(ctx, target);
@@ -89,7 +94,7 @@ export class SwagTag extends SwagTagBase {
                 },
                 [XtalTextInputMD.is]: ({ ctx, target }) => {
                     const inp = ctx.replacedElement;
-                    this.copyAttribs(inp, target);
+                    this.copyAttr(inp, target);
                     target.value = inp.value;
                     return {
                         span: ({ target }) => decorateSpan(target, inp)
@@ -113,7 +118,7 @@ export class SwagTag extends SwagTagBase {
                 [XtalCheckboxInputMD.is]: ({ ctx, target }) => {
                     const xci = target;
                     const inp = ctx.replacedElement;
-                    this.copyAttribs(inp, target);
+                    this.copyAttr(inp, target);
                     xci.value = inp.value;
                     xci.boolValue = inp.hasAttribute("checked");
                     return {

@@ -107,15 +107,13 @@ export class SwagTagBase extends XtalViewElement<WCSuiteInfo> {
 
                   },
                   [PD.is]: ({ target }) =>
-                    decorate(target as HTMLElement, {
-                      propVals: {
+                    decorate(target as HTMLElement, 
+                      {propVals: {
                         careOf: this._wcInfo.name,
-                        prop: prop.name
-                      } as PD,
-                      attribs: {
-                        "data-type": prop.type
-                      }
-                    })
+                        prop: prop.name,
+                      } as PD, 
+                      attribs: {"data-type": prop.type}
+                  })
                 };
               }
             }) as TransformRules
@@ -123,23 +121,14 @@ export class SwagTagBase extends XtalViewElement<WCSuiteInfo> {
       },
       details: ({target}) =>{
         const el = document.createElement(this._wcInfo.name);
-        const ces = this._wcInfo.customEvents;
+        const ces = this._wcInfo.events;
         if (ces !== undefined) el.setAttribute("disabled", ces.length.toString());
         target.appendChild(el);
-        //let leaf = el;
 
         if (ces !== undefined) {
           ces.forEach(ce => {
             const pdEvent = document.createElement("p-d-x-event");
-            decorate(pdEvent, {
-              propVals: {
-                on: ce.name,
-                from: 'details',
-                to: XtalJsonEditor.is,
-                prop: "input",
-                m: 1
-              } as PD
-            });
+            decorate(pdEvent, {propVals: { on: ce.name, from: 'details', to: XtalJsonEditor.is, prop: "input", m: 1} as PD});
             target.appendChild(pdEvent);
           });
         }

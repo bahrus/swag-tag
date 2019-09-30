@@ -71,14 +71,21 @@ export class SwagTag extends SwagTagBase {
     return false;
   }
 
-  //_renderOptions: RenderOptions;
-  copyAttribs(inp: HTMLElement, target: Element) {
-    for (let i = 0, ii = inp.attributes.length; i < ii; i++) {
-      const attrib = inp.attributes[i];
-      if (attrib.name === "type") continue;
-      target.setAttribute(attrib.name, attrib.value);
-    }
+  // //_renderOptions: RenderOptions;
+  // copyAttribs(inp: HTMLElement, target: Element) {
+  //   for (let i = 0, ii = inp.attributes.length; i < ii; i++) {
+  //     const attrib = inp.attributes[i];
+  //     if (attrib.name === "type") continue;
+  //     target.setAttribute(attrib.name, attrib.value);
+  //   }
+  // }
+
+  copyAttr(inp: HTMLElement, target: Element){
+    inp.getAttributeNames().forEach(name =>{
+      if(name !== 'type') target.setAttribute(name, inp.getAttribute(name)!);
+    })
   }
+
   initRenderCallback(ctx: RenderContext, target: HTMLElement | DocumentFragment){
     super.initRenderCallback(ctx, target);
     init(target as DocumentFragment, {
@@ -103,7 +110,7 @@ export class SwagTag extends SwagTagBase {
         },
         [XtalTextInputMD.is]: ({ ctx, target }) => {
           const inp = ctx.replacedElement as HTMLInputElement;
-          this.copyAttribs(inp, target);
+          this.copyAttr(inp, target);
           (<any>target).value = inp.value;
           return {
             span: ({target}) => decorateSpan(target, inp)
@@ -128,7 +135,7 @@ export class SwagTag extends SwagTagBase {
         [XtalCheckboxInputMD.is]: ({ ctx, target }) => {
           const xci = target as XtalCheckboxInputMD;
           const inp = ctx.replacedElement as HTMLInputElement;
-          this.copyAttribs(inp, target);
+          this.copyAttr(inp, target);
           xci.value = inp.value;
           xci.boolValue = inp.hasAttribute("checked");
           return {

@@ -100,14 +100,11 @@ export class SwagTagBase extends XtalViewElement {
                                         }
                                     }
                                 },
-                                [PD.is]: ({ target }) => decorate(target, {
-                                    propVals: {
+                                [PD.is]: ({ target }) => decorate(target, { propVals: {
                                         careOf: this._wcInfo.name,
-                                        prop: prop.name
+                                        prop: prop.name,
                                     },
-                                    attribs: {
-                                        "data-type": prop.type
-                                    }
+                                    attribs: { "data-type": prop.type }
                                 })
                             };
                         }
@@ -116,23 +113,14 @@ export class SwagTagBase extends XtalViewElement {
             },
             details: ({ target }) => {
                 const el = document.createElement(this._wcInfo.name);
-                const ces = this._wcInfo.customEvents;
+                const ces = this._wcInfo.events;
                 if (ces !== undefined)
                     el.setAttribute("disabled", ces.length.toString());
                 target.appendChild(el);
-                //let leaf = el;
                 if (ces !== undefined) {
                     ces.forEach(ce => {
                         const pdEvent = document.createElement("p-d-x-event");
-                        decorate(pdEvent, {
-                            propVals: {
-                                on: ce.name,
-                                from: 'details',
-                                to: XtalJsonEditor.is,
-                                prop: "input",
-                                m: 1
-                            }
-                        });
+                        decorate(pdEvent, { propVals: { on: ce.name, from: 'details', to: XtalJsonEditor.is, prop: "input", m: 1 } });
                         target.appendChild(pdEvent);
                     });
                 }
