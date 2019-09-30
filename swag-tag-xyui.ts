@@ -9,16 +9,15 @@ import "xy-ui/components/xy-input.js";
 import { append } from "trans-render/append.js";
 import { createTemplate } from "xtal-element/utils.js";
 import { init } from "trans-render/init.js";
-import { replaceElementWithTemplate } from "trans-render/replaceElementWithTemplate.js";
+//import { replaceElementWithTemplate } from "trans-render/replaceElementWithTemplate.js";
+import {replaceTargetWithTag} from "trans-render/replaceTargetWithTag.js";
 
 const stringInputTemplate = createTemplate(/* html */ `
-<xy-input disabled>
-  <span slot="label"></span>
-</xy-input>
+<xy-input disabled></xy-input>
 `);
 
-export class SwagTagUI5 extends SwagTagBase{
-    static get is(){return 'swag-tag-ui5';}
+export class SwagTagXyUI extends SwagTagBase{
+    static get is(){return 'swag-tag-xyui';}
 
     get noShadow() {
         return false;
@@ -32,12 +31,28 @@ export class SwagTagUI5 extends SwagTagBase{
                   Select: "*"
                 } as TransformRules,
                 'input[type="text"][data-prop-type="string"]': ({ctx, target}) => {
-                    replaceElementWithTemplate(target, stringInputTemplate, ctx);
+                    const label = target.dataset.propName;
+                    //replaceElementWithTemplate(target, stringInputTemplate, ctx);
+
+                    replaceTargetWithTag(target, 'xy-input', ctx, el => {
+                        //debugger;
+                        if(label !== undefined){
+                            el.setAttribute('label', label);
+                        }
+                        
+                    })
+                    return {
+                        'xy-input': ({target}) => {
+                            debugger;
+                            (<any>target).label = label
+                        },
+                    }
                 },
+                
             }
         })
     }
 
 } 
 
-define(SwagTagUI5);
+define(SwagTagXyUI);

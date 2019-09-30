@@ -92,6 +92,7 @@ export class SwagTagBase extends XtalViewElement {
                                                 target.setAttribute("checked", "");
                                                 inp.value = "on";
                                                 break;
+                                            case "any": //TODO
                                             case "object":
                                                 inp.value = JSON.stringify(propVal);
                                                 break;

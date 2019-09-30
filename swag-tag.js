@@ -86,7 +86,7 @@ export class SwagTag extends SwagTagBase {
                 'input[type="text"][data-prop-type="string"]': ({ ctx, target }) => {
                     replaceElementWithTemplate(target, stringInputTemplate, ctx);
                 },
-                'input[type="text"][data-prop-type="object"]': ({ ctx, target }) => {
+                'input[type="text"][data-prop-type="object"],input[type="text"][data-prop-type="any"]': ({ ctx, target }) => {
                     replaceElementWithTemplate(target, objectInputTemplate, ctx);
                 },
                 'input[type="checkbox"]': ({ ctx, target }) => {
@@ -109,7 +109,7 @@ export class SwagTag extends SwagTagBase {
                         span: ({ target }) => decorateSpanForObject(target, inp)
                     };
                 },
-                'p-d[data-type="object"]': ({ target }) => decorate(target, {
+                'p-d[data-type="object"],p-d[data-type="any"]': ({ target }) => decorate(target, {
                     propVals: {
                         on: "object-value-changed",
                         val: "target.objectValue"
