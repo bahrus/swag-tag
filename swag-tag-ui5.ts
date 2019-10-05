@@ -3,9 +3,10 @@ import { define } from "trans-render/define.js";
 import {
     RenderOptions,
     RenderContext,
-    TransformRules
+    TransformRules,
+    TransformFn
 } from "trans-render/init.d.js";
-import "@ui5/webcomponents/dist/Input.js";
+import  "@ui5/webcomponents/dist/Input.js";
 import { append } from "trans-render/append.js";
 import { createTemplate } from "xtal-element/utils.js";
 import { init } from "trans-render/init.js";
@@ -18,7 +19,7 @@ const stringInputTemplate = createTemplate(/* html */ `
 `);
 
 const objectInputTemplate = createTemplate(/* html */ `
-<xtal-text-area-md rows=8 disabled>
+<ui5-textarea rows=8 disabled>
   <span slot="label"></span>
 </xtal-text-area-md>
 `);
@@ -40,6 +41,10 @@ export class SwagTagUI5 extends SwagTagBase{
                 'input[type="text"][data-prop-type="string"]': ({ctx, target}) => {
                     replaceElementWithTemplate(target, stringInputTemplate, ctx);
                 },
+                'ui5-input': (({target, ctx}) =>{
+                    const inp = ctx.replacedElement as HTMLInputElement;
+                    target.placeholder = inp.dataset.propName!;
+                }) as TransformFn<HTMLInputElement> as TransformFn
             }
         })
     }

@@ -9,6 +9,11 @@ const stringInputTemplate = createTemplate(/* html */ `
   <span slot="label"></span>
 </ui5-input>
 `);
+const objectInputTemplate = createTemplate(/* html */ `
+<ui5-textarea rows=8 disabled>
+  <span slot="label"></span>
+</xtal-text-area-md>
+`);
 export class SwagTagUI5 extends SwagTagBase {
     static get is() { return 'swag-tag-ui5'; }
     get noShadow() {
@@ -24,6 +29,10 @@ export class SwagTagUI5 extends SwagTagBase {
                 'input[type="text"][data-prop-type="string"]': ({ ctx, target }) => {
                     replaceElementWithTemplate(target, stringInputTemplate, ctx);
                 },
+                'ui5-input': (({ target, ctx }) => {
+                    const inp = ctx.replacedElement;
+                    target.placeholder = inp.dataset.propName;
+                })
             }
         });
     }
