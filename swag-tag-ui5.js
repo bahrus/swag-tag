@@ -12,7 +12,7 @@ const stringInputTemplate = createTemplate(/* html */ `
 const objectInputTemplate = createTemplate(/* html */ `
 <ui5-textarea rows=8 cols=200 growing disabled style="width:100%">
   <span slot="label"></span>
-</xtal-text-area-md>
+</ui5-textarea>
 `);
 export class SwagTagUI5 extends SwagTagBase {
     static get is() { return 'swag-tag-ui5'; }
