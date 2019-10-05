@@ -17,6 +17,12 @@ const stringInputTemplate = createTemplate(/* html */ `
 </ui5-input>
 `);
 
+const objectInputTemplate = createTemplate(/* html */ `
+<xtal-text-area-md rows=8 disabled>
+  <span slot="label"></span>
+</xtal-text-area-md>
+`);
+
 export class SwagTagUI5 extends SwagTagBase{
     static get is(){return 'swag-tag-ui5';}
 

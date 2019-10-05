@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Serene Hotel</title>
+
+  <link rel="stylesheet" href="https://component.kitchen/demos/demos.css">
+  <script type="module" src="https://component.kitchen/demos/src/serene/SereneTabs.js"></script>
+  <script type="module" src="https://component.kitchen/demos/src/serene/SereneTabButton.js"></script>
+
+
+  <style>
+    body {
+      background: url(./images/serene/sereneTexture.png);
+      padding: 0;
+    }
+
+    @media (min-width: 768px) {
+      body {
+        padding: 25px;
+      }
+
+      .demo {
+        margin: 0 auto;
+        max-width: 800px;
+      }
+    }
+  </style>
+
+</head>
+
+<body>
+  <div class="demo">
+    <link href="https://fonts.googleapis.com/css?family=Gentium+Basic:400,700|Open+Sans:400,700" rel="stylesheet">
+    <style>
+      serene-tabs {
+        font-family: 'Open Sans';
+      }
+
+      serene-tabs h1 {
+        color: black;
+        font-family: 'Gentium Basic';
+        font-size: 2em;
+        font-weight: bold;
+        margin: 1em 0;
+      }
+    </style>
+
+    <serene-tabs -selected-index id=sereneTabs>
+      <div aria-label="Standard">
+        <h1>Standard rooms</h1>
+        <p>
+          <details>
+            <summary>Standard Rooms Detail</summary>
+            <button id=switchToDeluxe>Switch to Deluxe</button>
+            <script>
+              switchToDeluxe.addEventListener('click', e =>{
+                console.log("clicked on Switch To Deluxe Button");
+                sereneTabs.selectedIndex = 1;
+              })
+            </script>
+          </details>
+        </p>
+      </div>
+      <div aria-label="Deluxe">
+        <h1>Deluxe rooms</h1>
+        <p>
+            <details>
+                <summary>Deluxe Rooms Detail</summary>
+                <button id=switchToStandard>Switch to Standard</button>
+                <script>
+                  switchToStandard.addEventListener('click', e =>{
+                    console.log("clicked on Switch To Standard Button");
+                    sereneTabs.selectedIndex = 0;
+                  })
+                </script>
+              </details>
+        </p>
+      </div>
+      
+    </serene-tabs>
+
+  </div>
+</body>
+
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <!--https://mwc-demos.glitch.me/-->
+    <div>
+        <script type="module" src="https://cdn.pika.dev/@material/mwc-textarea/"></script>
+        <!-- <script type="module" src="https://cdn.pika.dev/@material/mwc-icon/mwc-icon.js"></script>
+        <script type="module" src="https://cdn.pika.dev/@material/mwc-icon/mwc-icon-font.js"></script> -->
+        <style>
+            mwc-textarea {
+                min-width: 250px;
+            }
+        </style>
+
+        <main>
+            <h4>Textarea</h4>
+            <div class="demo-group-spaced">
+                <mwc-textarea label="Standard"></mwc-textarea>
+                <mwc-textarea outlined="" label="Standard"></mwc-textarea>
+            </div>
+
+            <h4>Textarea with Character Counter</h4>
+            <div class="demo-group-spaced">
+                <mwc-textarea label="Standard" maxlength="18" charcounter=""></mwc-textarea>
+                <mwc-textarea outlined="" label="Standard" maxlength="18" charcounter=""></mwc-textarea>
+            </div>
+
+            <h4>Textarea with Helper Text</h4>
+            <div class="demo-group-spaced">
+                <mwc-textarea label="Standard" helper="Helper Text" helperpersistent=""></mwc-textarea>
+                <mwc-textarea outlined="" label="Standard" helper="Helper Text" helperpersistent=""></mwc-textarea>
+            </div>
+
+            <h4>Full Width Textarea</h4>
+            <mwc-textarea outlined="" fullwidth="" label="Standard" helper="Helper Text" helperpersistent="">
+            </mwc-textarea>
+        </main>
+    </div>
+</body>
+
+</html>
