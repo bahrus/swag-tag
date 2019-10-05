@@ -19,7 +19,7 @@ const stringInputTemplate = createTemplate(/* html */ `
 `);
 
 const objectInputTemplate = createTemplate(/* html */ `
-<ui5-textarea rows=8 disabled>
+<ui5-textarea rows=8 cols=200 growing disabled style="width:100%">
   <span slot="label"></span>
 </xtal-text-area-md>
 `);
@@ -41,10 +41,16 @@ export class SwagTagUI5 extends SwagTagBase{
                 'input[type="text"][data-prop-type="string"]': ({ctx, target}) => {
                     replaceElementWithTemplate(target, stringInputTemplate, ctx);
                 },
-                'ui5-input': (({target, ctx}) =>{
+                'ui5-input,ui5-textarea': (({target, ctx}) =>{
                     const inp = ctx.replacedElement as HTMLInputElement;
                     target.placeholder = inp.dataset.propName!;
-                }) as TransformFn<HTMLInputElement> as TransformFn
+                }) as TransformFn<HTMLInputElement> as TransformFn,
+                'input[type="text"][data-prop-type="object"],input[type="text"][data-prop-type="any"]': ({
+                    ctx,
+                    target
+                  }) => {
+                    replaceElementWithTemplate(target, objectInputTemplate, ctx);
+                },
             }
         })
     }
