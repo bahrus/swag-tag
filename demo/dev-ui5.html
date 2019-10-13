@@ -5,6 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>wc-info Dev</title>
+    <script defer src="https://cdn.jsdelivr.net/npm/es-module-shims@0.4.5/dist/es-module-shims.js"></script>
+    <script type="importmap">
+    {
+        "imports": {
+            "xtal-element/": "../node_modules/xtal-element/",
+            "trans-render/": "../node_modules/trans-render/",
+            "event-switch/": "../node_modules/event-switch/",
+            "hypo-link/": "https://cdn.jsdelivr.net/npm/hypo-link@0.0.14/",
+            "p-et-alia/": "../node_modules/p-et-alia/",
+            "xtal-json-editor/": "../node_modules/xtal-json-editor/",
+            "xtal-text-input-md/": "../node_modules/xtal-text-input-md/",
+            "xtal-checkbox-input-md/": "../node_modules/xtal-checkbox-input-md/",
+            "xtal-text-area-md/": "../node_modules/xtal-text-area-md/",
+            "@ui5/webcomponents/dist/Input.js": "https://storage.googleapis.com/pika-web-packages-02/ui5-buffet/0.0.0/dist-es2019/ui5-buffet.min.js",
+            "@ui5/webcomponents/dist/TextArea.js": "https://storage.googleapis.com/pika-web-packages-02/ui5-buffet/0.0.0/dist-es2019/ui5-buffet.min.js",
+            "lit-html/": "../node_modules/lit-html/",
+            "lit-html": "../node_modules/lit-html/lit-html.js"
+        }
+    }
+    </script>
+    <script  type="module">
+        import '../swag-tag.js';
+        import '../swag-tag-ui5.js';
+    </script>
 </head>
 <body>
     <div>
@@ -23,29 +47,7 @@
         <!-- <swag-tag href=https://unpkg.com/time-ticker@0.0.10/html.json tag=time-ticker></swag-tag>-->
 
 
-        <script defer src="https://cdn.jsdelivr.net/npm/es-module-shims@0.2.7/dist/es-module-shims.js"></script>
-        <script type="importmap-shim">
-        {
-            "imports": {
-                "xtal-element/": "../node_modules/xtal-element/",
-                "trans-render/": "../node_modules/trans-render/",
-                "event-switch/": "../node_modules/event-switch/",
-                "hypo-link/": "https://cdn.jsdelivr.net/npm/hypo-link@0.0.14/",
-                "p-et-alia/": "../node_modules/p-et-alia/",
-                "xtal-json-editor/": "../node_modules/xtal-json-editor/",
-                "xtal-text-input-md/": "../node_modules/xtal-text-input-md/",
-                "xtal-checkbox-input-md/": "../node_modules/xtal-checkbox-input-md/",
-                "xtal-text-area-md/": "../node_modules/xtal-text-area-md/",
-                "@ui5/": "https://storage.googleapis.com/pika-web-packages-02/ui5-buffet/0.0.0/dist-es2019/ui5-buffet.min.js#",
-                "lit-html/": "../node_modules/lit-html/",
-                "lit-html": "../node_modules/lit-html/lit-html.js"
-            }
-        }
-        </script>
-        <script  type="module-shim">
-            import '../swag-tag.js';
-            import '../swag-tag-ui5.js';
-        </script>
+
     </div>
 </body>
 </html>

@@ -7,6 +7,7 @@ import {
     TransformFn
 } from "trans-render/init.d.js";
 import  "@ui5/webcomponents/dist/Input.js";
+import "@ui5/webcomponents/dist/TextArea.js";
 import { append } from "trans-render/append.js";
 import { createTemplate } from "xtal-element/utils.js";
 import { init } from "trans-render/init.js";

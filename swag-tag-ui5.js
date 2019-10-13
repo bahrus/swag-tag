@@ -1,6 +1,7 @@
 import { SwagTagBase } from './swag-tag-base.js';
 import { define } from "trans-render/define.js";
 import "@ui5/webcomponents/dist/Input.js";
+import "@ui5/webcomponents/dist/TextArea.js";
 import { createTemplate } from "xtal-element/utils.js";
 import { init } from "trans-render/init.js";
 import { replaceElementWithTemplate } from "trans-render/replaceElementWithTemplate.js";
