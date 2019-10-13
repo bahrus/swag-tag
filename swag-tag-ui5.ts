@@ -54,6 +54,11 @@ export class SwagTagUI5 extends SwagTagBase{
                     const inp = ctx.replacedElement as HTMLInputElement;
                     (<any>target).text = inp.dataset.propName!;
                 }),
+                'p-d[data-type="boolean"]': ({target}) =>{
+                    const uicheckbox = target as any;
+                    uicheckbox.on = 'change';
+                    uicheckbox.val = 'target.checked';
+                },
                 'input[type="text"][data-prop-type="object"],input[type="text"][data-prop-type="any"]': ({
                     ctx,
                     target
