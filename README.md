@@ -6,3 +6,6 @@ swag-tag is delighted to discover [activity going on](https://github.com/webcomp
 
 In the meantime, swag-tag is a possible alternative that may or may not have different features from the upcoming in-fashion alternative(s).
 
+<!-- 
+https://github.com/search?p=3&q=filename%3Acustom-elements.json+path%3A%2F&type=Code
+-->

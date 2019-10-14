@@ -14,12 +14,15 @@ import { PD } from "p-et-alia/p-d.js";
 import { extend } from "p-et-alia/p-d-x.js";
 import { XtalJsonEditor } from "xtal-json-editor/xtal-json-editor.js";
 
-extend("event", {
-  valFromEvent: e => ({
-    type: e.type,
-    detail: (<any>e).detail
-  })
-});
+const pdxEvent = 'event';
+
+// extend({
+//   name: pdxEvent,
+//   valFromEvent: e => ({
+//     type: e.type,
+//     detail: (<any>e).detail
+//   })
+// });
 
 const fieldEditorTemplate = createTemplate(/* html */ `
   <div>
@@ -128,9 +131,16 @@ export class SwagTagBase extends XtalViewElement<WCSuiteInfo> {
 
         if (ces !== undefined) {
           ces.forEach(ce => {
-            const pdEvent = document.createElement("p-d-x-event");
+            const pdEvent = extend({
+              name: pdxEvent,
+              valFromEvent: e => ({
+                type: e.type,
+                detail: (<any>e).detail
+              }),
+              insertAfter: el
+            }) as HTMLElement;
             decorate(pdEvent, {propVals: { on: ce.name, from: 'details', to: XtalJsonEditor.is, prop: "input", m: 1} as PD});
-            target.appendChild(pdEvent);
+            //target.appendChild(pdEvent);
           });
         }
         return {
