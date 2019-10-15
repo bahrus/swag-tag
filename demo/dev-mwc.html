@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>wc-info Dev</title>
-    <script defer src="https://cdn.jsdelivr.net/npm/es-module-shims@0.4.5/dist/es-module-shims.js"></script>
-    <script type="importmap">
+    <script defer src="../node_modules/es-module-shims/dist/es-module-shims.js"></script>
+    <script type="importmap-shim">
     {
         "imports": {
             "xtal-element/": "../node_modules/xtal-element/",
@@ -20,30 +20,32 @@
             "xtal-text-area-md/": "../node_modules/xtal-text-area-md/",
             "@ui5/webcomponents/dist/Input.js": "https://cdn.pika.dev/ui5-buffet",
             "@ui5/webcomponents/dist/TextArea.js": "https://cdn.pika.dev/ui5-buffet",
-            "@ui5/webcomponents/dist/CheckBox.js": "https://cdn.pika.dev/ui5-buffet",
             "lit-html/": "../node_modules/lit-html/",
-            "lit-html": "../node_modules/lit-html/lit-html.js"
+            "lit-html": "../node_modules/lit-html/lit-html.js",
+            "@material/mwc-checkbox/mwc-checkbox.js": "https://unpkg.com/@material/mwc-checkbox@0.10.0/mwc-checkbox.js?module",
+            "@material/mwc-formfield/mwc-formfield.js": "https://unpkg.com/@material/mwc-formfield@0.10.0/mwc-formfield.js?module"
+            
         }
     }
     </script>
-    <script  type="module">
+    <script  type="module-shim">
         import '../swag-tag.js';
-        import '../swag-tag-ui5.js';
+        import '../swag-tag-mwc.js';
     </script>
 </head>
 <body>
     <div>
-        <swag-tag-ui5 href=https://unpkg.com/hypo-link@0.0.18/html.json tag=hypo-link></swag-tag-ui5>
+        <swag-tag-mwc href=https://unpkg.com/hypo-link@0.0.18/html.json tag=hypo-link></swag-tag-mwc>
 
-        <swag-tag-ui5 href=https://unpkg.com/xtal-fetch@0.0.75/html.json tag=xtal-fetch-get test=test1></swag-tag-ui5>
+        <swag-tag-mwc href=https://unpkg.com/xtal-fetch@0.0.75/html.json tag=xtal-fetch-get test=test1></swag-tag-mwc>
 
-        <swag-tag-ui5 href=https://unpkg.com/xtal-fetch@0.0.75/html.json tag=xtal-fetch-req test=test1></swag-tag-ui5>
+        <swag-tag-mwc href=https://unpkg.com/xtal-fetch@0.0.75/html.json tag=xtal-fetch-req test=test1></swag-tag-mwc>
 
-        <swag-tag-ui5 href=https://unpkg.com/xtal-fetch@0.0.75/html.json tag=xtal-fetch-entities test=test1></swag-tag-ui5>
+        <swag-tag-mwc href=https://unpkg.com/xtal-fetch@0.0.75/html.json tag=xtal-fetch-entities test=test1></swag-tag-mwc>
 
-        <swag-tag-ui5 href=https://unpkg.com/xtal-frappe-chart@0.0.37/html.json tag=xtal-frappe-chart test=test1></swag-tag-ui5>
+        <swag-tag-mwc href=https://unpkg.com/xtal-frappe-chart@0.0.37/html.json tag=xtal-frappe-chart test=test1></swag-tag-mwc>
 
-        <swag-tag-ui5  href=https://unpkg.com/hypo-link@0.0.18/html.json tag=hypo-link></swag-tag-ui5>
+        <swag-tag-mwc  href=https://unpkg.com/hypo-link@0.0.18/html.json tag=hypo-link></swag-tag-mwc>
 
         <!-- <swag-tag href=https://unpkg.com/time-ticker@0.0.10/html.json tag=time-ticker></swag-tag>-->
 

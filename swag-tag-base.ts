@@ -46,6 +46,11 @@ const mainTemplate = createTemplate(/* html */ `
 <main></main>
 `);
 
+const valFromEvent = (e: Event) =>({
+  type: e.type,
+  detail: (<any>e).detail
+})
+
 const href = "href";
 const tag = "tag";
 const test = "test";
@@ -130,13 +135,11 @@ export class SwagTagBase extends XtalViewElement<WCSuiteInfo> {
         target.appendChild(el);
 
         if (ces !== undefined) {
+
           ces.forEach(ce => {
             const pdEvent = extend({
               name: pdxEvent,
-              valFromEvent: e => ({
-                type: e.type,
-                detail: (<any>e).detail
-              }),
+              valFromEvent: valFromEvent,
               insertAfter: el
             }) as HTMLElement;
             decorate(pdEvent, {propVals: { on: ce.name, from: 'details', to: XtalJsonEditor.is, prop: "input", m: 1} as PD});

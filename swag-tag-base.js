@@ -35,6 +35,10 @@ const mainTemplate = createTemplate(/* html */ `
 <xtal-json-editor options="{}"  height="300px"></xtal-json-editor>
 <main></main>
 `);
+const valFromEvent = (e) => ({
+    type: e.type,
+    detail: e.detail
+});
 const href = "href";
 const tag = "tag";
 const test = "test";
@@ -124,10 +128,7 @@ export class SwagTagBase extends XtalViewElement {
                     ces.forEach(ce => {
                         const pdEvent = extend({
                             name: pdxEvent,
-                            valFromEvent: e => ({
-                                type: e.type,
-                                detail: e.detail
-                            }),
+                            valFromEvent: valFromEvent,
                             insertAfter: el
                         });
                         decorate(pdEvent, { propVals: { on: ce.name, from: 'details', to: XtalJsonEditor.is, prop: "input", m: 1 } });
