@@ -53,10 +53,14 @@ export class SwagTagMWC extends SwagTagBase{
                     const inp = ctx.replacedElement as HTMLInputElement;
                     target.placeholder = inp.dataset.propName!;
                 }) as TransformFn<HTMLInputElement> as TransformFn,
-                'mwc-checkbox': (({target, ctx}) =>{
+                'mwc-formfield': ({target, ctx}) =>{
                     const inp = ctx.replacedElement as HTMLInputElement;
-                    (<any>target).text = inp.dataset.propName!;
-                }),
+                    (<any>target).label = inp.dataset.propName!;
+                },
+                // 'mwc-checkbox': ({target, ctx}) =>{
+                //     const inp = ctx.replacedElement as HTMLInputElement;
+                //     (<any>target).text = inp.dataset.propName!;
+                // },
                 'p-d[data-type="boolean"]': ({target}) =>{
                     const uicheckbox = target as any;
                     uicheckbox.on = 'change';
