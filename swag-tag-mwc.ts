@@ -24,8 +24,8 @@ const objectInputTemplate = createTemplate(/* html */ `
 `);
 
 const boolInputTemplate = createTemplate(/* html */ `
-<mwc-formfield label="This is a checkbox.">
-    <mwc-checkbox disabled></mwc-checkbox>
+<mwc-formfield disabled label="This is a checkbox.">
+    <mwc-checkbox></mwc-checkbox>
 </mwc-formfield>
 `);
 

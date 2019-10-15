@@ -14,8 +14,8 @@ const objectInputTemplate = createTemplate(/* html */ `
 <ui5-textarea rows=8 cols=200 growing disabled style="width:100%"></ui5-textarea>
 `);
 const boolInputTemplate = createTemplate(/* html */ `
-<mwc-formfield label="This is a checkbox.">
-    <mwc-checkbox disabled></mwc-checkbox>
+<mwc-formfield disabled label="This is a checkbox.">
+    <mwc-checkbox></mwc-checkbox>
 </mwc-formfield>
 `);
 export class SwagTagMWC extends SwagTagBase {
