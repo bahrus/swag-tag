@@ -10,11 +10,10 @@ import { createTemplate } from "xtal-element/utils.js";
 import { init } from "trans-render/init.js";
 //import {replaceTargetWithTag} from 'trans-render/replaceTargetWithTag.js';
 import { replaceElementWithTemplate } from "trans-render/replaceElementWithTemplate.js";
-import { XtalTextInputMD } from "xtal-text-input-md/xtal-text-input-md.js";
-import { XtalCheckboxInputMD } from "xtal-checkbox-input-md/xtal-checkbox-input-md.js";
-import {XtalTextAreaMD} from "xtal-text-area-md/xtal-text-area-md.js";
+
 import { decorate } from "trans-render/decorate.js";
 import { PD } from "p-et-alia/p-d.js";
+import {IXtalInputProperties, xtal_text_input_md} from 'xtal-text-input-md/types.js';
 
 const styleTemplate = createTemplate(/* html */ `
 <style>
@@ -62,6 +61,9 @@ function decorateSpanForObject(target: HTMLSpanElement, inp: HTMLInputElement){
     } as HTMLSpanElement
   }) 
 }
+import ("xtal-text-input-md/xtal-text-input-md.js");
+import ("xtal-checkbox-input-md/xtal-checkbox-input-md.js");
+import ("xtal-text-area-md/xtal-text-area-md.js");
 export class SwagTag extends SwagTagBase {
   static get is() {
     return "swag-tag";
@@ -88,6 +90,7 @@ export class SwagTag extends SwagTagBase {
 
   initRenderCallback(ctx: RenderContext, target: HTMLElement | DocumentFragment){
     super.initRenderCallback(ctx, target);
+    const xti : xtal_text_input_md = 'xtal-text-input-md';
     init(target as DocumentFragment, {
       Transform: {
         "*": {
@@ -108,16 +111,16 @@ export class SwagTag extends SwagTagBase {
         'input[type="checkbox"]': ({ ctx, target }) => {
           replaceElementWithTemplate(target, boolInputTemplate, ctx);
         },
-        [XtalTextInputMD.is]: ({ ctx, target }) => {
-          const inp = ctx.replacedElement as HTMLInputElement;
+        [xti]: ({ ctx, target }) => {
+          const inp = ctx.replacedElement as any as  IXtalInputProperties;
           this.copyAttr(inp, target);
           (<any>target).value = inp.value;
           return {
-            span: ({target}) => decorateSpan(target, inp)
+            span: ({target}) => decorateSpan(target, inp as any as HTMLInputElement)
           }
         },
-        [XtalTextAreaMD.is]:({ctx, target}) => {
-          const xta = target as XtalTextAreaMD;
+        'xtal-text-area-md':({ctx, target}) => {
+          const xta = target as any;
           const inp = ctx.replacedElement as HTMLInputElement;
           xta.coerceToJSON = true;
           xta.value = inp.value;

@@ -1,8 +1,5 @@
 import { SwagTagBase } from './swag-tag-base.js';
 import { define } from "trans-render/define.js";
-import "@ui5/webcomponents/dist/Input.js";
-import "@ui5/webcomponents/dist/TextArea.js";
-import "@ui5/webcomponents/dist/CheckBox.js";
 import { createTemplate } from "xtal-element/utils.js";
 import { init } from "trans-render/init.js";
 import { replaceElementWithTemplate } from "trans-render/replaceElementWithTemplate.js";
@@ -15,6 +12,9 @@ const objectInputTemplate = createTemplate(/* html */ `
 const boolInputTemplate = createTemplate(/* html */ `
 <ui5-checkbox disabled></ui5-checkbox>
 `);
+import("@ui5/webcomponents/dist/Input.js");
+import("@ui5/webcomponents/dist/TextArea.js");
+import("@ui5/webcomponents/dist/CheckBox.js");
 export class SwagTagUI5 extends SwagTagBase {
     static get is() { return 'swag-tag-ui5'; }
     get noShadow() {

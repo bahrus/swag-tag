@@ -5,9 +5,6 @@ import { createTemplate } from "xtal-element/utils.js";
 import { init } from "trans-render/init.js";
 //import {replaceTargetWithTag} from 'trans-render/replaceTargetWithTag.js';
 import { replaceElementWithTemplate } from "trans-render/replaceElementWithTemplate.js";
-import { XtalTextInputMD } from "xtal-text-input-md/xtal-text-input-md.js";
-import { XtalCheckboxInputMD } from "xtal-checkbox-input-md/xtal-checkbox-input-md.js";
-import { XtalTextAreaMD } from "xtal-text-area-md/xtal-text-area-md.js";
 import { decorate } from "trans-render/decorate.js";
 const styleTemplate = createTemplate(/* html */ `
 <style>
@@ -55,6 +52,9 @@ function decorateSpanForObject(target, inp) {
         }
     });
 }
+import("xtal-text-input-md/xtal-text-input-md.js");
+import("xtal-checkbox-input-md/xtal-checkbox-input-md.js");
+import("xtal-text-area-md/xtal-text-area-md.js");
 export class SwagTag extends SwagTagBase {
     static get is() {
         return "swag-tag";
@@ -78,6 +78,7 @@ export class SwagTag extends SwagTagBase {
     }
     initRenderCallback(ctx, target) {
         super.initRenderCallback(ctx, target);
+        const xti = 'xtal-text-input-md';
         init(target, {
             Transform: {
                 "*": {
@@ -92,7 +93,7 @@ export class SwagTag extends SwagTagBase {
                 'input[type="checkbox"]': ({ ctx, target }) => {
                     replaceElementWithTemplate(target, boolInputTemplate, ctx);
                 },
-                [XtalTextInputMD.is]: ({ ctx, target }) => {
+                [xti]: ({ ctx, target }) => {
                     const inp = ctx.replacedElement;
                     this.copyAttr(inp, target);
                     target.value = inp.value;
@@ -100,7 +101,7 @@ export class SwagTag extends SwagTagBase {
                         span: ({ target }) => decorateSpan(target, inp)
                     };
                 },
-                [XtalTextAreaMD.is]: ({ ctx, target }) => {
+                'xtal-text-area-md': ({ ctx, target }) => {
                     const xta = target;
                     const inp = ctx.replacedElement;
                     xta.coerceToJSON = true;

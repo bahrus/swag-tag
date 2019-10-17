@@ -13,7 +13,9 @@ import { init } from "trans-render/init.js";
 import { replaceElementWithTemplate } from "trans-render/replaceElementWithTemplate.js";
 
 const stringInputTemplate = createTemplate(/* html */ `
-<ui5-input disabled></ui5-input>
+<mwc-formfield disabled>
+    <mwc-textfield></mwc-textfield>
+</mwc-formfield>
 `);
 
 const objectInputTemplate = createTemplate(/* html */ `
@@ -30,10 +32,11 @@ const boolInputTemplate = createTemplate(/* html */ `
 `);
 
 import("@material/mwc-checkbox/mwc-checkbox.js");
-import("@ui5/webcomponents/dist/Input.js");
-import("@ui5/webcomponents/dist/TextArea.js");
+//import("@ui5/webcomponents/dist/Input.js");
+//import("@ui5/webcomponents/dist/TextArea.js");
 import("@material/mwc-textarea/mwc-textarea.js");
 import("@material/mwc-formfield/mwc-formfield.js");
+import ("@material/mwc-textfield/mwc-textfield.js");
 export class SwagTagMWC extends SwagTagBase{
     static get is(){return 'swag-tag-mwc';}
 
@@ -62,6 +65,7 @@ export class SwagTagMWC extends SwagTagBase{
                 'mwc-formfield': ({target, ctx}) =>{
                     const inp = ctx.replacedElement as HTMLInputElement;
                     (<any>target).label = inp.dataset.propName!;
+                    
                 },
                 // 'mwc-checkbox': ({target, ctx}) =>{
                 //     const inp = ctx.replacedElement as HTMLInputElement;

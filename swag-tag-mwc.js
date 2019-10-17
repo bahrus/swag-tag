@@ -5,7 +5,9 @@ import { createTemplate } from "xtal-element/utils.js";
 import { init } from "trans-render/init.js";
 import { replaceElementWithTemplate } from "trans-render/replaceElementWithTemplate.js";
 const stringInputTemplate = createTemplate(/* html */ `
-<ui5-input disabled></ui5-input>
+<mwc-formfield disabled>
+    <mwc-textfield></mwc-textfield>
+</mwc-formfield>
 `);
 const objectInputTemplate = createTemplate(/* html */ `
 <mwc-formfield disabled>
@@ -19,10 +21,11 @@ const boolInputTemplate = createTemplate(/* html */ `
 </mwc-formfield>
 `);
 import("@material/mwc-checkbox/mwc-checkbox.js");
-import("@ui5/webcomponents/dist/Input.js");
-import("@ui5/webcomponents/dist/TextArea.js");
+//import("@ui5/webcomponents/dist/Input.js");
+//import("@ui5/webcomponents/dist/TextArea.js");
 import("@material/mwc-textarea/mwc-textarea.js");
 import("@material/mwc-formfield/mwc-formfield.js");
+import("@material/mwc-textfield/mwc-textfield.js");
 export class SwagTagMWC extends SwagTagBase {
     static get is() { return 'swag-tag-mwc'; }
     get noShadow() {
