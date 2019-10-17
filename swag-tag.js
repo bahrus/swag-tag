@@ -116,7 +116,7 @@ export class SwagTag extends SwagTagBase {
                         val: "target.objectValue"
                     }
                 }),
-                [XtalCheckboxInputMD.is]: ({ ctx, target }) => {
+                'xtal-checkbox-input-md': ({ ctx, target }) => {
                     const xci = target;
                     const inp = ctx.replacedElement;
                     this.copyAttr(inp, target);
