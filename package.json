@@ -24,6 +24,7 @@
     "@material/mwc-checkbox": "0.10.0",
     "@material/mwc-textfield": "0.10.0",
     "@ui5/webcomponents": "1.0.0-rc.4",
+    "weightless": "0.0.34",
     "xy-ui": "1.8.8"
   },
   "devDependencies": {

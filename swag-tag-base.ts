@@ -10,7 +10,8 @@ import {
   TransformRules
 } from "trans-render/init.d.js";
 import { XtalViewElement } from "xtal-element/xtal-view-element.js";
-import { PD } from "p-et-alia/p-d.js";
+//import { PD } from "p-et-alia/p-d.js";
+import {PDProps} from 'p-et-alia/types.d.js';
 import { extend } from "p-et-alia/p-d-x.js";
 import { XtalJsonEditor } from "xtal-json-editor/xtal-json-editor.js";
 
@@ -115,12 +116,12 @@ export class SwagTagBase extends XtalViewElement<WCSuiteInfo> {
                     }
 
                   },
-                  [PD.is]: ({ target }) =>
+                  'p-d': ({ target }) =>
                     decorate(target as HTMLElement, 
                       {propVals: {
                         careOf: this._wcInfo.name,
                         prop: prop.name,
-                      } as PD, 
+                      } as PDProps, 
                       attribs: {"data-type": prop.type}
                   })
                 };
@@ -142,7 +143,7 @@ export class SwagTagBase extends XtalViewElement<WCSuiteInfo> {
               valFromEvent: valFromEvent,
               insertAfter: el
             }) as HTMLElement;
-            decorate(pdEvent, {propVals: { on: ce.name, from: 'details', to: XtalJsonEditor.is, prop: "input", m: 1} as PD});
+            decorate(pdEvent, {propVals: { on: ce.name, from: 'details', to: XtalJsonEditor.is, prop: "input", m: 1} as PDProps});
             //target.appendChild(pdEvent);
           });
         }
@@ -153,7 +154,7 @@ export class SwagTagBase extends XtalViewElement<WCSuiteInfo> {
       [XtalJsonEditor.is]: ({ target }) => {
         decorate(target as HTMLElement, {
           propVals: {
-            archive: true
+            archive: true,
           } as XtalJsonEditor
         });
       }

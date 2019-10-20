@@ -4,7 +4,6 @@ import { repeat } from "trans-render/repeat.js";
 import { decorate } from "trans-render/decorate.js";
 import { createTemplate, newRenderContext } from "xtal-element/utils.js";
 import { XtalViewElement } from "xtal-element/xtal-view-element.js";
-import { PD } from "p-et-alia/p-d.js";
 import { extend } from "p-et-alia/p-d-x.js";
 import { XtalJsonEditor } from "xtal-json-editor/xtal-json-editor.js";
 const pdxEvent = 'event';
@@ -107,7 +106,7 @@ export class SwagTagBase extends XtalViewElement {
                                         }
                                     }
                                 },
-                                [PD.is]: ({ target }) => decorate(target, { propVals: {
+                                'p-d': ({ target }) => decorate(target, { propVals: {
                                         careOf: this._wcInfo.name,
                                         prop: prop.name,
                                     },
@@ -142,7 +141,7 @@ export class SwagTagBase extends XtalViewElement {
             [XtalJsonEditor.is]: ({ target }) => {
                 decorate(target, {
                     propVals: {
-                        archive: true
+                        archive: true,
                     }
                 });
             }

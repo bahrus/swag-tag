@@ -8,7 +8,6 @@ import {
 import { append } from "trans-render/append.js";
 import { createTemplate } from "xtal-element/utils.js";
 import { init } from "trans-render/init.js";
-//import {replaceTargetWithTag} from 'trans-render/replaceTargetWithTag.js';
 import { replaceElementWithTemplate } from "trans-render/replaceElementWithTemplate.js";
 
 import { decorate } from "trans-render/decorate.js";
@@ -64,23 +63,16 @@ function decorateSpanForObject(target: HTMLSpanElement, inp: HTMLInputElement){
 import ("xtal-text-input-md/xtal-text-input-md.js");
 import ("xtal-checkbox-input-md/xtal-checkbox-input-md.js");
 import ("xtal-text-area-md/xtal-text-area-md.js");
-export class SwagTag extends SwagTagBase {
+export class SwagTagXtal extends SwagTagBase {
   static get is() {
-    return "swag-tag";
+    return "swag-tag-xtal";
   }
 
   get noShadow() {
     return false;
   }
 
-  // //_renderOptions: RenderOptions;
-  // copyAttribs(inp: HTMLElement, target: Element) {
-  //   for (let i = 0, ii = inp.attributes.length; i < ii; i++) {
-  //     const attrib = inp.attributes[i];
-  //     if (attrib.name === "type") continue;
-  //     target.setAttribute(attrib.name, attrib.value);
-  //   }
-  // }
+
 
   copyAttr(inp: HTMLElement, target: Element){
     inp.getAttributeNames().forEach(name =>{
@@ -156,4 +148,4 @@ export class SwagTag extends SwagTagBase {
   }
 
 }
-define(SwagTag);
+define(SwagTagXtal);
