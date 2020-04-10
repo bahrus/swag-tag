@@ -5,9 +5,7 @@ import { createTemplate } from "xtal-element/utils.js";
 import { init } from "trans-render/init.js";
 import { replaceElementWithTemplate } from "trans-render/replaceElementWithTemplate.js";
 const stringInputTemplate = createTemplate(/* html */ `
-<mwc-formfield disabled>
     <mwc-textfield></mwc-textfield>
-</mwc-formfield>
 `);
 const objectInputTemplate = createTemplate(/* html */ `
 <mwc-formfield disabled>
@@ -40,6 +38,10 @@ export class SwagTagMWC extends SwagTagBase {
                 },
                 'input[type="text"][data-prop-type="string"]': ({ ctx, target }) => {
                     replaceElementWithTemplate(target, stringInputTemplate, ctx);
+                },
+                'mwc-textfield': ({ target, ctx }) => {
+                    const inp = ctx.replacedElement;
+                    target.label = inp.dataset.propName;
                 },
                 'input[type="checkbox"]': ({ ctx, target }) => {
                     replaceElementWithTemplate(target, boolInputTemplate, ctx);
