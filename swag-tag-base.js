@@ -52,11 +52,15 @@ export class SwagTagBase extends XtalViewElement {
         return "swag-tag-base";
     }
     get initRenderContext() {
-        if (this._wcInfo.selfResolvingModulePath === undefined) {
+        if (this._wcInfo.path === undefined) {
             console.warn("No self resolving module path found in " + this._href + ' tag: ' + this._tag);
             return {};
         }
-        import(this._wcInfo.selfResolvingModulePath);
+        debugger;
+        const selfResolvingModuleSplitPath = this.href?.split('/');
+        selfResolvingModuleSplitPath?.pop();
+        const selfResolvingModulePath = selfResolvingModuleSplitPath?.join('/') + this._wcInfo.path.substring(1) + '?module';
+        import(selfResolvingModulePath);
         return newRenderContext({
             fieldset: ({ target }) => {
                 const allProperties = this._wcInfo.properties;

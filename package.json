@@ -29,9 +29,9 @@
     "xy-ui": "1.9.3"
   },
   "devDependencies": {
-    "es-dev-server": "^1.46.1",
+    "es-dev-server": "1.46.1",
     "es-module-shims": "0.4.6",
-    "wc-info": "0.0.73",
+    "wc-info": "0.0.74",
     "xtal-test": "0.0.44"
   },
   "author": "",
