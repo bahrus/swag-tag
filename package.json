@@ -26,12 +26,12 @@
     "@material/mwc-textfield": "0.14.1",
     "@ui5/webcomponents": "1.0.0-rc.6",
     "weightless": "0.0.37",
-    "xy-ui": "1.9.3"
+    "xy-ui": "1.9.3",
+    "wc-info": "0.0.75"
   },
   "devDependencies": {
     "es-dev-server": "1.46.1",
     "es-module-shims": "0.4.6",
-    "wc-info": "0.0.74",
     "xtal-test": "0.0.44"
   },
   "author": "",

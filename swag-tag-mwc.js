@@ -17,8 +17,6 @@ const boolInputTemplate = createTemplate(/* html */ `
 </mwc-formfield>
 `);
 import("@material/mwc-checkbox/mwc-checkbox.js");
-//import("@ui5/webcomponents/dist/Input.js");
-//import("@ui5/webcomponents/dist/TextArea.js");
 import("@material/mwc-textarea/mwc-textarea.js");
 import("@material/mwc-formfield/mwc-formfield.js");
 import("@material/mwc-textfield/mwc-textfield.js");
@@ -48,11 +46,6 @@ export class SwagTagMWC extends SwagTagBase {
                 'input[type="checkbox"]': ({ ctx, target }) => {
                     replaceElementWithTemplate(target, boolInputTemplate, ctx);
                 },
-                // 'ui5-input,ui5-textarea': (({target, ctx}) =>{
-                'ui5-input': (({ target, ctx }) => {
-                    const inp = ctx.replacedElement;
-                    target.placeholder = inp.dataset.propName;
-                }),
                 'mwc-textarea': ({ target, ctx }) => {
                     const inp = ctx.replacedElement;
                     target.label = inp.dataset.propName;

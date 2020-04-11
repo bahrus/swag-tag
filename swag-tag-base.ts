@@ -28,7 +28,7 @@ const pdxEvent = 'event';
 const fieldEditorTemplate = createTemplate(/* html */ `
   <div>
     <input>
-    <p-d on=input from=fieldset to=details val=target.value m=1></p-d>
+    <p-d on=input from=fieldset to=details val=target.value m=1 skip-init></p-d>
   </div>
 `);
 
@@ -129,6 +129,11 @@ export class SwagTagBase extends XtalViewElement<WCSuiteInfo> {
       },
       details: ({target}) =>{
         const el = document.createElement(this._wcInfo.name);
+        this._wcInfo.properties?.forEach(prop =>{
+          if(prop.default){
+            (<any>el)[prop.name] = JSON.parse(prop.default);
+          }
+        })
         const ces = this._wcInfo.events;
         if (ces !== undefined) el.setAttribute("disabled", ces.length.toString());
         target.appendChild(el);
