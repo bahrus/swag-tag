@@ -40,13 +40,12 @@ const valFromEvent = (e) => ({
 });
 const href = "href";
 const tag = "tag";
-const test = "test";
+//const test = "test";
 export class SwagTagBase extends XtalViewElement {
     constructor() {
         super(...arguments);
         this._href = null;
         this._tag = null;
-        this._test = null;
     }
     static get is() {
         return "swag-tag-base";
@@ -56,7 +55,6 @@ export class SwagTagBase extends XtalViewElement {
             console.warn("No self resolving module path found in " + this._href + ' tag: ' + this._tag);
             return {};
         }
-        debugger;
         const selfResolvingModuleSplitPath = this.href?.split('/');
         selfResolvingModuleSplitPath?.pop();
         const selfResolvingModulePath = selfResolvingModuleSplitPath?.join('/') + this._wcInfo.path.substring(1) + '?module';
@@ -74,10 +72,10 @@ export class SwagTagBase extends XtalViewElement {
                     form: ({ target, ctx }) => repeat(fieldEditorTemplate, ctx, writeableProps.length, target, {
                         div: ({ idx }) => {
                             const prop = writeableProps[idx];
-                            let propVal = undefined;
-                            if (this._test && prop.testValues) {
-                                propVal = prop.testValues[this._test];
-                            }
+                            const propVal = prop.default;
+                            //if (this._test && prop.testValues) {
+                            //propVal = prop.testValues[this._test];
+                            //}
                             return {
                                 //label: prop.name + ': ',
                                 input: ({ target }) => {
@@ -95,15 +93,11 @@ export class SwagTagBase extends XtalViewElement {
                                             "type": prop.type === 'boolean' ? 'checkbox' : 'text'
                                         }
                                     });
-                                    if (propVal) {
+                                    if (propVal !== undefined) {
                                         switch (prop.type) {
                                             case "boolean":
                                                 target.setAttribute("checked", "");
                                                 inp.value = "on";
-                                                break;
-                                            case "any": //TODO
-                                            case "object":
-                                                inp.value = JSON.stringify(propVal);
                                                 break;
                                             default:
                                                 inp.value = propVal;
@@ -175,7 +169,7 @@ export class SwagTagBase extends XtalViewElement {
         return super.onPropsChange();
     }
     static get observedAttributes() {
-        return super.observedAttributes.concat([href, tag, test]);
+        return super.observedAttributes.concat([href, tag]);
     }
     attributeChangedCallback(n, ov, nv) {
         switch (n) {
@@ -199,18 +193,19 @@ export class SwagTagBase extends XtalViewElement {
     set tag(nv) {
         this.attr(tag, nv);
     }
-    get test() {
-        return this._test;
-    }
-    set test(nv) {
-        this.attr(test, nv);
-    }
+    // _test: string | null = null;
+    // get test() {
+    //   return this._test;
+    // }
+    // set test(nv) {
+    //   this.attr(test, nv);
+    // }
     get mainTemplate() {
         return mainTemplate;
     }
     //_c = false;
     connectedCallback() {
-        this.propUp([href, tag, test]);
+        this.propUp([href, tag]);
         super.connectedCallback();
     }
     set viewModel(nv) {
