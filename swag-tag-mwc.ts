@@ -16,7 +16,7 @@ const stringInputTemplate = createTemplate(/* html */ `
 `);
 
 const objectInputTemplate = createTemplate(/* html */ `
-    <mwc-textarea disabled></mwc-textarea>
+    <mwc-textarea rows=4 disabled></mwc-textarea>
 `);
 
 const boolInputTemplate = createTemplate(/* html */ `
@@ -29,6 +29,7 @@ const styleTemplate = createTemplate(/* html */`
 <style>
     mwc-textarea {
         width: 95%;
+        resize: vertical;
     }
 </style>
 `);
@@ -75,11 +76,17 @@ export class SwagTagMWC extends SwagTagBase{
                     (<any>target).value = inp.value;
                     
                 },
-                // 'mwc-checkbox': ({target, ctx}) =>{
-                //     const inp = ctx.replacedElement as HTMLInputElement;
-                //     (<any>target).text = inp.dataset.propName!;
-                // },
-                'p-d[data-type="boolean"]': ({target}) =>{
+                'mwc-formfield': ({target, ctx}) =>{
+                    const inp = ctx.replacedElement as HTMLInputElement;
+                    (<any>target).label = inp.dataset.propName!;
+                    return {
+                        'mwc-checkbox': ({target, ctx}) =>{
+
+                        },
+                    }
+                },
+
+                '[on][data-type="boolean"]': ({target}) =>{
                     const uicheckbox = target as any;
                     uicheckbox.on = 'change';
                     uicheckbox.val = 'target.checked';
