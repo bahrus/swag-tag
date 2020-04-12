@@ -1,27 +1,25 @@
 import { define } from "trans-render/define.js";
-//import {init} from "trans-render/init.js";
 import { repeat } from "trans-render/repeat.js";
 import { decorate } from "trans-render/decorate.js";
 import { createTemplate, newRenderContext } from "xtal-element/utils.js";
 import { XtalViewElement } from "xtal-element/xtal-view-element.js";
+import "p-et-alia/p-d.js";
 import { extend } from "p-et-alia/p-d-x.js";
 import { XtalJsonEditor } from "xtal-json-editor/xtal-json-editor.js";
 const pdxEvent = 'event';
-// extend({
-//   name: pdxEvent,
-//   valFromEvent: e => ({
-//     type: e.type,
-//     detail: (<any>e).detail
-//   })
-// });
+const pdxJSONParser = extend({
+    name: 'json-parsed',
+    valFromEvent: e => JSON.parse(e.target.value)
+});
 const fieldEditorTemplate = createTemplate(/* html */ `
   <div>
     <input>
-    <p-d on=input from=fieldset to=details val=target.value m=1 skip-init></p-d>
+    <p-d-x-json-parsed on=input from=fieldset to=details val=target.value m=1 skip-init></p-d>
   </div>
 `);
 const mainTemplate = createTemplate(/* html */ `
-
+<header>
+</header>
 <fieldset>
   <legend>✏️Edit <var></var>'s properties</legend>
   <form>
@@ -33,6 +31,7 @@ const mainTemplate = createTemplate(/* html */ `
 <h4>Live Events Fired</h4>
 <xtal-json-editor options="{}"  height="300px"></xtal-json-editor>
 <main></main>
+<footer></footer>
 `);
 const valFromEvent = (e) => ({
     type: e.type,
@@ -73,18 +72,22 @@ export class SwagTagBase extends XtalViewElement {
                         div: ({ idx }) => {
                             const prop = writeableProps[idx];
                             const propVal = prop.default;
-                            //if (this._test && prop.testValues) {
-                            //propVal = prop.testValues[this._test];
-                            //}
+                            let propType = 'other';
+                            switch (prop.type) {
+                                case 'boolean':
+                                case 'string':
+                                case 'object':
+                                    propType = prop.type;
+                                    break;
+                            }
                             return {
-                                //label: prop.name + ': ',
                                 input: ({ target }) => {
                                     const inp = target;
                                     decorate(inp, {
                                         propVals: {
                                             dataset: {
                                                 propName: prop.name,
-                                                propType: prop.type,
+                                                propType: propType,
                                                 description: prop.description
                                             },
                                             placeholder: prop.name
@@ -104,7 +107,7 @@ export class SwagTagBase extends XtalViewElement {
                                         }
                                     }
                                 },
-                                'p-d': ({ target }) => decorate(target, { propVals: {
+                                '[on]': ({ target }) => decorate(target, { propVals: {
                                         careOf: this._wcInfo.name,
                                         prop: prop.name,
                                     },
@@ -134,7 +137,6 @@ export class SwagTagBase extends XtalViewElement {
                             insertAfter: el
                         });
                         decorate(pdEvent, { propVals: { on: ce.name, from: 'details', to: XtalJsonEditor.is, prop: "input", m: 1 } });
-                        //target.appendChild(pdEvent);
                     });
                 }
                 return {
@@ -198,17 +200,9 @@ export class SwagTagBase extends XtalViewElement {
     set tag(nv) {
         this.attr(tag, nv);
     }
-    // _test: string | null = null;
-    // get test() {
-    //   return this._test;
-    // }
-    // set test(nv) {
-    //   this.attr(test, nv);
-    // }
     get mainTemplate() {
         return mainTemplate;
     }
-    //_c = false;
     connectedCallback() {
         this.propUp([href, tag]);
         super.connectedCallback();

@@ -1,6 +1,5 @@
 import { WCSuiteInfo, WCInfo } from "wc-info/types.js";
 import { define } from "trans-render/define.js";
-//import {init} from "trans-render/init.js";
 import { repeat } from "trans-render/repeat.js";
 import { decorate } from "trans-render/decorate.js";
 import { createTemplate, newRenderContext } from "xtal-element/utils.js";
@@ -10,30 +9,28 @@ import {
   TransformRules
 } from "trans-render/init.d.js";
 import { XtalViewElement } from "xtal-element/xtal-view-element.js";
-//import { PD } from "p-et-alia/p-d.js";
+import "p-et-alia/p-d.js";
 import {PDProps} from 'p-et-alia/types.d.js';
 import { extend } from "p-et-alia/p-d-x.js";
 import { XtalJsonEditor } from "xtal-json-editor/xtal-json-editor.js";
 
 const pdxEvent = 'event';
 
-// extend({
-//   name: pdxEvent,
-//   valFromEvent: e => ({
-//     type: e.type,
-//     detail: (<any>e).detail
-//   })
-// });
+const pdxJSONParser = extend({
+  name: 'json-parsed',
+  valFromEvent: e =>  JSON.parse((<any>e).target.value)
+})
 
 const fieldEditorTemplate = createTemplate(/* html */ `
   <div>
     <input>
-    <p-d on=input from=fieldset to=details val=target.value m=1 skip-init></p-d>
+    <p-d-x-json-parsed on=input from=fieldset to=details val=target.value m=1 skip-init></p-d>
   </div>
 `);
 
 const mainTemplate = createTemplate(/* html */ `
-
+<header>
+</header>
 <fieldset>
   <legend>✏️Edit <var></var>'s properties</legend>
   <form>
@@ -45,6 +42,7 @@ const mainTemplate = createTemplate(/* html */ `
 <h4>Live Events Fired</h4>
 <xtal-json-editor options="{}"  height="300px"></xtal-json-editor>
 <main></main>
+<footer></footer>
 `);
 
 const valFromEvent = (e: Event) =>({
@@ -82,18 +80,23 @@ export class SwagTagBase extends XtalViewElement<WCSuiteInfo> {
               div: ({ idx }) => {
                 const prop = writeableProps[idx];
                 const propVal =  prop.default;
-                //if (this._test && prop.testValues) {
-                  //propVal = prop.testValues[this._test];
-                //}
+                let propType = 'other';
+                switch(prop.type){
+                  case 'boolean':
+                  case 'string':
+                  case 'object':
+                    propType = prop.type;
+                    break;
+
+                }
                 return {
-                  //label: prop.name + ': ',
                   input: ({ target }) => {
                     const inp = target as HTMLInputElement;
                     decorate(inp, {
                       propVals:{
                         dataset:{
                           propName: prop.name,
-                          propType: prop.type,
+                          propType: propType,
                           description: prop.description
                         } as DOMStringMap,
                         placeholder: prop.name
@@ -114,7 +117,7 @@ export class SwagTagBase extends XtalViewElement<WCSuiteInfo> {
                     }
 
                   },
-                  'p-d': ({ target }) =>
+                  '[on]': ({ target }) =>
                     decorate(target as HTMLElement, 
                       {propVals: {
                         careOf: this._wcInfo.name,
@@ -147,7 +150,6 @@ export class SwagTagBase extends XtalViewElement<WCSuiteInfo> {
               insertAfter: el
             }) as HTMLElement;
             decorate(pdEvent, {propVals: { on: ce.name, from: 'details', to: XtalJsonEditor.is, prop: "input", m: 1} as PDProps});
-            //target.appendChild(pdEvent);
           });
         }
         return {
@@ -225,19 +227,10 @@ export class SwagTagBase extends XtalViewElement<WCSuiteInfo> {
     this.attr(tag, nv!);
   }
 
-  // _test: string | null = null;
-  // get test() {
-  //   return this._test;
-  // }
-  // set test(nv) {
-  //   this.attr(test, nv);
-  // }
-
   get mainTemplate() {
     return mainTemplate;
   }
 
-  //_c = false;
   connectedCallback() {
     this.propUp([href, tag]);
     super.connectedCallback();
