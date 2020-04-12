@@ -18,7 +18,14 @@ const pdxEvent = 'event';
 
 const pdxJSONParser = extend({
   name: 'json-parsed',
-  valFromEvent: e =>  JSON.parse((<any>e).target.value)
+  valFromEvent: e => {
+    if((<any>e).target.dataset.propType === 'boolean'){
+      return (<any>e).target.value !== null;
+    }else{
+      return JSON.parse((<any>e).target.value);
+    }
+    
+  }  
 })
 
 const fieldEditorTemplate = createTemplate(/* html */ `

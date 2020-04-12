@@ -9,7 +9,14 @@ import { XtalJsonEditor } from "xtal-json-editor/xtal-json-editor.js";
 const pdxEvent = 'event';
 const pdxJSONParser = extend({
     name: 'json-parsed',
-    valFromEvent: e => JSON.parse(e.target.value)
+    valFromEvent: e => {
+        if (e.target.dataset.propType === 'boolean') {
+            return e.target.value !== null;
+        }
+        else {
+            return JSON.parse(e.target.value);
+        }
+    }
 });
 const fieldEditorTemplate = createTemplate(/* html */ `
   <div>

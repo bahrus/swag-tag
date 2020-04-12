@@ -11,7 +11,7 @@ const objectInputTemplate = createTemplate(/* html */ `
 `);
 const boolInputTemplate = createTemplate(/* html */ `
 <mwc-formfield disabled>
-    <mwc-checkbox></mwc-checkbox>
+    <mwc-checkbox data-prop-type="boolean"></mwc-checkbox>
 </mwc-formfield>
 `);
 const styleTemplate = createTemplate(/* html */ `
