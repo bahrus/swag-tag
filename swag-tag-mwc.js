@@ -19,7 +19,9 @@ const styleTemplate = createTemplate(/* html */ `
     mwc-textarea {
         width: 95%;
         resize: vertical;
+        margin-bottom:20px
     }
+
 </style>
 `);
 import("@material/mwc-checkbox/mwc-checkbox.js");
@@ -57,6 +59,7 @@ export class SwagTagMWC extends SwagTagBase {
                     const inp = ctx.replacedElement;
                     target.label = inp.dataset.propName;
                     target.value = inp.value;
+                    target.helper = inp.dataset.description;
                 },
                 'mwc-formfield': ({ target, ctx }) => {
                     const inp = ctx.replacedElement;

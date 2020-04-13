@@ -11,6 +11,7 @@ import { createTemplate } from "xtal-element/utils.js";
 import { init } from "trans-render/init.js";
 import { replaceElementWithTemplate } from "trans-render/replaceElementWithTemplate.js";
 
+
 const stringInputTemplate = createTemplate(/* html */ `
     <mwc-textfield disabled></mwc-textfield>
 `);
@@ -30,7 +31,9 @@ const styleTemplate = createTemplate(/* html */`
     mwc-textarea {
         width: 95%;
         resize: vertical;
+        margin-bottom:20px
     }
+
 </style>
 `);
 
@@ -62,19 +65,12 @@ export class SwagTagMWC extends SwagTagBase{
                   }) => {
                     replaceElementWithTemplate(target, objectInputTemplate, ctx);
                 },
-                'mwc-textfield':({target, ctx}) =>{
-                    const inp = ctx.replacedElement as HTMLInputElement;
-                    (<any>target).label = inp.dataset.propName!;
-                    (<any>target).value = inp.value;
-                },
                 'input[type="checkbox"]': ({ ctx, target }) => {
                     replaceElementWithTemplate(target, boolInputTemplate, ctx);
                 },
-                'mwc-textarea': ({target, ctx}) =>{
+                'mwc-textarea, mwc-textfield': ({target, ctx}) =>{
                     const inp = ctx.replacedElement as HTMLInputElement;
-                    (<any>target).label = inp.dataset.propName!;
-                    (<any>target).value = inp.value;
-                    
+                    Object.assign(target, {label: inp.dataset.propName!, value: inp.value, helper: inp.dataset.description});
                 },
                 'mwc-formfield': ({target, ctx}) =>{
                     const inp = ctx.replacedElement as HTMLInputElement;
@@ -85,11 +81,8 @@ export class SwagTagMWC extends SwagTagBase{
                         },
                     }
                 },
-
                 '[on][data-type="boolean"]': ({target}) =>{
-                    const uicheckbox = target as any;
-                    uicheckbox.on = 'change';
-                    uicheckbox.val = 'target.checked';
+                    Object.assign(target, {on: 'change', val: 'target.checked'})
                 },
 
             }
