@@ -1,6 +1,7 @@
 import { WCSuiteInfo, WCInfo } from "wc-info/types.js";
 import { define } from "trans-render/define.js";
 import { repeat } from "trans-render/repeat.js";
+import { appendTag } from "trans-render/appendTag.js";
 import { decorate } from "trans-render/decorate.js";
 import { createTemplate, newRenderContext } from "xtal-element/utils.js";
 import {
@@ -138,25 +139,20 @@ export class SwagTagBase extends XtalViewElement<WCSuiteInfo> {
         } as TransformRules;
       },
       details: ({target}) =>{
-        const el = document.createElement(this._wcInfo.name);
-        this._wcInfo.properties?.forEach(prop =>{
-          if(prop.default){
-            (<any>el)[prop.name] = JSON.parse(prop.default);
-          }
+        const el = appendTag(target, this._wcInfo.name, {}) as any;
+        this._wcInfo.properties?.filter(prop => prop.default !== undefined).forEach(prop =>{
+          el[prop.name] = JSON.parse(prop.default);
         })
         const ces = this._wcInfo.events;
         if (ces !== undefined) el.setAttribute("disabled", ces.length.toString());
-        target.appendChild(el);
-
         if (ces !== undefined) {
-
           ces.forEach(ce => {
             const pdEvent = extend({
               name: pdxEvent,
               valFromEvent: valFromEvent,
               insertAfter: el
             }) as HTMLElement;
-            decorate(pdEvent, {propVals: { on: ce.name, from: 'details', to: XtalJsonEditor.is, prop: "input", m: 1} as PDProps});
+            Object.assign(pdEvent, { on: ce.name, from: 'details', to: XtalJsonEditor.is, prop: "input", m: 1} );
           });
         }
         return {
@@ -164,11 +160,7 @@ export class SwagTagBase extends XtalViewElement<WCSuiteInfo> {
         }
       },
       [XtalJsonEditor.is]: ({ target }) => {
-        decorate(target as HTMLElement, {
-          propVals: {
-            archive: true,
-          } as XtalJsonEditor
-        });
+        Object.assign(target, {archive: true});
       }
     });
   }

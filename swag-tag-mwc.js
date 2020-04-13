@@ -47,19 +47,12 @@ export class SwagTagMWC extends SwagTagBase {
                 'input[type="text"][data-prop-type="object"],input[type="text"][data-prop-type="other"]': ({ ctx, target }) => {
                     replaceElementWithTemplate(target, objectInputTemplate, ctx);
                 },
-                'mwc-textfield': ({ target, ctx }) => {
-                    const inp = ctx.replacedElement;
-                    target.label = inp.dataset.propName;
-                    target.value = inp.value;
-                },
                 'input[type="checkbox"]': ({ ctx, target }) => {
                     replaceElementWithTemplate(target, boolInputTemplate, ctx);
                 },
-                'mwc-textarea': ({ target, ctx }) => {
+                'mwc-textarea, mwc-textfield': ({ target, ctx }) => {
                     const inp = ctx.replacedElement;
-                    target.label = inp.dataset.propName;
-                    target.value = inp.value;
-                    target.helper = inp.dataset.description;
+                    Object.assign(target, { label: inp.dataset.propName, value: inp.value, helper: inp.dataset.description });
                 },
                 'mwc-formfield': ({ target, ctx }) => {
                     const inp = ctx.replacedElement;
@@ -70,9 +63,7 @@ export class SwagTagMWC extends SwagTagBase {
                     };
                 },
                 '[on][data-type="boolean"]': ({ target }) => {
-                    const uicheckbox = target;
-                    uicheckbox.on = 'change';
-                    uicheckbox.val = 'target.checked';
+                    Object.assign(target, { on: 'change', val: 'target.checked' });
                 },
             }
         });
