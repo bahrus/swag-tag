@@ -9,7 +9,7 @@ import {
 
 import { createTemplate } from "trans-render/createTemplate.js";
 import { init } from "trans-render/init.js";
-import { replaceElementWithTemplate } from "trans-render/replaceElementWithTemplate.js";
+import { replaceElementWithTemplate as replace } from "trans-render/replaceElementWithTemplate.js";
 
 //template refs
 const stringInputTemplate = 'stringInputTemplate';
@@ -41,9 +41,9 @@ export class SwagTagMWC extends SwagTagBase{
 
     initRenderCallback(ctx: RenderContext, target: HTMLElement | DocumentFragment){
         super.initRenderCallback(ctx, target);
-        const stringInputTemplate = Symbol();
-        const objectInputTemplate = Symbol();
-        const boolInputTemplate = Symbol();
+        const string$ = Symbol();
+        const object$ = Symbol();
+        const bool$ = Symbol();
         init(target as DocumentFragment, {
             Transform: {
                 "*": {
@@ -51,24 +51,24 @@ export class SwagTagMWC extends SwagTagBase{
                 } as TransformRules,
                 header: styleTemplate,
                 'input[type="text"][data-prop-type="string"]': ({ctx, target}) => {
-                    replaceElementWithTemplate(target, ctx, /* html */ `
+                    replace(target, ctx, /* html */ `
                         <mwc-textfield disabled></mwc-textfield>
-                    `, stringInputTemplate);
+                    `, string$);
                 },
                 'input[type="text"][data-prop-type="object"],input[type="text"][data-prop-type="other"]': ({
                     ctx,
                     target
                   }) => {
-                    replaceElementWithTemplate(target, ctx, /* html */ `
+                    replace(target, ctx, /* html */ `
                         <mwc-textarea rows=4 disabled></mwc-textarea>
-                    `, objectInputTemplate);
+                    `, object$);
                 },
                 'input[type="checkbox"]': ({ ctx, target }) => {
-                    replaceElementWithTemplate(target, ctx, /* html */ `
+                    replace(target, ctx, /* html */ `
                     <mwc-formfield disabled>
                         <mwc-checkbox data-prop-type="boolean"></mwc-checkbox>
                     </mwc-formfield>
-                    `, boolInputTemplate);
+                    `, bool$);
                 },
                 'mwc-textarea, mwc-textfield': ({target, ctx}) =>{
                     const inp = ctx.replacedElement as HTMLInputElement;

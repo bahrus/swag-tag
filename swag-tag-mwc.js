@@ -2,7 +2,7 @@ import { SwagTagBase } from './swag-tag-base.js';
 import { define } from "trans-render/define.js";
 import { createTemplate } from "trans-render/createTemplate.js";
 import { init } from "trans-render/init.js";
-import { replaceElementWithTemplate } from "trans-render/replaceElementWithTemplate.js";
+import { replaceElementWithTemplate as replace } from "trans-render/replaceElementWithTemplate.js";
 //template refs
 const stringInputTemplate = 'stringInputTemplate';
 const objectInputTemplate = 'objectInputTemplate';
@@ -28,6 +28,9 @@ export class SwagTagMWC extends SwagTagBase {
     }
     initRenderCallback(ctx, target) {
         super.initRenderCallback(ctx, target);
+        const string$ = Symbol();
+        const object$ = Symbol();
+        const bool$ = Symbol();
         init(target, {
             Transform: {
                 "*": {
@@ -35,21 +38,21 @@ export class SwagTagMWC extends SwagTagBase {
                 },
                 header: styleTemplate,
                 'input[type="text"][data-prop-type="string"]': ({ ctx, target }) => {
-                    replaceElementWithTemplate(target, ctx, createTemplate(/* html */ `
+                    replace(target, ctx, /* html */ `
                         <mwc-textfield disabled></mwc-textfield>
-                    `, ctx, { as: stringInputTemplate }));
+                    `, string$);
                 },
                 'input[type="text"][data-prop-type="object"],input[type="text"][data-prop-type="other"]': ({ ctx, target }) => {
-                    replaceElementWithTemplate(target, ctx, createTemplate(/* html */ `
+                    replace(target, ctx, /* html */ `
                         <mwc-textarea rows=4 disabled></mwc-textarea>
-                    `, ctx, { as: objectInputTemplate }));
+                    `, object$);
                 },
                 'input[type="checkbox"]': ({ ctx, target }) => {
-                    replaceElementWithTemplate(target, ctx, createTemplate(/* html */ `
+                    replace(target, ctx, /* html */ `
                     <mwc-formfield disabled>
                         <mwc-checkbox data-prop-type="boolean"></mwc-checkbox>
                     </mwc-formfield>
-                    `, ctx, { as: boolInputTemplate }));
+                    `, bool$);
                 },
                 'mwc-textarea, mwc-textfield': ({ target, ctx }) => {
                     const inp = ctx.replacedElement;
