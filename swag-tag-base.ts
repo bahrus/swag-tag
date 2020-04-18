@@ -31,14 +31,6 @@ const pdxJSONParser = extend({
   }  
 })
 
-const fieldEditorTemplate = T(/* html */ `
-  <div>
-    <label></label>
-    <input>
-    <p-d-x-json-parsed on=input from=fieldset to=details m=1 skip-init></p-d>
-  </div>
-`);
-
 
 const mainTemplate = T(/* html */ `
 <header>
@@ -67,6 +59,7 @@ const tag = "tag";
 const noPath = Symbol();
 export const propInfo$ = Symbol();
 export const propBase$ = Symbol();
+export const fieldEditor$ = Symbol();
 
 export class SwagTagBase extends XtalViewElement<WCSuiteInfo> {
   static get is() {
@@ -98,7 +91,13 @@ export class SwagTagBase extends XtalViewElement<WCSuiteInfo> {
             var: this._wcInfo.name
           },
           form: ({ target, ctx }) =>
-            repeat(fieldEditorTemplate, ctx, writeableProps.length, target, {
+            repeat([fieldEditor$, /* html */ `
+                <div>
+                  <label></label>
+                  <input>
+                  <p-d-x-json-parsed on=input from=fieldset to=details m=1 skip-init></p-d>
+                </div>
+              `], ctx, writeableProps.length, target, {
               div: ({ target, idx }) => {
                 const prop = writeableProps[idx];
                 const propAny = prop as any;
