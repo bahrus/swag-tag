@@ -1,19 +1,12 @@
 import { SwagTagBase } from './swag-tag-base.js';
 import { define } from "trans-render/define.js";
-import { createTemplate } from "xtal-element/utils.js";
+import { createTemplate } from "trans-render/createTemplate.js";
 import { init } from "trans-render/init.js";
 import { replaceElementWithTemplate } from "trans-render/replaceElementWithTemplate.js";
-const stringInputTemplate = createTemplate(/* html */ `
-    <mwc-textfield disabled></mwc-textfield>
-`);
-const objectInputTemplate = createTemplate(/* html */ `
-    <mwc-textarea rows=4 disabled></mwc-textarea>
-`);
-const boolInputTemplate = createTemplate(/* html */ `
-<mwc-formfield disabled>
-    <mwc-checkbox data-prop-type="boolean"></mwc-checkbox>
-</mwc-formfield>
-`);
+//template refs
+const stringInputTemplate = 'stringInputTemplate';
+const objectInputTemplate = 'objectInputTemplate';
+const boolInputTemplate = 'boolInputTemplate';
 const styleTemplate = createTemplate(/* html */ `
 <style>
     mwc-textarea {
@@ -42,13 +35,21 @@ export class SwagTagMWC extends SwagTagBase {
                 },
                 header: styleTemplate,
                 'input[type="text"][data-prop-type="string"]': ({ ctx, target }) => {
-                    replaceElementWithTemplate(target, stringInputTemplate, ctx);
+                    replaceElementWithTemplate(target, ctx, createTemplate(/* html */ `
+                        <mwc-textfield disabled></mwc-textfield>
+                    `, ctx, { as: stringInputTemplate }));
                 },
                 'input[type="text"][data-prop-type="object"],input[type="text"][data-prop-type="other"]': ({ ctx, target }) => {
-                    replaceElementWithTemplate(target, objectInputTemplate, ctx);
+                    replaceElementWithTemplate(target, ctx, createTemplate(/* html */ `
+                        <mwc-textarea rows=4 disabled></mwc-textarea>
+                    `, ctx, { as: objectInputTemplate }));
                 },
                 'input[type="checkbox"]': ({ ctx, target }) => {
-                    replaceElementWithTemplate(target, boolInputTemplate, ctx);
+                    replaceElementWithTemplate(target, ctx, createTemplate(/* html */ `
+                    <mwc-formfield disabled>
+                        <mwc-checkbox data-prop-type="boolean"></mwc-checkbox>
+                    </mwc-formfield>
+                    `, ctx, { as: boolInputTemplate }));
                 },
                 'mwc-textarea, mwc-textfield': ({ target, ctx }) => {
                     const inp = ctx.replacedElement;
@@ -57,10 +58,10 @@ export class SwagTagMWC extends SwagTagBase {
                 'mwc-formfield': ({ target, ctx }) => {
                     const inp = ctx.replacedElement;
                     target.label = inp.dataset.propName;
-                    return {
-                        'mwc-checkbox': ({ target, ctx }) => {
-                        },
-                    };
+                    // return {
+                    //     'mwc-checkbox': ({target, ctx}) =>{
+                    //     },
+                    // }
                 },
                 '[on][data-type="boolean"]': ({ target }) => {
                     Object.assign(target, { on: 'change', val: 'target.checked' });

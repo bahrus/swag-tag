@@ -2,7 +2,8 @@ import { define } from "trans-render/define.js";
 import { repeat } from "trans-render/repeat.js";
 import { appendTag } from "trans-render/appendTag.js";
 import { decorate } from "trans-render/decorate.js";
-import { createTemplate, newRenderContext } from "xtal-element/utils.js";
+import { newRenderContext } from "xtal-element/newRenderContext.js";
+import { createTemplate } from "trans-render/createTemplate.js";
 import { XtalViewElement } from "xtal-element/xtal-view-element.js";
 import "p-et-alia/p-d.js";
 import { extend } from "p-et-alia/p-d-x.js";
@@ -22,7 +23,7 @@ const pdxJSONParser = extend({
 const fieldEditorTemplate = createTemplate(/* html */ `
   <div>
     <input>
-    <p-d-x-json-parsed on=input from=fieldset to=details val=target.value m=1 skip-init></p-d>
+    <p-d-x-json-parsed on=input from=fieldset to=details m=1 skip-init></p-d>
   </div>
 `);
 const mainTemplate = createTemplate(/* html */ `
