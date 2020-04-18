@@ -2,7 +2,6 @@ import { define } from "trans-render/define.js";
 import { repeat } from "trans-render/repeat.js";
 import { replaceTargetWithTag } from "trans-render/replaceTargetWithTag.js";
 import { appendTag } from "trans-render/appendTag.js";
-import { decorate } from "trans-render/decorate.js";
 import { newRenderContext } from "xtal-element/newRenderContext.js";
 import { createTemplate as T } from "trans-render/createTemplate.js";
 import { XtalViewElement } from "xtal-element/xtal-view-element.js";
@@ -110,12 +109,7 @@ export class SwagTagBase extends XtalViewElement {
                                 textarea: [{ textContent: prop.default }, {}, { id: 'rc_' + prop.name }],
                                 'input[type="checkbox"]': [{}, {}, { checked: prop.default }],
                                 'input[type="text"]': [{}, {}, { value: prop.default ?? '' }],
-                                '[on]': ({ target }) => decorate(target, { propVals: {
-                                        careOf: this._wcInfo.name,
-                                        prop: prop.name,
-                                    },
-                                    attribs: { "data-type": prop.type }
-                                })
+                                '[on]': [{ careOf: this._wcInfo.name, prop: prop.name }]
                             };
                         }
                     })

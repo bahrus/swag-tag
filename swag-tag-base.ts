@@ -123,14 +123,7 @@ export class SwagTagBase extends XtalViewElement<WCSuiteInfo> {
                   textarea: [{textContent: prop.default}, {}, {id: 'rc_' + prop.name}],
                   'input[type="checkbox"]': [{}, {}, {checked: prop.default}],
                   'input[type="text"]': [{}, {}, {value: prop.default ?? ''}],
-                  '[on]': ({ target }) =>
-                    decorate(target as HTMLElement, 
-                      {propVals: {
-                        careOf: this._wcInfo.name,
-                        prop: prop.name,
-                      } as PDProps, 
-                      attribs: {"data-type": prop.type}
-                  })
+                  '[on]': [{careOf: this._wcInfo.name, prop: prop.name}]
                 };
               }
             }) as TransformRules

@@ -39,6 +39,7 @@ export class SwagTagMWC extends SwagTagBase {
                         div: ({ target }) => {
                             const propInfo = target[propInfo$];
                             return {
+                                label: false,
                                 textarea: ({ ctx, target }) => {
                                     replace(target, ctx, [string$, /* html */ `
                                     <mwc-textfield disabled></mwc-textfield>
