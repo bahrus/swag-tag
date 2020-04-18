@@ -13,10 +13,7 @@ import { init } from "trans-render/init.js";
 import { replaceElementWithTemplate as replace } from "trans-render/replaceElementWithTemplate.js";
 import { PropertyInfo } from '../wc-info/types.js';
 
-//template refs
-const stringInputTemplate = 'stringInputTemplate';
-const objectInputTemplate = 'objectInputTemplate';
-const boolInputTemplate = 'boolInputTemplate';
+
 
 const styleTemplate = createTemplate(/* html */`
 <style>
@@ -56,7 +53,12 @@ export class SwagTagMWC extends SwagTagBase{
                             return {
                                 label: false,
                                 textarea: ({ctx, target}) =>{
-                                    replace(target, ctx, [string$, /* html */ `
+                                    replace(target, ctx, [object$, /* html */ `
+                                    <mwc-textarea disabled></mwc-textarea>
+                                    `]);
+                                },
+                                'input[type="text"]': ({ctx, target}) =>{
+                                    replace(target, ctx, [string$, /*html */`
                                     <mwc-textfield disabled></mwc-textfield>
                                     `]);
                                 },

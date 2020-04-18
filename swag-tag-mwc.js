@@ -3,10 +3,6 @@ import { define } from "trans-render/define.js";
 import { createTemplate } from "trans-render/createTemplate.js";
 import { init } from "trans-render/init.js";
 import { replaceElementWithTemplate as replace } from "trans-render/replaceElementWithTemplate.js";
-//template refs
-const stringInputTemplate = 'stringInputTemplate';
-const objectInputTemplate = 'objectInputTemplate';
-const boolInputTemplate = 'boolInputTemplate';
 const styleTemplate = createTemplate(/* html */ `
 <style>
     mwc-textarea {
@@ -41,7 +37,12 @@ export class SwagTagMWC extends SwagTagBase {
                             return {
                                 label: false,
                                 textarea: ({ ctx, target }) => {
-                                    replace(target, ctx, [string$, /* html */ `
+                                    replace(target, ctx, [object$, /* html */ `
+                                    <mwc-textarea disabled></mwc-textarea>
+                                    `]);
+                                },
+                                'input[type="text"]': ({ ctx, target }) => {
+                                    replace(target, ctx, [string$, /*html */ `
                                     <mwc-textfield disabled></mwc-textfield>
                                     `]);
                                 },
