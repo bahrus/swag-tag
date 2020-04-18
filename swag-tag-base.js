@@ -1,5 +1,6 @@
 import { define } from "trans-render/define.js";
 import { repeat } from "trans-render/repeat.js";
+import { replaceTargetWithTag } from "trans-render/replaceTargetWithTag.js";
 import { appendTag } from "trans-render/appendTag.js";
 import { decorate } from "trans-render/decorate.js";
 import { newRenderContext } from "xtal-element/newRenderContext.js";
@@ -48,7 +49,9 @@ const valFromEvent = (e) => ({
 });
 const href = "href";
 const tag = "tag";
-//const test = "test";
+const noPath = Symbol();
+export const propInfo$ = Symbol();
+export const propBase$ = Symbol();
 export class SwagTagBase extends XtalViewElement {
     constructor() {
         super(...arguments);
@@ -58,15 +61,18 @@ export class SwagTagBase extends XtalViewElement {
     static get is() {
         return "swag-tag-base";
     }
+    importReferencedModule() {
+        const selfResolvingModuleSplitPath = this.href?.split('/');
+        selfResolvingModuleSplitPath?.pop();
+        const selfResolvingModulePath = selfResolvingModuleSplitPath?.join('/') + this._wcInfo.path.substring(1) + '?module';
+        import(selfResolvingModulePath);
+    }
     get initRenderContext() {
         if (this._wcInfo.path === undefined) {
             console.warn("No self resolving module path found in " + this._href + ' tag: ' + this._tag);
             return {};
         }
-        const selfResolvingModuleSplitPath = this.href?.split('/');
-        selfResolvingModuleSplitPath?.pop();
-        const selfResolvingModulePath = selfResolvingModuleSplitPath?.join('/') + this._wcInfo.path.substring(1) + '?module';
-        import(selfResolvingModulePath);
+        this.importReferencedModule();
         return newRenderContext({
             fieldset: ({ target }) => {
                 const allProperties = this._wcInfo.properties;
@@ -78,25 +84,33 @@ export class SwagTagBase extends XtalViewElement {
                         var: this._wcInfo.name
                     },
                     form: ({ target, ctx }) => repeat(fieldEditorTemplate, ctx, writeableProps.length, target, {
-                        div: ({ idx }) => {
+                        div: ({ target, idx }) => {
                             const prop = writeableProps[idx];
+                            const propAny = prop;
+                            target[propInfo$] = prop;
                             const propVal = prop.default;
-                            let propType = 'other';
+                            let propBase = 'object';
                             switch (prop.type) {
                                 case 'boolean':
                                 case 'string':
                                 case 'object':
-                                    propType = prop.type;
+                                    propBase = prop.type;
                                     break;
                             }
+                            propAny[propBase$] = propBase;
                             return {
-                                input: ({ target }) => {
+                                input: ({ target, ctx }) => {
+                                    if (propBase === 'object') {
+                                        replaceTargetWithTag(target, ctx, 'textarea');
+                                    }
+                                },
+                                '"': ({ target }) => {
                                     const inp = target;
                                     decorate(inp, {
                                         propVals: {
                                             dataset: {
                                                 propName: prop.name,
-                                                propType: propType,
+                                                propType: propBase,
                                                 description: prop.description
                                             },
                                             placeholder: prop.name
@@ -203,6 +217,9 @@ export class SwagTagBase extends XtalViewElement {
         this.attr(tag, nv);
     }
     get mainTemplate() {
+        if (!this._wcInfo.path) {
+            return createTemplate(`<div>No path found.</div>`, this, noPath);
+        }
         return mainTemplate;
     }
     connectedCallback() {
