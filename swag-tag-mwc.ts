@@ -41,6 +41,9 @@ export class SwagTagMWC extends SwagTagBase{
 
     initRenderCallback(ctx: RenderContext, target: HTMLElement | DocumentFragment){
         super.initRenderCallback(ctx, target);
+        const stringInputTemplate = Symbol();
+        const objectInputTemplate = Symbol();
+        const boolInputTemplate = Symbol();
         init(target as DocumentFragment, {
             Transform: {
                 "*": {
@@ -50,7 +53,7 @@ export class SwagTagMWC extends SwagTagBase{
                 'input[type="text"][data-prop-type="string"]': ({ctx, target}) => {
                     replaceElementWithTemplate(target, ctx, createTemplate(/* html */ `
                         <mwc-textfield disabled></mwc-textfield>
-                    `, ctx, {as: stringInputTemplate}));
+                    `, ctx, stringInputTemplate));
                 },
                 'input[type="text"][data-prop-type="object"],input[type="text"][data-prop-type="other"]': ({
                     ctx,
@@ -58,14 +61,14 @@ export class SwagTagMWC extends SwagTagBase{
                   }) => {
                     replaceElementWithTemplate(target, ctx, createTemplate(/* html */ `
                         <mwc-textarea rows=4 disabled></mwc-textarea>
-                    `, ctx, {as: objectInputTemplate}))
+                    `, ctx, objectInputTemplate));
                 },
                 'input[type="checkbox"]': ({ ctx, target }) => {
                     replaceElementWithTemplate(target, ctx, createTemplate(/* html */ `
                     <mwc-formfield disabled>
                         <mwc-checkbox data-prop-type="boolean"></mwc-checkbox>
                     </mwc-formfield>
-                    `, ctx, {as: boolInputTemplate}));
+                    `, ctx, boolInputTemplate));
                 },
                 'mwc-textarea, mwc-textfield': ({target, ctx}) =>{
                     const inp = ctx.replacedElement as HTMLInputElement;
