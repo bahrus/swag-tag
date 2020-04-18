@@ -7,8 +7,7 @@ import {
     TransformFn
 } from "trans-render/init.d.js";
 
-import { append } from "trans-render/append.js";
-import { createTemplate } from "xtal-element/utils.js";
+import { createTemplate } from "trans-render/createTemplate.js";
 import { init } from "trans-render/init.js";
 import { replaceElementWithTemplate } from "trans-render/replaceElementWithTemplate.js";
 
@@ -42,10 +41,10 @@ export class SwagTagUI5 extends SwagTagBase{
                   Select: "*"
                 } as TransformRules,
                 'input[type="text"][data-prop-type="string"]': ({ctx, target}) => {
-                    replaceElementWithTemplate(target, stringInputTemplate, ctx);
+                    replaceElementWithTemplate(target, ctx, stringInputTemplate);
                 },
                 'input[type="checkbox"]': ({ ctx, target }) => {
-                    replaceElementWithTemplate(target, boolInputTemplate, ctx);
+                    replaceElementWithTemplate(target, ctx, boolInputTemplate);
                 },
                 'ui5-input,ui5-textarea': (({target, ctx}) =>{
                     const inp = ctx.replacedElement as HTMLInputElement;
@@ -64,7 +63,7 @@ export class SwagTagUI5 extends SwagTagBase{
                     ctx,
                     target
                   }) => {
-                    replaceElementWithTemplate(target, objectInputTemplate, ctx);
+                    replaceElementWithTemplate(target, ctx, objectInputTemplate);
                 },
             }
         })

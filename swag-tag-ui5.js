@@ -1,6 +1,6 @@
 import { SwagTagBase } from './swag-tag-base.js';
 import { define } from "trans-render/define.js";
-import { createTemplate } from "xtal-element/utils.js";
+import { createTemplate } from "trans-render/createTemplate.js";
 import { init } from "trans-render/init.js";
 import { replaceElementWithTemplate } from "trans-render/replaceElementWithTemplate.js";
 const stringInputTemplate = createTemplate(/* html */ `
@@ -28,10 +28,10 @@ export class SwagTagUI5 extends SwagTagBase {
                     Select: "*"
                 },
                 'input[type="text"][data-prop-type="string"]': ({ ctx, target }) => {
-                    replaceElementWithTemplate(target, stringInputTemplate, ctx);
+                    replaceElementWithTemplate(target, ctx, stringInputTemplate);
                 },
                 'input[type="checkbox"]': ({ ctx, target }) => {
-                    replaceElementWithTemplate(target, boolInputTemplate, ctx);
+                    replaceElementWithTemplate(target, ctx, boolInputTemplate);
                 },
                 'ui5-input,ui5-textarea': (({ target, ctx }) => {
                     const inp = ctx.replacedElement;
@@ -47,7 +47,7 @@ export class SwagTagUI5 extends SwagTagBase {
                     uicheckbox.val = 'target.checked';
                 },
                 'input[type="text"][data-prop-type="object"],input[type="text"][data-prop-type="any"]': ({ ctx, target }) => {
-                    replaceElementWithTemplate(target, objectInputTemplate, ctx);
+                    replaceElementWithTemplate(target, ctx, objectInputTemplate);
                 },
             }
         });
