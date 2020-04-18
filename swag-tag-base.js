@@ -4,7 +4,7 @@ import { replaceTargetWithTag } from "trans-render/replaceTargetWithTag.js";
 import { appendTag } from "trans-render/appendTag.js";
 import { decorate } from "trans-render/decorate.js";
 import { newRenderContext } from "xtal-element/newRenderContext.js";
-import { createTemplate } from "trans-render/createTemplate.js";
+import { createTemplate as T } from "trans-render/createTemplate.js";
 import { XtalViewElement } from "xtal-element/xtal-view-element.js";
 import "p-et-alia/p-d.js";
 import { extend } from "p-et-alia/p-d-x.js";
@@ -21,13 +21,13 @@ const pdxJSONParser = extend({
         }
     }
 });
-const fieldEditorTemplate = createTemplate(/* html */ `
+const fieldEditorTemplate = T(/* html */ `
   <div>
     <input>
     <p-d-x-json-parsed on=input from=fieldset to=details m=1 skip-init></p-d>
   </div>
 `);
-const mainTemplate = createTemplate(/* html */ `
+const mainTemplate = T(/* html */ `
 <header>
 </header>
 <fieldset>
@@ -218,7 +218,7 @@ export class SwagTagBase extends XtalViewElement {
     }
     get mainTemplate() {
         if (!this._wcInfo.path) {
-            return createTemplate(`<div>No path found.</div>`, this, noPath);
+            return T(`<div>No path found.</div>`, this, noPath);
         }
         return mainTemplate;
     }
