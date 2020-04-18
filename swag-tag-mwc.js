@@ -1,4 +1,4 @@
-import { SwagTagBase } from './swag-tag-base.js';
+import { SwagTagBase, propInfo$ } from './swag-tag-base.js';
 import { define } from "trans-render/define.js";
 import { createTemplate } from "trans-render/createTemplate.js";
 import { init } from "trans-render/init.js";
@@ -33,40 +33,42 @@ export class SwagTagMWC extends SwagTagBase {
         const bool$ = Symbol();
         init(target, {
             Transform: {
-                "*": {
-                    Select: "*"
-                },
                 header: styleTemplate,
-                'input[type="text"][data-prop-type="string"]': ({ ctx, target }) => {
-                    replace(target, ctx, [string$, /* html */ `
-                        <mwc-textfield disabled></mwc-textfield>
-                    `]);
+                fieldset: {
+                    form: {
+                        div: ({ target }) => {
+                            const propInfo = target[propInfo$];
+                            return {
+                                textarea: ({ ctx, target }) => {
+                                    replace(target, ctx, [string$, /* html */ `
+                                    <mwc-textfield disabled></mwc-textfield>
+                                    `]);
+                                },
+                                'input[type="checkbox"]': ({ ctx, target }) => {
+                                    replace(target, ctx, [bool$, /* html */ `
+                                    <mwc-formfield disabled>
+                                        <mwc-checkbox></mwc-checkbox>
+                                    </mwc-formfield>
+                                    `]);
+                                },
+                                // 'mwc-textarea, mwc-textfield': ({target, ctx}) =>{
+                                //     const inp = ctx.replacedElement as HTMLInputElement;
+                                //     Object.assign(target, {label: inp.dataset.propName!, value: inp.value, helper: inp.dataset.description});
+                                // },
+                                'mwc-textarea, mwc-textfield': [{ label: propInfo.name, value: propInfo.default ?? '', helper: propInfo.description ?? '' }],
+                                'mwc-formfield': ({ target, ctx }) => {
+                                    const inp = ctx.replacedElement;
+                                    target.label = inp.dataset.propName;
+                                    // return {
+                                    //     'mwc-checkbox': ({target, ctx}) =>{
+                                    //     },
+                                    // }
+                                },
+                                '[on][data-type="boolean"]': [{ on: 'change', val: 'target.checked' }],
+                            };
+                        }
+                    }
                 },
-                'input[type="text"][data-prop-type="object"],input[type="text"][data-prop-type="other"]': ({ ctx, target }) => {
-                    replace(target, ctx, [object$, /* html */ `
-                        <mwc-textarea rows=4 disabled></mwc-textarea>
-                    `]);
-                },
-                'input[type="checkbox"]': ({ ctx, target }) => {
-                    replace(target, ctx, [bool$, /* html */ `
-                    <mwc-formfield disabled>
-                        <mwc-checkbox data-prop-type="boolean"></mwc-checkbox>
-                    </mwc-formfield>
-                    `]);
-                },
-                'mwc-textarea, mwc-textfield': ({ target, ctx }) => {
-                    const inp = ctx.replacedElement;
-                    Object.assign(target, { label: inp.dataset.propName, value: inp.value, helper: inp.dataset.description });
-                },
-                'mwc-formfield': ({ target, ctx }) => {
-                    const inp = ctx.replacedElement;
-                    target.label = inp.dataset.propName;
-                    // return {
-                    //     'mwc-checkbox': ({target, ctx}) =>{
-                    //     },
-                    // }
-                },
-                '[on][data-type="boolean"]': [{ on: 'change', val: 'target.checked' }],
             }
         });
     }
