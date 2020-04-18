@@ -66,20 +66,8 @@ export class SwagTagMWC extends SwagTagBase{
                                     </mwc-formfield>
                                     `]);
                                 },
-                                // 'mwc-textarea, mwc-textfield': ({target, ctx}) =>{
-                                //     const inp = ctx.replacedElement as HTMLInputElement;
-                                //     Object.assign(target, {label: inp.dataset.propName!, value: inp.value, helper: inp.dataset.description});
-                                // },
                                 'mwc-textarea, mwc-textfield':[{label: propInfo.name, value: propInfo.default ?? '', helper: propInfo.description ?? ''}],
-                                'mwc-formfield': ({target, ctx}) =>{
-                                    const inp = ctx.replacedElement as HTMLInputElement;
-                                    (<any>target).label = inp.dataset.propName!;
-                                    // return {
-                                    //     'mwc-checkbox': ({target, ctx}) =>{
-                
-                                    //     },
-                                    // }
-                                },
+                                'mwc-formfield': [{label: propInfo.name}],
                                 '[on][data-type="boolean"]': [{on: 'change', val: 'target.checked'}],
                             }
 

@@ -33,6 +33,7 @@ const pdxJSONParser = extend({
 
 const fieldEditorTemplate = T(/* html */ `
   <div>
+    <label></label>
     <input>
     <p-d-x-json-parsed on=input from=fieldset to=details m=1 skip-init></p-d>
   </div>
@@ -112,38 +113,16 @@ export class SwagTagBase extends XtalViewElement<WCSuiteInfo> {
                 }
                 propAny[propBase$] = propBase;
                 return {
+                  label: [{textContent: prop.name}, {}, {for: 'rc_' + prop.name}],
                   input: ({target, ctx}) => {
                     if(propBase === 'object'){
                       replaceTargetWithTag(target, ctx, 'textarea');
                     }
                   },
-                  '"': ({ target }) => {
-                    const inp = target as HTMLInputElement;
-                    decorate(inp, {
-                      propVals:{
-                        dataset:{
-                          propName: prop.name,
-                          propType: propBase,
-                          description: prop.description
-                        } as DOMStringMap,
-                        placeholder: prop.name
-                      } as HTMLInputElement,
-                      attribs:{
-                        "type": prop.type === 'boolean' ? 'checkbox' : 'text'
-                      }
-                    });
-                    if(propVal !== undefined){
-                      switch (prop.type) {
-                        case "boolean":
-                            target.setAttribute("checked", "");
-                            inp.value = "on";
-                          break;
-                        default:
-                            inp.value = propVal;
-                      }
-                    }
-
-                  },
+                  '"': [{}, {}, {type: prop.type === 'boolean' ? 'checkbox': 'text', id: 'rc_' + prop.name}],
+                  textarea: [{}, {}, {id: 'rc_' + prop.name}],
+                  'input[type="checkbox"]': [{}, {}, {checked: prop.default}],
+                  'input[type="text"]': [{}, {}, {value: prop.default ?? ''}],
                   '[on]': ({ target }) =>
                     decorate(target as HTMLElement, 
                       {propVals: {
