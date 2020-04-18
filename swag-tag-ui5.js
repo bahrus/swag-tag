@@ -1,8 +1,8 @@
-import { SwagTagBase } from './swag-tag-base.js';
+import { SwagTagBase, propInfo$ } from './swag-tag-base.js';
 import { define } from "trans-render/define.js";
 import { createTemplate } from "trans-render/createTemplate.js";
 import { init } from "trans-render/init.js";
-import { replaceElementWithTemplate } from "trans-render/replaceElementWithTemplate.js";
+import { replaceElementWithTemplate as replace } from "trans-render/replaceElementWithTemplate.js";
 const stringInputTemplate = createTemplate(/* html */ `
 <ui5-input disabled></ui5-input>
 `);
@@ -24,30 +24,17 @@ export class SwagTagUI5 extends SwagTagBase {
         super.initRenderCallback(ctx, target);
         init(target, {
             Transform: {
-                "*": {
-                    Select: "*"
-                },
-                'input[type="text"][data-prop-type="string"]': ({ ctx, target }) => {
-                    replaceElementWithTemplate(target, ctx, stringInputTemplate);
-                },
-                'input[type="checkbox"]': ({ ctx, target }) => {
-                    replaceElementWithTemplate(target, ctx, boolInputTemplate);
-                },
-                'ui5-input,ui5-textarea': (({ target, ctx }) => {
-                    const inp = ctx.replacedElement;
-                    target.placeholder = inp.dataset.propName;
-                }),
-                'ui5-checkbox': (({ target, ctx }) => {
-                    const inp = ctx.replacedElement;
-                    target.text = inp.dataset.propName;
-                }),
-                'p-d[data-type="boolean"]': ({ target }) => {
-                    const uicheckbox = target;
-                    uicheckbox.on = 'change';
-                    uicheckbox.val = 'target.checked';
-                },
-                'input[type="text"][data-prop-type="object"],input[type="text"][data-prop-type="any"]': ({ ctx, target }) => {
-                    replaceElementWithTemplate(target, ctx, objectInputTemplate);
+                fieldset: {
+                    form: {
+                        div: ({ target }) => {
+                            const propInfo = target[propInfo$];
+                            return {
+                                textarea: ({ ctx, target }) => {
+                                    replace(target, ctx, objectInputTemplate);
+                                }
+                            };
+                        }
+                    }
                 },
             }
         });
