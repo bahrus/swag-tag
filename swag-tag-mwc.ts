@@ -51,24 +51,24 @@ export class SwagTagMWC extends SwagTagBase{
                 } as TransformRules,
                 header: styleTemplate,
                 'input[type="text"][data-prop-type="string"]': ({ctx, target}) => {
-                    replaceElementWithTemplate(target, ctx, createTemplate(/* html */ `
+                    replaceElementWithTemplate(target, ctx, /* html */ `
                         <mwc-textfield disabled></mwc-textfield>
-                    `, ctx, stringInputTemplate));
+                    `, stringInputTemplate);
                 },
                 'input[type="text"][data-prop-type="object"],input[type="text"][data-prop-type="other"]': ({
                     ctx,
                     target
                   }) => {
-                    replaceElementWithTemplate(target, ctx, createTemplate(/* html */ `
+                    replaceElementWithTemplate(target, ctx, /* html */ `
                         <mwc-textarea rows=4 disabled></mwc-textarea>
-                    `, ctx, objectInputTemplate));
+                    `, objectInputTemplate);
                 },
                 'input[type="checkbox"]': ({ ctx, target }) => {
-                    replaceElementWithTemplate(target, ctx, createTemplate(/* html */ `
+                    replaceElementWithTemplate(target, ctx, /* html */ `
                     <mwc-formfield disabled>
                         <mwc-checkbox data-prop-type="boolean"></mwc-checkbox>
                     </mwc-formfield>
-                    `, ctx, boolInputTemplate));
+                    `, boolInputTemplate);
                 },
                 'mwc-textarea, mwc-textfield': ({target, ctx}) =>{
                     const inp = ctx.replacedElement as HTMLInputElement;
