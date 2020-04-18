@@ -107,7 +107,7 @@ export class SwagTagBase extends XtalViewElement {
                                     }
                                 },
                                 '"': [{}, {}, { type: prop.type === 'boolean' ? 'checkbox' : 'text', id: 'rc_' + prop.name }],
-                                textarea: [{}, {}, { id: 'rc_' + prop.name }],
+                                textarea: [{ textContent: prop.default }, {}, { id: 'rc_' + prop.name }],
                                 'input[type="checkbox"]': [{}, {}, { checked: prop.default }],
                                 'input[type="text"]': [{}, {}, { value: prop.default ?? '' }],
                                 '[on]': ({ target }) => decorate(target, { propVals: {
