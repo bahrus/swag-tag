@@ -80,10 +80,7 @@ export class SwagTagMWC extends SwagTagBase{
                     //     },
                     // }
                 },
-                '[on][data-type="boolean"]': ({target}) =>{
-                    Object.assign(target, {on: 'change', val: 'target.checked'})
-                },
-
+                '[on][data-type="boolean"]': [{on: 'change', val: 'target.checked'}],
             }
         })
     }
