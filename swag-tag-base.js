@@ -83,33 +83,32 @@ export class SwagTagBase extends XtalViewElement {
                   <input>
                   <p-d-x-json-parsed on=input from=fieldset to=details m=1 skip-init></p-d>
                 </div>
-              `], ctx, writeableProps.length, target, {
-                        div: ({ target, idx }) => {
-                            const prop = writeableProps[idx];
-                            const propAny = prop;
-                            target[propInfo$] = prop;
-                            const propVal = prop.default;
+              `], ctx, writeableProps, target, {
+                        div: ({ target, idx, item }) => {
+                            //const prop = writeableProps[idx];
+                            const propAny = item;
+                            target[propInfo$] = item;
+                            const propVal = item.default;
                             let propBase = 'object';
-                            switch (prop.type) {
+                            switch (item.type) {
                                 case 'boolean':
                                 case 'string':
-                                case 'object':
-                                    propBase = prop.type;
+                                    propBase = item.type;
                                     break;
                             }
                             propAny[propBase$] = propBase;
                             return {
-                                label: [{ textContent: prop.name }, {}, { for: 'rc_' + prop.name }],
+                                label: [{ textContent: item.name }, {}, { for: 'rc_' + item.name }],
                                 input: ({ target, ctx }) => {
                                     if (propBase === 'object') {
                                         replaceTargetWithTag(target, ctx, 'textarea');
                                     }
                                 },
-                                '"': [{}, {}, { type: prop.type === 'boolean' ? 'checkbox' : 'text', id: 'rc_' + prop.name }],
-                                textarea: [{ textContent: prop.default }, {}, { id: 'rc_' + prop.name }],
-                                'input[type="checkbox"]': [{}, {}, { checked: prop.default }],
-                                'input[type="text"]': [{}, {}, { value: prop.default ?? '' }],
-                                '[on]': [{ careOf: this._wcInfo.name, prop: prop.name }]
+                                '"': [{}, {}, { type: item.type === 'boolean' ? 'checkbox' : 'text', id: 'rc_' + item.name }],
+                                textarea: [{ textContent: item.default }, {}, { id: 'rc_' + item.name }],
+                                'input[type="checkbox"]': [{}, {}, { checked: item.default }],
+                                'input[type="text"]': [{}, {}, { value: item.default ?? '' }],
+                                '[on]': [{ careOf: this._wcInfo.name, prop: item.name }]
                             };
                         }
                     })

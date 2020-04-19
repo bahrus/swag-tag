@@ -13,7 +13,7 @@ import {
 } from "trans-render/init.d.js";
 import { XtalViewElement } from "xtal-element/xtal-view-element.js";
 import "p-et-alia/p-d.js";
-import {PDProps} from 'p-et-alia/types.d.js';
+import { PDProps } from 'p-et-alia/types.d.js';
 import { extend } from "p-et-alia/p-d-x.js";
 import { XtalJsonEditor } from "xtal-json-editor/xtal-json-editor.js";
 
@@ -22,13 +22,13 @@ const pdxEvent = 'event';
 const pdxJSONParser = extend({
   name: 'json-parsed',
   valFromEvent: e => {
-    if((<any>e).target.dataset.propType === 'boolean'){
+    if ((<any>e).target.dataset.propType === 'boolean') {
       return (<any>e).target.value !== null;
-    }else{
+    } else {
       return JSON.parse((<any>e).target.value);
     }
-    
-  }  
+
+  }
 })
 
 
@@ -49,7 +49,7 @@ const mainTemplate = T(/* html */ `
 <footer></footer>
 `);
 
-const valFromEvent = (e: Event) =>({
+const valFromEvent = (e: Event) => ({
   type: e.type,
   detail: (<any>e).detail
 })
@@ -66,15 +66,15 @@ export class SwagTagBase extends XtalViewElement<WCSuiteInfo> {
     return "swag-tag-base";
   }
 
-  importReferencedModule(){
+  importReferencedModule() {
     const selfResolvingModuleSplitPath = this.href?.split('/');
     selfResolvingModuleSplitPath?.pop();
-    const selfResolvingModulePath = selfResolvingModuleSplitPath?.join('/') + this._wcInfo.path!.substring(1) +  '?module';
+    const selfResolvingModulePath = selfResolvingModuleSplitPath?.join('/') + this._wcInfo.path!.substring(1) + '?module';
     import(selfResolvingModulePath);
   }
 
   get initRenderContext() {
-    if(this._wcInfo.path === undefined){
+    if (this._wcInfo.path === undefined) {
       console.warn("No self resolving module path found in " + this._href + ' tag: ' + this._tag);
       return {};
     }
@@ -97,40 +97,41 @@ export class SwagTagBase extends XtalViewElement<WCSuiteInfo> {
                   <input>
                   <p-d-x-json-parsed on=input from=fieldset to=details m=1 skip-init></p-d>
                 </div>
-              `], ctx, writeableProps.length, target, {
-              div: ({ target, idx }) => {
-                const prop = writeableProps[idx];
-                const propAny = prop as any;
-                (<any>target)[propInfo$] = prop;
-                const propVal =  prop.default;
+              `], ctx, writeableProps, target, {
+              div: ({ target, idx, item }) => {
+                //const prop = writeableProps[idx];
+                const propAny = item as any;
+                (<any>target)[propInfo$] = item;
+                const propVal = item.default;
                 let propBase = 'object';
-                switch(prop.type){
-                  case 'boolean': case 'string': case 'object':
-                    propBase = prop.type;
+                switch (item.type) {
+                  case 'boolean': case 'string':
+                    propBase = item.type;
                     break;
-                
+
                 }
                 propAny[propBase$] = propBase;
                 return {
-                  label: [{textContent: prop.name}, {}, {for: 'rc_' + prop.name}],
-                  input: ({target, ctx}) => {
-                    if(propBase === 'object'){
+                  label: [{ textContent: item.name }, {}, { for: 'rc_' + item.name }],
+                  input: ({ target, ctx }) => {
+                    if (propBase === 'object') {
                       replaceTargetWithTag(target, ctx, 'textarea');
                     }
                   },
-                  '"': [{}, {}, {type: prop.type === 'boolean' ? 'checkbox': 'text', id: 'rc_' + prop.name}],
-                  textarea: [{textContent: prop.default}, {}, {id: 'rc_' + prop.name}],
-                  'input[type="checkbox"]': [{}, {}, {checked: prop.default}],
-                  'input[type="text"]': [{}, {}, {value: prop.default ?? ''}],
-                  '[on]': [{careOf: this._wcInfo.name, prop: prop.name}]
+                  '"': [{}, {}, { type: item.type === 'boolean' ? 'checkbox' : 'text', id: 'rc_' + item.name }],
+                  textarea: [{ textContent: item.default }, {}, { id: 'rc_' + item.name }],
+                  'input[type="checkbox"]': [{}, {}, { checked: item.default }],
+                  'input[type="text"]': [{}, {}, { value: item.default ?? '' }],
+                  '[on]': [{ careOf: this._wcInfo.name, prop: item.name }]
                 };
               }
             }) as TransformRules
         } as TransformRules;
       },
-      details: ({target}) =>{
+      details: ({ target }) => {
         const el = appendTag(target, this._wcInfo.name, {}) as any;
-        this._wcInfo.properties?.filter(prop => prop.default !== undefined).forEach(prop =>{
+        //Set initial values
+        this._wcInfo.properties?.filter(prop => prop.default !== undefined).forEach(prop => {
           el[prop.name] = JSON.parse(prop.default);
         })
         const ces = this._wcInfo.events;
@@ -142,7 +143,7 @@ export class SwagTagBase extends XtalViewElement<WCSuiteInfo> {
               valFromEvent: valFromEvent,
               insertAfter: el
             }) as HTMLElement;
-            Object.assign(pdEvent, { on: ce.name, from: 'details', to: XtalJsonEditor.is, prop: "input", m: 1} );
+            Object.assign(pdEvent, { on: ce.name, from: 'details', to: XtalJsonEditor.is, prop: "input", m: 1 });
           });
         }
         return {
@@ -150,7 +151,7 @@ export class SwagTagBase extends XtalViewElement<WCSuiteInfo> {
         }
       },
       [XtalJsonEditor.is]: ({ target }) => {
-        Object.assign(target, {archive: true});
+        Object.assign(target, { archive: true });
       }
     });
   }
@@ -217,7 +218,7 @@ export class SwagTagBase extends XtalViewElement<WCSuiteInfo> {
   }
 
   get mainTemplate() {
-    if(!this._wcInfo.path){
+    if (!this._wcInfo.path) {
       return T(`<div>No path found.</div>`, this, noPath);
     }
     return mainTemplate;
