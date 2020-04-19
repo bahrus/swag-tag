@@ -45,7 +45,8 @@ export class SwagTagUI5 extends SwagTagBase{
                             return{
                                 textarea: ({ctx, target}) =>{
                                     replace(target, ctx, objectInputTemplate)
-                                }
+                                },
+                                'ui5-textarea':[{value: propInfo.default}]
                             }
 
                         }
