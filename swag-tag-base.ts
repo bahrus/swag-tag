@@ -56,7 +56,7 @@ const valFromEvent = (e: Event) => ({
 
 const href = "href";
 const tag = "tag";
-const noPath = Symbol();
+//const noPath = Symbol();
 export const propInfo$ = Symbol();
 export const propBase$ = Symbol();
 export const fieldEditor$ = Symbol();
@@ -99,7 +99,6 @@ export class SwagTagBase extends XtalViewElement<WCSuiteInfo> {
                 </div>
               `], ctx, writeableProps, target, {
               div: ({ target, idx, item }) => {
-                //const prop = writeableProps[idx];
                 const propAny = item as any;
                 (<any>target)[propInfo$] = item;
                 const propVal = item.default;
@@ -219,7 +218,7 @@ export class SwagTagBase extends XtalViewElement<WCSuiteInfo> {
 
   get mainTemplate() {
     if (!this._wcInfo.path) {
-      return T(`<div>No path found.</div>`, this, noPath);
+      return T(`<div>No path found.</div>`);
     }
     return mainTemplate;
   }

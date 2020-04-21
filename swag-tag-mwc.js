@@ -32,32 +32,28 @@ export class SwagTagMWC extends SwagTagBase {
                 header: styleTemplate,
                 fieldset: {
                     form: {
-                        div: ({ target }) => {
+                        div: {
+                            label: false,
+                            textarea: ({ ctx, target }) => replace(target, ctx, [object$, /* html */ `
+                                <mwc-textarea disabled></mwc-textarea>
+                            `]),
+                            '[on][data-type="boolean"]': [{ on: 'change', val: 'target.checked' }],
+                            'input[type="text"]': ({ ctx, target }) => replace(target, ctx, [string$, /*html */ `
+                            <mwc-textfield disabled></mwc-textfield>
+                            `]),
+                            'input[type="checkbox"]': ({ ctx, target }) => replace(target, ctx, [bool$, /* html */ `
+                                <mwc-formfield disabled>
+                                    <mwc-checkbox></mwc-checkbox>
+                                </mwc-formfield>
+                            `]),
+                        },
+                        '"': ({ target }) => {
                             const propInfo = target[propInfo$];
                             return {
-                                label: false,
-                                textarea: ({ ctx, target }) => {
-                                    replace(target, ctx, [object$, /* html */ `
-                                    <mwc-textarea disabled></mwc-textarea>
-                                    `]);
-                                },
-                                'input[type="text"]': ({ ctx, target }) => {
-                                    replace(target, ctx, [string$, /*html */ `
-                                    <mwc-textfield disabled></mwc-textfield>
-                                    `]);
-                                },
-                                'input[type="checkbox"]': ({ ctx, target }) => {
-                                    replace(target, ctx, [bool$, /* html */ `
-                                    <mwc-formfield disabled>
-                                        <mwc-checkbox></mwc-checkbox>
-                                    </mwc-formfield>
-                                    `]);
-                                },
                                 'mwc-textarea, mwc-textfield': [{ label: propInfo.name, value: propInfo.default ?? '', helper: propInfo.description ?? '' }],
                                 'mwc-formfield': [{ label: propInfo.name }],
-                                '[on][data-type="boolean"]': [{ on: 'change', val: 'target.checked' }],
                             };
-                        }
+                        },
                     }
                 },
             }
