@@ -124,7 +124,7 @@ export class SwagTagBase extends XtalViewElement<WCSuiteInfo> {
                   textarea: [{ textContent: item.default }, {}, { id: 'rc_' + item.name }]  as PEASettings<HTMLTextAreaElement>,
                   'input[type="checkbox"]': [{}, {}, { checked: item.default }]  as PEASettings<HTMLInputElement>,
                   'input[type="text"]': [{}, {}, { value: item.default ?? '' }] as PEASettings<HTMLInputElement>,
-                  '[on]': [{ careOf: this._wcInfo.name, prop: item.name }] as any,
+                  '[on]': [{ careOf: this._wcInfo.name, prop: item.name as string }] as PSettings<PDProps>,
                 };
               }
             }) as TransformRules
