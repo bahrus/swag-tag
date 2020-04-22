@@ -84,7 +84,7 @@ export class SwagTagBase extends XtalViewElement {
                   <p-d-x-json-parsed on=input from=fieldset to=details m=1 skip-init></p-d>
                 </div>
               `], ctx, writeableProps, target, {
-                        div: ({ target, idx, item }) => {
+                        div: ({ target, item }) => {
                             const propAny = item;
                             target[propInfo$] = item;
                             const propVal = item.default;
@@ -107,7 +107,7 @@ export class SwagTagBase extends XtalViewElement {
                                 textarea: [{ textContent: item.default }, {}, { id: 'rc_' + item.name }],
                                 'input[type="checkbox"]': [{}, {}, { checked: item.default }],
                                 'input[type="text"]': [{}, {}, { value: item.default ?? '' }],
-                                '[on]': [{ careOf: this._wcInfo.name, prop: item.name }]
+                                '[on]': [{ careOf: this._wcInfo.name, prop: item.name }],
                             };
                         }
                     })

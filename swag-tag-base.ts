@@ -9,7 +9,10 @@ import { createTemplate as T } from "trans-render/createTemplate.js";
 import {
   RenderContext,
   RenderOptions,
-  TransformRules
+  TransformRules,
+  PSettings,
+  PESettings,
+  PEASettings
 } from "trans-render/init.d.js";
 import { XtalViewElement } from "xtal-element/xtal-view-element.js";
 import "p-et-alia/p-d.js";
@@ -98,7 +101,7 @@ export class SwagTagBase extends XtalViewElement<WCSuiteInfo> {
                   <p-d-x-json-parsed on=input from=fieldset to=details m=1 skip-init></p-d>
                 </div>
               `], ctx, writeableProps, target, {
-              div: ({ target, idx, item }) => {
+              div: ({ target, item }) => {
                 const propAny = item as any;
                 (<any>target)[propInfo$] = item;
                 const propVal = item.default;
@@ -111,17 +114,17 @@ export class SwagTagBase extends XtalViewElement<WCSuiteInfo> {
                 }
                 propAny[propBase$] = propBase;
                 return {
-                  label: [{ textContent: item.name }, {}, { for: 'rc_' + item.name }],
+                  label: [{ textContent: item.name}, {}, { for: 'rc_' + item.name }] as PEASettings<HTMLLabelElement>,
                   input: ({ target, ctx }) => {
                     if (propBase === 'object') {
                       replaceTargetWithTag(target, ctx, 'textarea');
                     }
                   },
-                  '"': [{}, {}, { type: item.type === 'boolean' ? 'checkbox' : 'text', id: 'rc_' + item.name }],
-                  textarea: [{ textContent: item.default }, {}, { id: 'rc_' + item.name }],
-                  'input[type="checkbox"]': [{}, {}, { checked: item.default }],
-                  'input[type="text"]': [{}, {}, { value: item.default ?? '' }],
-                  '[on]': [{ careOf: this._wcInfo.name, prop: item.name }]
+                  '"': [{}, {}, { type: item.type === 'boolean' ? 'checkbox' : 'text', id: 'rc_' + item.name }] as PEASettings<HTMLInputElement>,
+                  textarea: [{ textContent: item.default }, {}, { id: 'rc_' + item.name }]  as PEASettings<HTMLTextAreaElement>,
+                  'input[type="checkbox"]': [{}, {}, { checked: item.default }]  as PEASettings<HTMLInputElement>,
+                  'input[type="text"]': [{}, {}, { value: item.default ?? '' }] as PEASettings<HTMLInputElement>,
+                  '[on]': [{ careOf: this._wcInfo.name, prop: item.name }] as any,
                 };
               }
             }) as TransformRules
