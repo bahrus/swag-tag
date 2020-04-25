@@ -86,11 +86,10 @@ export class SwagTagBase extends XtalViewElement<WCSuiteInfo> {
       return {};
     }
     const allProperties = this._wcInfo.properties;
+    if (allProperties === undefined) return {};
+    const writeableProps = allProperties.filter(prop => !prop.readOnly);
     return {
-      fieldset: ({ target }) => {
-        if (allProperties === undefined) return false;
-        const writeableProps = allProperties.filter(prop => !prop.readOnly);
-        return {
+      fieldset: {
           form: ({ target, ctx }) =>
             repeat([fieldEditor$, /* html */ `
                 <div>
@@ -126,7 +125,6 @@ export class SwagTagBase extends XtalViewElement<WCSuiteInfo> {
                 };
               },
             }) as TransformRules
-        } as TransformRules;
       },
       '"':{
         legend:{

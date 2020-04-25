@@ -72,47 +72,45 @@ export class SwagTagBase extends XtalViewElement {
             return {};
         }
         const allProperties = this._wcInfo.properties;
+        if (allProperties === undefined)
+            return {};
+        const writeableProps = allProperties.filter(prop => !prop.readOnly);
         return {
-            fieldset: ({ target }) => {
-                if (allProperties === undefined)
-                    return false;
-                const writeableProps = allProperties.filter(prop => !prop.readOnly);
-                return {
-                    form: ({ target, ctx }) => repeat([fieldEditor$, /* html */ `
+            fieldset: {
+                form: ({ target, ctx }) => repeat([fieldEditor$, /* html */ `
                 <div>
                   <label></label>
                   <input>
                   <p-d-x-json-parsed on=input from=fieldset to=details m=1 skip-init></p-d>
                 </div>
               `], ctx, writeableProps, target, {
-                        div: ({ target, item }) => {
-                            const propAny = item;
-                            target[propInfo$] = item;
-                            const propVal = item.default;
-                            let propBase = 'object';
-                            switch (item.type) {
-                                case 'boolean':
-                                case 'string':
-                                    propBase = item.type;
-                                    break;
-                            }
-                            propAny[propBase$] = propBase;
-                            return {
-                                label: [{ textContent: item.name }, {}, { for: 'rc_' + item.name }],
-                                input: ({ target, ctx }) => {
-                                    if (propBase === 'object') {
-                                        replaceTargetWithTag(target, ctx, 'textarea');
-                                    }
-                                },
-                                '"': [{}, {}, { type: item.type === 'boolean' ? 'checkbox' : 'text', id: 'rc_' + item.name }],
-                                textarea: [{ textContent: item.default }, {}, { id: 'rc_' + item.name }],
-                                'input[type="checkbox"]': [{}, {}, { checked: item.default }],
-                                'input[type="text"]': [{}, {}, { value: item.default ?? '' }],
-                                '[on]': [{ careOf: this._wcInfo.name, prop: item.name }],
-                            };
-                        },
-                    })
-                };
+                    div: ({ target, item }) => {
+                        const propAny = item;
+                        target[propInfo$] = item;
+                        const propVal = item.default;
+                        let propBase = 'object';
+                        switch (item.type) {
+                            case 'boolean':
+                            case 'string':
+                                propBase = item.type;
+                                break;
+                        }
+                        propAny[propBase$] = propBase;
+                        return {
+                            label: [{ textContent: item.name }, {}, { for: 'rc_' + item.name }],
+                            input: ({ target, ctx }) => {
+                                if (propBase === 'object') {
+                                    replaceTargetWithTag(target, ctx, 'textarea');
+                                }
+                            },
+                            '"': [{}, {}, { type: item.type === 'boolean' ? 'checkbox' : 'text', id: 'rc_' + item.name }],
+                            textarea: [{ textContent: item.default }, {}, { id: 'rc_' + item.name }],
+                            'input[type="checkbox"]': [{}, {}, { checked: item.default }],
+                            'input[type="text"]': [{}, {}, { value: item.default ?? '' }],
+                            '[on]': [{ careOf: this._wcInfo.name, prop: item.name }],
+                        };
+                    },
+                })
             },
             '"': {
                 legend: {
