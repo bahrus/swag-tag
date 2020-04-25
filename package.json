@@ -13,7 +13,7 @@
     "url": "git+https://github.com/bahrus/swag-tag.git"
   },
   "dependencies": {
-    "trans-render": "0.0.163",
+    "trans-render": "0.0.164",
     "xtal-element": "0.0.114",
     "p-et-alia": "0.0.74",
     "xtal-json-editor": "0.0.41",

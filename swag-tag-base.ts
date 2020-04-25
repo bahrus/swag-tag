@@ -81,18 +81,13 @@ export class SwagTagBase extends XtalViewElement<WCSuiteInfo> {
       console.warn("No self resolving module path found in " + this._href + ' tag: ' + this._tag);
       return {};
     }
-
     this.importReferencedModule();
-
+    const allProperties = this._wcInfo.properties;
     return newRenderContext({
       fieldset: ({ target }) => {
-        const allProperties = this._wcInfo.properties;
         if (allProperties === undefined) return false;
         const writeableProps = allProperties.filter(prop => !prop.readOnly);
         return {
-          legend: {
-            var: this._wcInfo.name
-          },
           form: ({ target, ctx }) =>
             repeat([fieldEditor$, /* html */ `
                 <div>
@@ -126,9 +121,14 @@ export class SwagTagBase extends XtalViewElement<WCSuiteInfo> {
                   'input[type="text"]': [{}, {}, { value: item.default ?? '' }] as PEASettings<HTMLInputElement>,
                   '[on]': [{ careOf: this._wcInfo.name, prop: item.name as string }] as PSettings<PDProps>,
                 };
-              }
+              },
             }) as TransformRules
         } as TransformRules;
+      },
+      '"':{
+        legend:{
+          var: this._wcInfo.name
+        }
       },
       details: ({ target }) => {
         const el = appendTag(target, this._wcInfo.name, {}) as any;
