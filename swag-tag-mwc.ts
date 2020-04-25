@@ -80,11 +80,6 @@ export class SwagTagMWC extends SwagTagBase{
     afterInitRenderCallback(ctx: RenderContext, target: HTMLElement | DocumentFragment, renderOptions: RenderOptions | undefined){
         ctx!.Transform = this.#initTransform;
         init(target, ctx);
-        // init(target as DocumentFragment, {
-        //     Transform: ,
-
-        //     }
-        // })
     }
 
 } 

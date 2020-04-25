@@ -61,10 +61,6 @@ export class SwagTagMWC extends SwagTagBase {
     afterInitRenderCallback(ctx, target, renderOptions) {
         ctx.Transform = this.#initTransform;
         init(target, ctx);
-        // init(target as DocumentFragment, {
-        //     Transform: ,
-        //     }
-        // })
     }
 }
 define(SwagTagMWC);
