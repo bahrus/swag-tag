@@ -48,6 +48,7 @@ export class SwagTagMWC extends SwagTagBase{
         fieldset: {
             form:{
                 div:{
+                    //static declarative rules
                     label: false,
                     textarea: ({ctx, target}) => replace(target, ctx,[object$, /* html */ `
                         <mwc-textarea disabled></mwc-textarea>
@@ -62,6 +63,7 @@ export class SwagTagMWC extends SwagTagBase{
                         </mwc-formfield>
                     `]),
                 },
+                // dynamic rules
                 '"': ({target}) => {
                     const propInfo = (<any>target)[propInfo$] as PropertyInfo;
                     return {
