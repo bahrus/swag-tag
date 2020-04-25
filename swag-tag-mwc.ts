@@ -33,6 +33,9 @@ import("@material/mwc-textarea/mwc-textarea.js");
 import("@material/mwc-formfield/mwc-formfield.js");
 import ("@material/mwc-textfield/mwc-textfield.js");
 
+const string$ = Symbol();
+const object$ = Symbol();
+const bool$ = Symbol();
 export class SwagTagMWC extends SwagTagBase{
     static get is(){return 'swag-tag-mwc';}
 
@@ -40,47 +43,48 @@ export class SwagTagMWC extends SwagTagBase{
         return false;
     }
 
-    initRenderCallback(ctx: RenderContext, target: HTMLElement | DocumentFragment){
-        super.initRenderCallback(ctx, target);
-        const string$ = Symbol();
-        const object$ = Symbol();
-        const bool$ = Symbol();
-        init(target as DocumentFragment, {
-            Transform: {
-                header: styleTemplate,
-                fieldset: {
-                    form:{
-                        div:{
-                            label: false,
-                            textarea: ({ctx, target}) => replace(target, ctx,[object$, /* html */ `
-                                <mwc-textarea disabled></mwc-textarea>
-                            `]),
-                            '[on][data-type="boolean"]': [{on: 'change', val: 'target.checked'}] as PSettings<PDProps>,
-                            'input[type="text"]': ({ctx, target}) => replace(target, ctx,[string$, /*html */`
-                            <mwc-textfield disabled></mwc-textfield>
-                            `]),
-                            'input[type="checkbox"]': ({ ctx, target }) => replace(target, ctx, [bool$, /* html */ `
-                                <mwc-formfield disabled>
-                                    <mwc-checkbox></mwc-checkbox>
-                                </mwc-formfield>
-                            `]),
-                        },
-                        '"': ({target}) => {
-                            const propInfo = (<any>target)[propInfo$] as PropertyInfo;
-                            return {
-                                'mwc-textarea, mwc-textfield':[{label: propInfo.name, value: propInfo.default ?? '', helper: propInfo.description ?? ''}],
-                                'mwc-formfield': [{label: propInfo.name}],
-                                
-                            }
-
-                        },
-
-
+    #initTransform = {
+        header: styleTemplate,
+        fieldset: {
+            form:{
+                div:{
+                    label: false,
+                    textarea: ({ctx, target}) => replace(target, ctx,[object$, /* html */ `
+                        <mwc-textarea disabled></mwc-textarea>
+                    `]),
+                    '[on][data-type="boolean"]': [{on: 'change', val: 'target.checked'}] as PSettings<PDProps>,
+                    'input[type="text"]': ({ctx, target}) => replace(target, ctx,[string$, /*html */`
+                    <mwc-textfield disabled></mwc-textfield>
+                    `]),
+                    'input[type="checkbox"]': ({ ctx, target }) => replace(target, ctx, [bool$, /* html */ `
+                        <mwc-formfield disabled>
+                            <mwc-checkbox></mwc-checkbox>
+                        </mwc-formfield>
+                    `]),
+                },
+                '"': ({target}) => {
+                    const propInfo = (<any>target)[propInfo$] as PropertyInfo;
+                    return {
+                        'mwc-textarea, mwc-textfield':[{label: propInfo.name, value: propInfo.default ?? '', helper: propInfo.description ?? ''}],
+                        'mwc-formfield': [{label: propInfo.name}],
+                        
                     }
-                } as TransformRules,
+
+                },
+
 
             }
-        })
+        } as TransformRules
+    };
+
+    afterInitRenderCallback(ctx: RenderContext, target: HTMLElement | DocumentFragment, renderOptions: RenderOptions | undefined){
+        ctx!.Transform = this.#initTransform;
+        init(target, ctx);
+        // init(target as DocumentFragment, {
+        //     Transform: ,
+
+        //     }
+        // })
     }
 
 } 
