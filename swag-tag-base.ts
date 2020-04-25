@@ -3,8 +3,6 @@ import { define } from "trans-render/define.js";
 import { repeat } from "trans-render/repeat.js";
 import { replaceTargetWithTag } from "trans-render/replaceTargetWithTag.js";
 import { appendTag } from "trans-render/appendTag.js";
-import { decorate } from "trans-render/decorate.js";
-import { newRenderContext } from "xtal-element/newRenderContext.js";
 import { createTemplate as T } from "trans-render/createTemplate.js";
 import {
   RenderContext,
@@ -76,14 +74,19 @@ export class SwagTagBase extends XtalViewElement<WCSuiteInfo> {
     import(selfResolvingModulePath);
   }
 
-  get initRenderContext() {
+  get mainTemplate() {
+    if (!this._wcInfo.path) {
+      return T(`<div>No path found.</div>`);
+    }
+    return mainTemplate;
+  }
+  get initTransform(){
     if (this._wcInfo.path === undefined) {
       console.warn("No self resolving module path found in " + this._href + ' tag: ' + this._tag);
       return {};
     }
-    this.importReferencedModule();
     const allProperties = this._wcInfo.properties;
-    return newRenderContext({
+    return {
       fieldset: ({ target }) => {
         if (allProperties === undefined) return false;
         const writeableProps = allProperties.filter(prop => !prop.readOnly);
@@ -155,8 +158,9 @@ export class SwagTagBase extends XtalViewElement<WCSuiteInfo> {
       [XtalJsonEditor.is]: ({ target }) => {
         Object.assign(target, { archive: true });
       }
-    });
+    } as TransformRules;
   }
+
 
   get noShadow() {
     return true;
@@ -181,11 +185,6 @@ export class SwagTagBase extends XtalViewElement<WCSuiteInfo> {
     return this.init();
   }
 
-  onPropsChange() {
-    this._initialized = false;
-    this.root.innerHTML = "";
-    return super.onPropsChange();
-  }
 
   static get observedAttributes() {
     return super.observedAttributes.concat([href, tag]);
@@ -219,12 +218,7 @@ export class SwagTagBase extends XtalViewElement<WCSuiteInfo> {
     this.attr(tag, nv!);
   }
 
-  get mainTemplate() {
-    if (!this._wcInfo.path) {
-      return T(`<div>No path found.</div>`);
-    }
-    return mainTemplate;
-  }
+
 
   connectedCallback() {
     this.propUp([href, tag]);
@@ -232,8 +226,9 @@ export class SwagTagBase extends XtalViewElement<WCSuiteInfo> {
   }
 
   set viewModel(nv: WCSuiteInfo) {
-    super.viewModel = nv;
     this._wcInfo = nv.tags.find(t => t.name === this._tag)!;
+    this.importReferencedModule();
+    super.viewModel = nv;
   }
 
   _wcInfo!: WCInfo;

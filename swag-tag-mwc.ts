@@ -3,9 +3,11 @@ import { define } from "trans-render/define.js";
 import {
     RenderOptions,
     RenderContext,
+    PSettings,
     TransformRules,
     TransformFn
 } from "trans-render/init.d.js";
+import {PDProps} from 'p-et-alia/types.d.js';
 
 
 import { createTemplate } from "trans-render/createTemplate.js";
@@ -53,7 +55,7 @@ export class SwagTagMWC extends SwagTagBase{
                             textarea: ({ctx, target}) => replace(target, ctx,[object$, /* html */ `
                                 <mwc-textarea disabled></mwc-textarea>
                             `]),
-                            '[on][data-type="boolean"]': [{on: 'change', val: 'target.checked'}],
+                            '[on][data-type="boolean"]': [{on: 'change', val: 'target.checked'}] as PSettings<PDProps>,
                             'input[type="text"]': ({ctx, target}) => replace(target, ctx,[string$, /*html */`
                             <mwc-textfield disabled></mwc-textfield>
                             `]),
