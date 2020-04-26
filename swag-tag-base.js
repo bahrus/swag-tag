@@ -41,36 +41,43 @@ const valFromEvent = (e) => ({
 });
 const href = "href";
 const tag = "tag";
-//const noPath = Symbol();
 export const propInfo$ = Symbol();
 export const propBase$ = Symbol();
 export const fieldEditor$ = Symbol();
+export const noPathFound$ = Symbol();
+export const noPathFoundTemplate = 'noPathFoundTemplate';
 export class SwagTagBase extends XtalViewElement {
     constructor() {
         super(...arguments);
         this._href = null;
         this._tag = null;
+        //#endregion
     }
     static get is() {
         return "swag-tag-base";
     }
-    importReferencedModule() {
-        const selfResolvingModuleSplitPath = this.href?.split('/');
-        selfResolvingModuleSplitPath?.pop();
-        const selfResolvingModulePath = selfResolvingModuleSplitPath?.join('/') + this._wcInfo.path.substring(1) + '?module';
-        import(selfResolvingModulePath);
+    //#region Required Methods / Properties
+    get readyToInit() {
+        return this._href !== undefined;
     }
-    get mainTemplate() {
-        if (!this._wcInfo.path) {
-            return T(`<div>No path found.</div>`);
+    init() {
+        return new Promise(resolve => {
+            fetch(this._href).then(resp => {
+                resp.json().then(info => {
+                    resolve(info);
+                });
+            });
+        });
+    }
+    get readyToRender() {
+        if (this._wcInfo !== undefined && this._wcInfo.path !== undefined) {
+            this.importReferencedModule();
+            return true;
         }
-        return mainTemplate;
+        return noPathFoundTemplate;
     }
+    get mainTemplate() { return mainTemplate; }
     get initTransform() {
-        if (this._wcInfo.path === undefined) {
-            console.warn("No self resolving module path found in " + this._href + ' tag: ' + this._tag);
-            return {};
-        }
         const allProperties = this._wcInfo.properties;
         if (allProperties === undefined)
             return {};
@@ -145,24 +152,32 @@ export class SwagTagBase extends XtalViewElement {
             }
         };
     }
-    get noShadow() {
-        return true;
-    }
-    get readyToInit() {
-        return this._href !== undefined;
-    }
-    init() {
-        return new Promise(resolve => {
-            fetch(this._href).then(resp => {
-                resp.json().then(info => {
-                    resolve(info);
-                });
-            });
-        });
-    }
     update() {
         return this.init();
     }
+    //#endregion
+    //#region overridden members
+    get noShadow() {
+        return true;
+    }
+    set viewModel(nv) {
+        this._wcInfo = nv.tags.find(t => t.name === this._tag);
+        super.viewModel = nv;
+    }
+    //#endregion 
+    get [noPathFoundTemplate]() {
+        return T(`<div>No path found.</div>`, SwagTagBase, noPathFound$);
+    }
+    importReferencedModule() {
+        const selfResolvingModuleSplitPath = this.href?.split('/');
+        selfResolvingModuleSplitPath?.pop();
+        const selfResolvingModulePath = selfResolvingModuleSplitPath?.join('/') + this._wcInfo.path.substring(1) + '?module';
+        import(selfResolvingModulePath);
+    }
+    get WCInfo() {
+        return this._wcInfo;
+    }
+    //#region boilerplate
     static get observedAttributes() {
         return super.observedAttributes.concat([href, tag]);
     }
@@ -191,14 +206,6 @@ export class SwagTagBase extends XtalViewElement {
     connectedCallback() {
         this.propUp([href, tag]);
         super.connectedCallback();
-    }
-    set viewModel(nv) {
-        this._wcInfo = nv.tags.find(t => t.name === this._tag);
-        this.importReferencedModule();
-        super.viewModel = nv;
-    }
-    get WCInfo() {
-        return this._wcInfo;
     }
 }
 define(SwagTagBase);
