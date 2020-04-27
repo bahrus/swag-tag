@@ -158,9 +158,6 @@ export class SwagTagBase extends XtalFetchViewElement<WCSuiteInfo> {
   }
 
 
-  update() {
-    return this.init();
-  }
 
   //#endregion
 

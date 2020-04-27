@@ -138,9 +138,6 @@ export class SwagTagBase extends XtalFetchViewElement {
             }
         };
     }
-    update() {
-        return this.init();
-    }
     //#endregion
     //#region overridden members
     get noShadow() {
