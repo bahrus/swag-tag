@@ -71,15 +71,6 @@ export class SwagTagBase extends XtalFetchViewElement<WCSuiteInfo> {
   //#region Required Methods / Properties
 
 
-  init() {
-    return new Promise<WCSuiteInfo>(resolve => {
-      fetch(this._href!).then(resp => {
-        resp.json().then(info => {
-          resolve(info as WCSuiteInfo);
-        });
-      });
-    });
-  }
 
   get readyToRender(){
     if(this._wcInfo !== undefined && this._wcInfo.path !== undefined) {
