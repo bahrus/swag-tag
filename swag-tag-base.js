@@ -3,7 +3,7 @@ import { repeat } from "trans-render/repeat.js";
 import { replaceTargetWithTag } from "trans-render/replaceTargetWithTag.js";
 import { appendTag } from "trans-render/appendTag.js";
 import { createTemplate as T } from "trans-render/createTemplate.js";
-import { XtalViewElement } from "xtal-element/xtal-view-element.js";
+import { XtalFetchViewElement } from "xtal-element/xtal-fetch-view-element.js";
 import "p-et-alia/p-d.js";
 import { extend } from "p-et-alia/p-d-x.js";
 import { XtalJsonEditor } from "xtal-json-editor/xtal-json-editor.js";
@@ -39,17 +39,15 @@ const valFromEvent = (e) => ({
     type: e.type,
     detail: e.detail
 });
-const href = "href";
 const tag = "tag";
 export const propInfo$ = Symbol();
 export const propBase$ = Symbol();
 export const fieldEditor$ = Symbol();
 export const noPathFound$ = Symbol();
 export const noPathFoundTemplate = 'noPathFoundTemplate';
-export class SwagTagBase extends XtalViewElement {
+export class SwagTagBase extends XtalFetchViewElement {
     constructor() {
         super(...arguments);
-        this._href = null;
         this._tag = null;
         //#endregion
     }
@@ -179,23 +177,15 @@ export class SwagTagBase extends XtalViewElement {
     }
     //#region boilerplate
     static get observedAttributes() {
-        return super.observedAttributes.concat([href, tag]);
+        return super.observedAttributes.concat([tag]);
     }
     attributeChangedCallback(n, ov, nv) {
         switch (n) {
-            case href:
             case tag:
-            case test:
                 this["_" + n] = nv;
                 break;
         }
         super.attributeChangedCallback(n, ov, nv);
-    }
-    get href() {
-        return this._href;
-    }
-    set href(nv) {
-        this.attr(href, nv);
     }
     get tag() {
         return this._tag;
@@ -204,7 +194,7 @@ export class SwagTagBase extends XtalViewElement {
         this.attr(tag, nv);
     }
     connectedCallback() {
-        this.propUp([href, tag]);
+        this.propUp([tag]);
         super.connectedCallback();
     }
 }

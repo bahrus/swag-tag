@@ -13,6 +13,7 @@ import {
   PEASettings
 } from "trans-render/init.d.js";
 import { XtalViewElement } from "xtal-element/xtal-view-element.js";
+import { XtalFetchViewElement} from "xtal-element/xtal-fetch-view-element.js";
 import "p-et-alia/p-d.js";
 import { PDProps } from 'p-et-alia/types.d.js';
 import { extend } from "p-et-alia/p-d-x.js";
@@ -55,14 +56,14 @@ const valFromEvent = (e: Event) => ({
   detail: (<any>e).detail
 })
 
-const href = "href";
+
 const tag = "tag";
 export const propInfo$ = Symbol();
 export const propBase$ = Symbol();
 export const fieldEditor$ = Symbol();
 export const noPathFound$ = Symbol();
 export const noPathFoundTemplate = 'noPathFoundTemplate';
-export class SwagTagBase extends XtalViewElement<WCSuiteInfo> {
+export class SwagTagBase extends XtalFetchViewElement<WCSuiteInfo> {
   static get is() {
     return "swag-tag-base";
   }
@@ -204,27 +205,19 @@ export class SwagTagBase extends XtalViewElement<WCSuiteInfo> {
   //#region boilerplate
 
   static get observedAttributes() {
-    return super.observedAttributes.concat([href, tag]);
+    return super.observedAttributes.concat([tag]);
   }
 
   attributeChangedCallback(n: string, ov: string, nv: string) {
     switch (n) {
-      case href:
       case tag:
-      case test:
         (<any>this)["_" + n] = nv;
         break;
     }
     super.attributeChangedCallback(n, ov, nv);
   }
 
-  _href: string | null = null;
-  get href() {
-    return this._href;
-  }
-  set href(nv) {
-    this.attr(href, nv!);
-  }
+
 
   _tag: string | null = null;
   get tag() {
@@ -236,7 +229,7 @@ export class SwagTagBase extends XtalViewElement<WCSuiteInfo> {
   }
 
   connectedCallback() {
-    this.propUp([href, tag]);
+    this.propUp([tag]);
     super.connectedCallback();
   }
   //#endregion
