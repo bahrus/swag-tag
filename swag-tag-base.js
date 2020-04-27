@@ -55,9 +55,6 @@ export class SwagTagBase extends XtalFetchViewElement {
         return "swag-tag-base";
     }
     //#region Required Methods / Properties
-    get readyToInit() {
-        return this._href !== undefined;
-    }
     init() {
         return new Promise(resolve => {
             fetch(this._href).then(resp => {
