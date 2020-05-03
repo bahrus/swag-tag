@@ -23,7 +23,7 @@ const bool$ = Symbol();
 export class SwagTagMWC extends SwagTagBase {
     constructor() {
         super(...arguments);
-        this.#initTransform = {
+        this.initPostTransform = {
             header: styleTemplate,
             fieldset: {
                 form: {
@@ -59,9 +59,8 @@ export class SwagTagMWC extends SwagTagBase {
     get noShadow() {
         return false;
     }
-    #initTransform;
     afterInitRenderCallback(ctx, target, renderOptions) {
-        ctx.Transform = this.#initTransform;
+        ctx.Transform = this.initPostTransform;
         init(target, ctx);
     }
 }

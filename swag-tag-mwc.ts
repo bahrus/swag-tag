@@ -43,7 +43,7 @@ export class SwagTagMWC extends SwagTagBase{
         return false;
     }
 
-    #initTransform = {
+    initPostTransform = {
         header: styleTemplate,
         fieldset: {
             form:{
@@ -80,7 +80,7 @@ export class SwagTagMWC extends SwagTagBase{
     };
 
     afterInitRenderCallback(ctx: RenderContext, target: HTMLElement | DocumentFragment, renderOptions: RenderOptions | undefined){
-        ctx!.Transform = this.#initTransform;
+        ctx!.Transform = this.initPostTransform;
         init(target, ctx);
     }
 
