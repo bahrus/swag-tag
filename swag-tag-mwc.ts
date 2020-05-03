@@ -6,7 +6,7 @@ import {
     PSettings,
     TransformRules,
     TransformFn
-} from "trans-render/init.d.js";
+} from "trans-render/types.d.js";
 import {PDProps} from 'p-et-alia/types.d.js';
 
 

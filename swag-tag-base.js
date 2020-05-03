@@ -3,7 +3,8 @@ import { repeat } from "trans-render/repeat.js";
 import { replaceTargetWithTag } from "trans-render/replaceTargetWithTag.js";
 import { appendTag } from "trans-render/appendTag.js";
 import { createTemplate as T } from "trans-render/createTemplate.js";
-import { XtalFetchViewElement } from "xtal-element/xtal-fetch-view-element.js";
+//import { XtalViewElement } from "xtal-element/xtal-view-element.js";
+import { XtalFetchViewElement } from "xtal-element/XtalFetchViewElement.js";
 import "p-et-alia/p-d.js";
 import { extend } from "p-et-alia/p-d-x.js";
 import { XtalJsonEditor } from "xtal-json-editor/xtal-json-editor.js";
@@ -48,6 +49,7 @@ export const noPathFoundTemplate = 'noPathFoundTemplate';
 export class SwagTagBase extends XtalFetchViewElement {
     constructor() {
         super(...arguments);
+        this.mainTemplate = mainTemplate;
         this._tag = null;
         //#endregion
     }
@@ -62,7 +64,6 @@ export class SwagTagBase extends XtalFetchViewElement {
         }
         return noPathFoundTemplate;
     }
-    get mainTemplate() { return mainTemplate; }
     get initTransform() {
         const allProperties = this._wcInfo.properties;
         if (allProperties === undefined)

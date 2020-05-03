@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "trans-render": "0.0.168",
-    "xtal-element": "0.0.122",
+    "xtal-element": "0.0.123",
     "p-et-alia": "0.0.74",
     "xtal-json-editor": "0.0.41",
     "xtal-text-input-md": "0.0.18",

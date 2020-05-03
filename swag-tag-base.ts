@@ -11,9 +11,9 @@ import {
   PSettings,
   PESettings,
   PEASettings
-} from "trans-render/init.d.js";
-import { XtalViewElement } from "xtal-element/xtal-view-element.js";
-import { XtalFetchViewElement} from "xtal-element/xtal-fetch-view-element.js";
+} from "trans-render/types.d.js";
+//import { XtalViewElement } from "xtal-element/xtal-view-element.js";
+import { XtalFetchViewElement} from "xtal-element/XtalFetchViewElement.js";
 import "p-et-alia/p-d.js";
 import { PDProps } from 'p-et-alia/types.d.js';
 import { extend } from "p-et-alia/p-d-x.js";
@@ -70,8 +70,6 @@ export class SwagTagBase extends XtalFetchViewElement<WCSuiteInfo> {
 
   //#region Required Methods / Properties
 
-
-
   get readyToRender(){
     if(this._wcInfo !== undefined && this._wcInfo.path !== undefined) {
       this.importReferencedModule();
@@ -80,7 +78,7 @@ export class SwagTagBase extends XtalFetchViewElement<WCSuiteInfo> {
     return noPathFoundTemplate;
   }
 
-  get mainTemplate() {return mainTemplate;}
+  mainTemplate = mainTemplate;
 
   get initTransform(){
     const allProperties = this._wcInfo.properties;
@@ -156,8 +154,6 @@ export class SwagTagBase extends XtalFetchViewElement<WCSuiteInfo> {
       }
     } as TransformRules;
   }
-
-
 
   //#endregion
 
