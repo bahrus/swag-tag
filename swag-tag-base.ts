@@ -19,19 +19,6 @@ import { PDProps } from 'p-et-alia/types.d.js';
 import { extend } from "p-et-alia/p-d-x.js";
 import { XtalJsonEditor } from "xtal-json-editor/xtal-json-editor.js";
 
-const pdxEvent = 'event';
-
-const pdxJSONParser = extend({
-  name: 'json-parsed',
-  valFromEvent: e => {
-    if ((<any>e).target.dataset.propType === 'boolean') {
-      return (<any>e).target.value !== null;
-    } else {
-      return JSON.parse((<any>e).target.value);
-    }
-
-  }
-})
 
 
 const mainTemplate = T(/* html */ `
@@ -58,6 +45,7 @@ const valFromEvent = (e: Event) => ({
 
 
 const tag = "tag";
+const pdxEvent = 'event';
 export const propInfo$ = Symbol();
 export const propBase$ = Symbol();
 export const fieldEditor$ = Symbol();
@@ -107,16 +95,16 @@ export class SwagTagBase extends XtalFetchViewElement<WCSuiteInfo> {
                 }
                 propAny[propBase$] = propBase;
                 return {
-                  label: [{ textContent: item.name}, {}, { for: 'rc_' + item.name }] as PEASettings<HTMLLabelElement>,
+                  label: [{ textContent: item.name},,{ for: 'rc_' + item.name }] as PEASettings<HTMLLabelElement>,
                   input: ({ target, ctx }) => {
                     if (propBase === 'object') {
                       replaceTargetWithTag(target, ctx, 'textarea');
                     }
                   },
-                  '"': [{}, {}, { type: item.type === 'boolean' ? 'checkbox' : 'text', id: 'rc_' + item.name }] as PEASettings<HTMLInputElement>,
-                  textarea: [{ textContent: item.default }, {}, { id: 'rc_' + item.name }]  as PEASettings<HTMLTextAreaElement>,
-                  'input[type="checkbox"]': [{}, {}, { checked: item.default }]  as PEASettings<HTMLInputElement>,
-                  'input[type="text"]': [{}, {}, { value: item.default ?? '' }] as PEASettings<HTMLInputElement>,
+                  '"': [,, { type: item.type === 'boolean' ? 'checkbox' : 'text', id: 'rc_' + item.name }] as PEASettings<HTMLInputElement>,
+                  textarea: [{ textContent: item.default },,{ id: 'rc_' + item.name }]  as PEASettings<HTMLTextAreaElement>,
+                  'input[type="checkbox"]': [,, { checked: item.default }]  as PEASettings<HTMLInputElement>,
+                  'input[type="text"]': [,,{ value: item.default ?? '' }] as PEASettings<HTMLInputElement>,
                   '[on]': [{ careOf: this._wcInfo.name, prop: item.name as string }] as PSettings<PDProps>,
                 };
               },
@@ -218,3 +206,15 @@ export class SwagTagBase extends XtalFetchViewElement<WCSuiteInfo> {
 }
 
 define(SwagTagBase);
+
+const pdxJSONParser = extend({
+  name: 'json-parsed',
+  valFromEvent: e => {
+    if ((<any>e).target.dataset.propType === 'boolean') {
+      return (<any>e).target.value !== null;
+    } else {
+      return JSON.parse((<any>e).target.value);
+    }
+
+  }
+})
