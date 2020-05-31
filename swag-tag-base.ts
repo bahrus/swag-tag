@@ -1,5 +1,4 @@
 import { WCSuiteInfo, WCInfo } from "wc-info/types.js";
-import { define } from "trans-render/define.js";
 import { repeat } from "trans-render/repeat.js";
 import { replaceTargetWithTag } from "trans-render/replaceTargetWithTag.js";
 import { appendTag } from "trans-render/appendTag.js";
@@ -12,13 +11,11 @@ import {
   PESettings,
   PEASettings
 } from "trans-render/types.d.js";
-//import { XtalViewElement } from "xtal-element/xtal-view-element.js";
-import { XtalFetchViewElement} from "xtal-element/XtalFetchViewElement.js";
+import { XtalFetchViewElement, define, mergeProps, AttributeProps} from "xtal-element/XtalFetchViewElement.js";
 import "p-et-alia/p-d.js";
 import { PDProps } from 'p-et-alia/types.d.js';
 import { extend } from "p-et-alia/p-d-x.js";
 import { XtalJsonEditor } from "xtal-json-editor/xtal-json-editor.js";
-
 
 
 const mainTemplate = T(/* html */ `
@@ -52,13 +49,30 @@ export const fieldEditor$ = Symbol();
 export const noPathFound$ = Symbol();
 export const noPathFoundTemplate = 'noPathFoundTemplate';
 export class SwagTagBase extends XtalFetchViewElement<WCSuiteInfo> {
-  static get is() {
-    return "swag-tag-base";
+  static is = "swag-tag-base";
+
+  static attributeProps = ({tag} : SwagTagBase) =>{
+    const ap = {
+      str: [tag],
+
+    } as AttributeProps;
+    return mergeProps(ap, (<any>XtalFetchViewElement).props);
   }
+
+  tag: string | null = null;
+
+  _wcInfo!: WCInfo;
+  get WCInfo() {
+    return this._wcInfo;
+  }
+
+  noShadow = true;
+
 
   //#region Required Methods / Properties
 
   get readyToRender(){
+    if(this._wcInfo === undefined) return false;
     if(this._wcInfo !== undefined && this._wcInfo.path !== undefined) {
       this.importReferencedModule();
       return true;
@@ -143,14 +157,10 @@ export class SwagTagBase extends XtalFetchViewElement<WCSuiteInfo> {
     } as TransformRules;
   }
 
-  //#endregion
+  
 
-  //#region overridden members
-  get noShadow() {
-    return true;
-  }
   set viewModel(nv: WCSuiteInfo) {
-    this._wcInfo = nv.tags.find(t => t.name === this._tag)!;
+    this._wcInfo = nv.tags.find(t => t.name === this.tag)!;
     super.viewModel = nv;
   }
   //#endregion 
@@ -166,42 +176,9 @@ export class SwagTagBase extends XtalFetchViewElement<WCSuiteInfo> {
     import(selfResolvingModulePath);
   }
 
-  _wcInfo!: WCInfo;
-  get WCInfo() {
-    return this._wcInfo;
-  }
-
-  //#region boilerplate
-
-  static get observedAttributes() {
-    return super.observedAttributes.concat([tag]);
-  }
-
-  attributeChangedCallback(n: string, ov: string, nv: string) {
-    switch (n) {
-      case tag:
-        (<any>this)["_" + n] = nv;
-        break;
-    }
-    super.attributeChangedCallback(n, ov, nv);
-  }
 
 
 
-  _tag: string | null = null;
-  get tag() {
-    return this._tag;
-  }
-
-  set tag(nv) {
-    this.attr(tag, nv!);
-  }
-
-  connectedCallback() {
-    this.propUp([tag]);
-    super.connectedCallback();
-  }
-  //#endregion
 
 }
 
