@@ -129,6 +129,9 @@ let SwagTagBase = /** @class */ (() => {
                 }
             };
         }
+        get viewModel() {
+            return this._viewModel;
+        }
         set viewModel(nv) {
             this._wcInfo = nv.tags.find(t => t.name === this.tag);
             super.viewModel = nv;

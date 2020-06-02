@@ -51,7 +51,7 @@ export const noPathFoundTemplate = 'noPathFoundTemplate';
 export class SwagTagBase extends XtalFetchViewElement<WCSuiteInfo> {
   static is = "swag-tag-base";
 
-  static attributeProps = ({tag} : SwagTagBase) =>{
+  static attributeProps: any = ({tag} : SwagTagBase) =>{
     const ap = {
       str: [tag],
 
@@ -158,7 +158,9 @@ export class SwagTagBase extends XtalFetchViewElement<WCSuiteInfo> {
   }
 
   
-
+  get viewModel(){
+    return this._viewModel;
+  }
   set viewModel(nv: WCSuiteInfo) {
     this._wcInfo = nv.tags.find(t => t.name === this.tag)!;
     super.viewModel = nv;
