@@ -1,5 +1,5 @@
-import { repeat } from "trans-render/repeat.js";
-import { replaceTargetWithTag } from "trans-render/replaceTargetWithTag.js";
+//import { repeat } from "trans-render/repeat.js";
+import { replaceTargetWithTag } from "trans-render/replaceTargetWithTag2.js";
 import { appendTag } from "trans-render/appendTag.js";
 import { createTemplate as T } from "trans-render/createTemplate.js";
 import { XtalFetchViewElement, define, mergeProps } from "xtal-element/XtalFetchViewElement.js";
@@ -22,6 +22,13 @@ const mainTemplate = T(/* html */ `
 <main></main>
 <footer></footer>
 `);
+const fieldEditor = T(/* html */ `
+<div>
+  <label></label>
+  <input>
+  <p-d-x-json-parsed on=input from=fieldset to=details m=1 skip-init></p-d>
+</div>
+`);
 const valFromEvent = (e) => ({
     type: e.type,
     detail: e.detail
@@ -30,7 +37,6 @@ const tag = "tag";
 const pdxEvent = 'event';
 export const propInfo$ = Symbol();
 export const propBase$ = Symbol();
-export const fieldEditor$ = Symbol();
 export const noPathFound$ = Symbol();
 export const noPathFoundTemplate = 'noPathFoundTemplate';
 let SwagTagBase = /** @class */ (() => {
@@ -61,40 +67,34 @@ let SwagTagBase = /** @class */ (() => {
             const writeableProps = allProperties.filter(prop => !prop.readOnly);
             return {
                 fieldset: {
-                    form: ({ target, ctx }) => repeat([fieldEditor$, /* html */ `
-                <div>
-                  <label></label>
-                  <input>
-                  <p-d-x-json-parsed on=input from=fieldset to=details m=1 skip-init></p-d>
-                </div>
-              `], ctx, writeableProps, target, {
-                        div: ({ target, item }) => {
-                            const propAny = item;
-                            target[propInfo$] = item;
-                            const propVal = item.default;
-                            let propBase = 'object';
-                            switch (item.type) {
-                                case 'boolean':
-                                case 'string':
-                                    propBase = item.type;
-                                    break;
+                    form: [writeableProps, fieldEditor, , {
+                            div: ({ target, item }) => {
+                                const propAny = item;
+                                target[propInfo$] = item;
+                                const propVal = item.default;
+                                let propBase = 'object';
+                                switch (item.type) {
+                                    case 'boolean':
+                                    case 'string':
+                                        propBase = item.type;
+                                        break;
+                                }
+                                propAny[propBase$] = propBase;
+                                return {
+                                    label: [{ textContent: item.name }, , { for: 'rc_' + item.name }],
+                                    input: ({ target, ctx }) => {
+                                        if (propBase === 'object') {
+                                            replaceTargetWithTag(target, ctx, 'textarea');
+                                        }
+                                    },
+                                    '"': [, , { type: item.type === 'boolean' ? 'checkbox' : 'text', id: 'rc_' + item.name }],
+                                    textarea: [{ textContent: item.default }, , { id: 'rc_' + item.name }],
+                                    'input[type="checkbox"]': [, , { checked: item.default }],
+                                    'input[type="text"]': [, , { value: item.default ?? '' }],
+                                    '[on]': [{ careOf: this._wcInfo.name, prop: item.name }],
+                                };
                             }
-                            propAny[propBase$] = propBase;
-                            return {
-                                label: [{ textContent: item.name }, , { for: 'rc_' + item.name }],
-                                input: ({ target, ctx }) => {
-                                    if (propBase === 'object') {
-                                        replaceTargetWithTag(target, ctx, 'textarea');
-                                    }
-                                },
-                                '"': [, , { type: item.type === 'boolean' ? 'checkbox' : 'text', id: 'rc_' + item.name }],
-                                textarea: [{ textContent: item.default }, , { id: 'rc_' + item.name }],
-                                'input[type="checkbox"]': [, , { checked: item.default }],
-                                'input[type="text"]': [, , { value: item.default ?? '' }],
-                                '[on]': [{ careOf: this._wcInfo.name, prop: item.name }],
-                            };
-                        },
-                    })
+                        }]
                 },
                 '"': {
                     legend: {

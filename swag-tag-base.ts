@@ -1,16 +1,18 @@
-import { WCSuiteInfo, WCInfo } from "wc-info/types.js";
-import { repeat } from "trans-render/repeat.js";
-import { replaceTargetWithTag } from "trans-render/replaceTargetWithTag.js";
+import { WCSuiteInfo, WCInfo, PropertyInfo } from "wc-info/types.js";
+//import { repeat } from "trans-render/repeat.js";
+import { replaceTargetWithTag } from "trans-render/replaceTargetWithTag2.js";
 import { appendTag } from "trans-render/appendTag.js";
 import { createTemplate as T } from "trans-render/createTemplate.js";
 import {
-  RenderContext,
   RenderOptions,
   TransformRules,
   PSettings,
   PESettings,
   PEASettings
 } from "trans-render/types.d.js";
+import {
+  RenderContext
+} from 'trans-render/types2.d.js';
 import { XtalFetchViewElement, define, mergeProps, AttributeProps} from "xtal-element/XtalFetchViewElement.js";
 import "p-et-alia/p-d.js";
 import { PDProps } from 'p-et-alia/types.d.js';
@@ -35,6 +37,14 @@ const mainTemplate = T(/* html */ `
 <footer></footer>
 `);
 
+const fieldEditor = T(/* html */`
+<div>
+  <label></label>
+  <input>
+  <p-d-x-json-parsed on=input from=fieldset to=details m=1 skip-init></p-d>
+</div>
+`);
+
 const valFromEvent = (e: Event) => ({
   type: e.type,
   detail: (<any>e).detail
@@ -45,7 +55,6 @@ const tag = "tag";
 const pdxEvent = 'event';
 export const propInfo$ = Symbol();
 export const propBase$ = Symbol();
-export const fieldEditor$ = Symbol();
 export const noPathFound$ = Symbol();
 export const noPathFoundTemplate = 'noPathFoundTemplate';
 export class SwagTagBase extends XtalFetchViewElement<WCSuiteInfo> {
@@ -88,41 +97,35 @@ export class SwagTagBase extends XtalFetchViewElement<WCSuiteInfo> {
     const writeableProps = allProperties.filter(prop => !prop.readOnly);
     return {
       fieldset: {
-          form: ({ target, ctx }) =>
-            repeat([fieldEditor$, /* html */ `
-                <div>
-                  <label></label>
-                  <input>
-                  <p-d-x-json-parsed on=input from=fieldset to=details m=1 skip-init></p-d>
-                </div>
-              `], ctx, writeableProps, target, {
-              div: ({ target, item }) => {
-                const propAny = item as any;
-                (<any>target)[propInfo$] = item;
-                const propVal = item.default;
-                let propBase = 'object';
-                switch (item.type) {
-                  case 'boolean': case 'string':
-                    propBase = item.type;
-                    break;
-
+        form: [writeableProps, fieldEditor,,{
+          div: ({target, item}: RenderContext<PropertyInfo>) =>{
+            const propAny = item as any;
+            (<any>target)[propInfo$] = item;
+            const propVal = item!.default;
+            let propBase = 'object';
+            switch (item!.type) {
+              case 'boolean': 
+              case 'string':
+                propBase = item!.type;
+                break;
+  
+            }
+            propAny[propBase$] = propBase;
+            return {
+              label: [{ textContent: item!.name},,{ for: 'rc_' + item!.name }] as PEASettings<HTMLLabelElement>,
+              input: ({ target, ctx }: RenderContext) => {
+                if (propBase === 'object') {
+                  replaceTargetWithTag(target!, ctx!, 'textarea');
                 }
-                propAny[propBase$] = propBase;
-                return {
-                  label: [{ textContent: item.name},,{ for: 'rc_' + item.name }] as PEASettings<HTMLLabelElement>,
-                  input: ({ target, ctx }) => {
-                    if (propBase === 'object') {
-                      replaceTargetWithTag(target, ctx, 'textarea');
-                    }
-                  },
-                  '"': [,, { type: item.type === 'boolean' ? 'checkbox' : 'text', id: 'rc_' + item.name }] as PEASettings<HTMLInputElement>,
-                  textarea: [{ textContent: item.default },,{ id: 'rc_' + item.name }]  as PEASettings<HTMLTextAreaElement>,
-                  'input[type="checkbox"]': [,, { checked: item.default }]  as PEASettings<HTMLInputElement>,
-                  'input[type="text"]': [,,{ value: item.default ?? '' }] as PEASettings<HTMLInputElement>,
-                  '[on]': [{ careOf: this._wcInfo.name, prop: item.name as string }] as PSettings<PDProps>,
-                };
               },
-            }) as TransformRules
+              '"': [,, { type: item!.type === 'boolean' ? 'checkbox' : 'text', id: 'rc_' + item!.name }] as PEASettings<HTMLInputElement>,
+              textarea: [{ textContent: item!.default },,{ id: 'rc_' + item!.name }]  as PEASettings<HTMLTextAreaElement>,
+              'input[type="checkbox"]': [,, { checked: item!.default }]  as PEASettings<HTMLInputElement>,
+              'input[type="text"]': [,,{ value: item!.default ?? '' }] as PEASettings<HTMLInputElement>,
+              '[on]': [{ careOf: this._wcInfo.name, prop: item!.name as string }] as PSettings<PDProps>,
+            };
+          }
+        }]
       },
       '"':{
         legend:{
