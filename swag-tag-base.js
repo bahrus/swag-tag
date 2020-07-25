@@ -42,12 +42,12 @@ const updateTransforms = [
         [uiRefs.editName]: name,
         [uiRefs.var$]: [name]
     }),
-    ({ properties }) => ({
+    ({ properties, name }) => ({
         [uiRefs.fieldset]: [properties, SwagTagPrimitiveBase.is, , {
                 [SwagTagPrimitiveBase.is]: ({ item, target }) => {
                     Object.assign(target, item);
                 },
-                '"': [PD.is, 'afterEnd']
+                '"': ({ item }) => ([PD.is, 'afterEnd', [{ on: 'input', from: 'form', to: 'details', careOf: name, prop: item.name, val: 'target.value', m: 1 }]])
             }]
     })
 ];
