@@ -15,7 +15,7 @@ import {
   RenderContext
 } from 'trans-render/types2.d.js';
 import { XtalFetchViewElement, define, mergeProps, AttributeProps} from "xtal-element/XtalFetchViewElement.js";
-import "p-et-alia/p-d.js";
+import {PD} from "p-et-alia/p-d.js";
 import { PDProps } from 'p-et-alia/types.d.js';
 import { extend } from "p-et-alia/p-d-x.js";
 import { XtalJsonEditor } from "xtal-json-editor/xtal-json-editor.js";
@@ -35,9 +35,7 @@ const mainTemplate = T(/* html */ `
   <var></var>
 </details>
 <h4>Live Events Fired</h4>
-<json-viewer contenteditable>
-  {"hello": "goodbye"}
-</json-viewer>
+<json-viewer></json-viewer>
 <main></main>
 <footer></footer>
 `);
@@ -71,17 +69,13 @@ const updateTransforms = [
     [uiRefs.fieldset]: [properties, SwagTagPrimitiveBase.is,, {
       [SwagTagPrimitiveBase.is]: ({item, target}: RenderContext<SwagTagPrimitiveBase, PropertyInfo>) => {
         Object.assign(target, item);
-      }
+      },
+      '"': [PD.is, 'afterEnd']
+
     }]
   })
 ] as SelectiveUpdate<any>[];
 
-
-
-// const valFromEvent = (e: Event) => ({
-//   type: e.type,
-//   detail: (<any>e).detail
-// });
 
 const linkWcInfo = ({viewModel, tag, self} : SwagTagBase) => {
   if(tag === undefined || viewModel === undefined) return;

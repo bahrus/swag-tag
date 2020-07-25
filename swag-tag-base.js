@@ -1,7 +1,7 @@
 import { symbolize } from 'xtal-element/symbolize.js';
 import { createTemplate as T } from "trans-render/createTemplate.js";
 import { XtalFetchViewElement, define, mergeProps } from "xtal-element/XtalFetchViewElement.js";
-import "p-et-alia/p-d.js";
+import { PD } from "p-et-alia/p-d.js";
 import { SwagTagPrimitiveBase } from './swag-tag-primitive-base.js';
 const mainTemplate = T(/* html */ `
 <header>
@@ -16,9 +16,7 @@ const mainTemplate = T(/* html */ `
   <var></var>
 </details>
 <h4>Live Events Fired</h4>
-<json-viewer contenteditable>
-  {"hello": "goodbye"}
-</json-viewer>
+<json-viewer></json-viewer>
 <main></main>
 <footer></footer>
 `);
@@ -48,14 +46,11 @@ const updateTransforms = [
         [uiRefs.fieldset]: [properties, SwagTagPrimitiveBase.is, , {
                 [SwagTagPrimitiveBase.is]: ({ item, target }) => {
                     Object.assign(target, item);
-                }
+                },
+                '"': [PD.is, 'afterEnd']
             }]
     })
 ];
-// const valFromEvent = (e: Event) => ({
-//   type: e.type,
-//   detail: (<any>e).detail
-// });
 const linkWcInfo = ({ viewModel, tag, self }) => {
     if (tag === undefined || viewModel === undefined)
         return;
