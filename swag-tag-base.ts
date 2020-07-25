@@ -65,8 +65,8 @@ const updateTransforms = [
     [uiRefs.editName]: name,
     [uiRefs.var$]: [name]
   }),
-  ({properties, name}: SwagTagBase) => ({
-    [uiRefs.fieldset]: [properties, SwagTagPrimitiveBase.is,, {
+  ({massagedProps, name}: SwagTagBase) => ({
+    [uiRefs.fieldset]: [massagedProps, SwagTagPrimitiveBase.is,, {
       [SwagTagPrimitiveBase.is]: ({item, target}: RenderContext<SwagTagPrimitiveBase, PropertyInfo>) => {
         Object.assign(target, item);
       },
@@ -77,7 +77,7 @@ const updateTransforms = [
 ] as SelectiveUpdate<any>[];
 
 
-const linkWcInfo = ({viewModel, tag, self} : SwagTagBase) => {
+export const linkWcInfo = ({viewModel, tag, self} : SwagTagBase) => {
   if(tag === undefined || viewModel === undefined) return;
   const wcInfo = viewModel.tags.find(t => t.name === tag)!;
   wcInfo.attribs = (<any>wcInfo).attributes;
@@ -85,6 +85,15 @@ const linkWcInfo = ({viewModel, tag, self} : SwagTagBase) => {
   Object.assign(self, wcInfo);
 }
 
+const massaged = Symbol();
+export const linkMassagedProps = ({properties, self}: SwagTagBase) => {
+  if(properties === undefined || (<any>properties)[massaged as any as string]) return;
+  properties.forEach(prop =>{
+    prop.value = (<any>prop).default;
+  });
+  (<any>properties)[massaged as any as string] = true;
+  self.massagedProps = properties;
+}
 
 
 const pdxEvent = 'event';
@@ -113,7 +122,7 @@ export class SwagTagBase extends XtalFetchViewElement<WCSuiteInfo> implements WC
   }
 
   propActions = [
-    linkWcInfo,
+    linkWcInfo, linkMassagedProps
   ];
 
   updateTransforms = updateTransforms;
@@ -125,6 +134,7 @@ export class SwagTagBase extends XtalFetchViewElement<WCSuiteInfo> implements WC
   description: string | undefined;
 
   properties: PropertyInfo[] | undefined;
+  massagedProps: PropertyInfo[] | undefined;
 
   path: string | undefined;
 

@@ -42,8 +42,8 @@ const updateTransforms = [
         [uiRefs.editName]: name,
         [uiRefs.var$]: [name]
     }),
-    ({ properties, name }) => ({
-        [uiRefs.fieldset]: [properties, SwagTagPrimitiveBase.is, , {
+    ({ massagedProps, name }) => ({
+        [uiRefs.fieldset]: [massagedProps, SwagTagPrimitiveBase.is, , {
                 [SwagTagPrimitiveBase.is]: ({ item, target }) => {
                     Object.assign(target, item);
                 },
@@ -51,13 +51,23 @@ const updateTransforms = [
             }]
     })
 ];
-const linkWcInfo = ({ viewModel, tag, self }) => {
+export const linkWcInfo = ({ viewModel, tag, self }) => {
     if (tag === undefined || viewModel === undefined)
         return;
     const wcInfo = viewModel.tags.find(t => t.name === tag);
     wcInfo.attribs = wcInfo.attributes;
     delete wcInfo.attributes;
     Object.assign(self, wcInfo);
+};
+const massaged = Symbol();
+export const linkMassagedProps = ({ properties, self }) => {
+    if (properties === undefined || properties[massaged])
+        return;
+    properties.forEach(prop => {
+        prop.value = prop.default;
+    });
+    properties[massaged] = true;
+    self.massagedProps = properties;
 };
 const pdxEvent = 'event';
 export const propInfo$ = Symbol();
@@ -70,7 +80,7 @@ export class SwagTagBase extends XtalFetchViewElement {
         this.noShadow = true;
         this.mainTemplate = mainTemplate;
         this.propActions = [
-            linkWcInfo,
+            linkWcInfo, linkMassagedProps
         ];
         this.updateTransforms = updateTransforms;
         this.initTransform = initTransform;

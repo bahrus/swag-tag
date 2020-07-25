@@ -51,7 +51,8 @@ export class SwagTagPrimitiveBase extends XtalElement {
         async: [readOnly, inputType, disabled, value],
         str: [type, value, name, description, inputType],
         obj: ['default', testValues, eventScopes],
-        jsonProp: [eventScopes]
+        jsonProp: [eventScopes],
+        reflect: [readOnly, type, value, disabled, name, inputType]
     } as AttributeProps);
 
     readyToInit = true;
