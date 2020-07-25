@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <swag-tag-primitive-base id="st1"></swag-tag-primitive-base>
+    <script type=module>
+        import '../swag-tag-primitive-base.js';
+        st1.name = 'hello';
+        st1.value = 'world';
+        st1.addEventListener('input', e =>{
+            console.log(e);
+        });
+    </script>
+</body>
+</html>

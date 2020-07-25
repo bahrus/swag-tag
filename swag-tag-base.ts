@@ -1,6 +1,7 @@
-import { WCSuiteInfo, WCInfo, PropertyInfo } from "wc-info/types.js";
+import { WCSuiteInfo, WCInfo, PropertyInfo, CustomEventInfo, SlotInfo, AttribInfo } from "wc-info/types.js";
 //import { repeat } from "trans-render/repeat.js";
 import { replaceTargetWithTag } from "trans-render/replaceTargetWithTag2.js";
+import {symbolize} from 'xtal-element/symbolize.js';
 import { appendTag } from "trans-render/appendTag.js";
 import { createTemplate as T } from "trans-render/createTemplate.js";
 import {
@@ -18,157 +19,140 @@ import "p-et-alia/p-d.js";
 import { PDProps } from 'p-et-alia/types.d.js';
 import { extend } from "p-et-alia/p-d-x.js";
 import { XtalJsonEditor } from "xtal-json-editor/xtal-json-editor.js";
-
+import { SwagTagPrimitiveBase } from './swag-tag-primitive-base.js';
+import { SelectiveUpdate } from "../xtal-element/types.js";
 
 const mainTemplate = T(/* html */ `
 <header>
 </header>
-<fieldset>
-  <legend>✏️Edit <var></var>'s properties</legend>
-  <form>
-  </form>
-</fieldset>
+<form>
+  <fieldset>
+    <legend>✏️Edit <var></var>'s properties</legend>
+  </fieldset>
+</form>
 <details open>
   <summary></summary>
+  <var></var>
 </details>
 <h4>Live Events Fired</h4>
-<xtal-json-editor options="{}"  height="300px"></xtal-json-editor>
+<json-viewer contenteditable>
+  {"hello": "goodbye"}
+</json-viewer>
 <main></main>
 <footer></footer>
 `);
 
-const fieldEditor = T(/* html */`
-<div>
-  <label></label>
-  <input>
-  <p-d-x-json-parsed on=input from=fieldset to=details m=1 skip-init></p-d>
-</div>
-`);
+interface IUIRef{editName: symbol; fieldset: symbol, summary: symbol; xtalJsonEditor: symbol; var$: symbol;}
+const symbolGen = ({editName, fieldset, summary, xtalJsonEditor, var$}: IUIRef) => 0;
+const uiRefs = symbolize(symbolGen) as IUIRef;
 
-const valFromEvent = (e: Event) => ({
-  type: e.type,
-  detail: (<any>e).detail
-})
+const initTransform = {
+  form:{
+    fieldset: uiRefs.fieldset,
+    '"':{
+      legend: {
+        var: uiRefs.editName,
+      }
+    },
+  },
+  details:{
+    summary: uiRefs.summary,
+    var: uiRefs.var$
+  },
+};
+
+const updateTransforms = [
+  ({name}: SwagTagBase) => ({
+    [uiRefs.summary]: name,
+    [uiRefs.editName]: name,
+    [uiRefs.var$]: [name]
+  }),
+  ({properties}: SwagTagBase) => ({
+    [uiRefs.fieldset]: [properties, SwagTagPrimitiveBase.is,, {
+      [SwagTagPrimitiveBase.is]: ({item, target}: RenderContext<SwagTagPrimitiveBase, PropertyInfo>) => {
+        Object.assign(target, item);
+      }
+    }]
+  })
+] as SelectiveUpdate<any>[];
 
 
-const tag = "tag";
+
+// const valFromEvent = (e: Event) => ({
+//   type: e.type,
+//   detail: (<any>e).detail
+// });
+
+const linkWcInfo = ({viewModel, tag, self} : SwagTagBase) => {
+  if(tag === undefined || viewModel === undefined) return;
+  const wcInfo = viewModel.tags.find(t => t.name === tag)!;
+  wcInfo.attribs = (<any>wcInfo).attributes;
+  delete (<any>wcInfo).attributes;
+  Object.assign(self, wcInfo);
+}
+
+
+
 const pdxEvent = 'event';
 export const propInfo$ = Symbol();
 export const propBase$ = Symbol();
 export const noPathFound$ = Symbol();
 export const noPathFoundTemplate = 'noPathFoundTemplate';
-export class SwagTagBase extends XtalFetchViewElement<WCSuiteInfo> {
+export class SwagTagBase extends XtalFetchViewElement<WCSuiteInfo> implements WCInfo {
+  constructor(){
+    super();
+    import('@alenaksu/json-viewer/build/index.js');
+  }
   static is = "swag-tag-base";
 
-  static attributeProps: any = ({tag} : SwagTagBase) =>{
-    const ap = {
-      str: [tag],
+  noShadow = true;
 
+  mainTemplate = mainTemplate;
+
+  static attributeProps: any = ({tag, name, properties, path, events, slots, testCaseNames} : SwagTagBase) =>{
+    const ap = {
+      str: [tag, name, path],
+      obj: [properties, events, slots, testCaseNames],
+      reflect: [tag]
     } as AttributeProps;
     return mergeProps(ap, (<any>XtalFetchViewElement).props);
   }
 
-  tag: string | null = null;
+  propActions = [
+    linkWcInfo,
+  ];
 
-  _wcInfo!: WCInfo;
-  get WCInfo() {
-    return this._wcInfo;
-  }
+  updateTransforms = updateTransforms;
 
-  noShadow = true;
+  tag: string | undefined;
 
+  name: string | undefined;
 
+  description: string | undefined;
+
+  properties: PropertyInfo[] | undefined;
+
+  path: string | undefined;
+
+  events: CustomEventInfo[] | undefined;
+
+  slots: SlotInfo[] | undefined;
+
+  attribs: AttribInfo[] | undefined; 
+
+  testCaseNames: string[] | undefined;
   //#region Required Methods / Properties
 
   get readyToRender(){
-    if(this._wcInfo === undefined) return false;
-    if(this._wcInfo !== undefined && this._wcInfo.path !== undefined) {
+    if(this.name === undefined) return false;
+    if(this.path !== undefined) {
       this.importReferencedModule();
       return true;
     }
     return noPathFoundTemplate;
   }
 
-  mainTemplate = mainTemplate;
-
-  get initTransform(){
-    const allProperties = this._wcInfo.properties;
-    if (allProperties === undefined) return {};
-    const writeableProps = allProperties.filter(prop => !prop.readOnly);
-    return {
-      fieldset: {
-        form: [writeableProps, fieldEditor,,{
-          div: ({target, item}: RenderContext<PropertyInfo>) =>{
-            const propAny = item as any;
-            (<any>target)[propInfo$] = item;
-            const propVal = item!.default;
-            let propBase = 'object';
-            switch (item!.type) {
-              case 'boolean': 
-              case 'string':
-                propBase = item!.type;
-                break;
-  
-            }
-            propAny[propBase$] = propBase;
-            return {
-              label: [{ textContent: item!.name},,{ for: 'rc_' + item!.name }] as PEASettings<HTMLLabelElement>,
-              input: ({ target, ctx }: RenderContext) => {
-                if (propBase === 'object') {
-                  replaceTargetWithTag(target!, ctx!, 'textarea');
-                }
-              },
-              '"': [,, { type: item!.type === 'boolean' ? 'checkbox' : 'text', id: 'rc_' + item!.name }] as PEASettings<HTMLInputElement>,
-              textarea: [{ textContent: item!.default },,{ id: 'rc_' + item!.name }]  as PEASettings<HTMLTextAreaElement>,
-              'input[type="checkbox"]': [,, { checked: item!.default }]  as PEASettings<HTMLInputElement>,
-              'input[type="text"]': [,,{ value: item!.default ?? '' }] as PEASettings<HTMLInputElement>,
-              '[on]': [{ careOf: this._wcInfo.name, prop: item!.name as string }] as PSettings<PDProps>,
-            };
-          }
-        }]
-      },
-      '"':{
-        legend:{
-          var: this._wcInfo.name
-        }
-      },
-      details: ({ target }) => {
-        const el = appendTag(target, this._wcInfo.name, {}) as any;
-        //Set initial values
-        this._wcInfo.properties?.filter(prop => prop.default !== undefined).forEach(prop => {
-          el[prop.name] = JSON.parse(prop.default);
-        })
-        const ces = this._wcInfo.events;
-        if (ces !== undefined) el.setAttribute("disabled", ces.length.toString());
-        if (ces !== undefined) {
-          ces.forEach(ce => {
-            const pdEvent = extend({
-              name: pdxEvent,
-              valFromEvent: valFromEvent,
-              insertAfter: el
-            }) as HTMLElement;
-            Object.assign(pdEvent, { on: ce.name, from: 'details', to: XtalJsonEditor.is, prop: "input", m: 1 });
-          });
-        }
-        return {
-          summary: this._wcInfo.name + ''
-        }
-      },
-      [XtalJsonEditor.is]: ({ target }) => {
-        Object.assign(target, { archive: true });
-      }
-    } as TransformRules;
-  }
-
-  
-  get viewModel(){
-    return this._viewModel;
-  }
-  set viewModel(nv: WCSuiteInfo) {
-    this._wcInfo = nv.tags.find(t => t.name === this.tag)!;
-    super.viewModel = nv;
-  }
-  //#endregion 
+  initTransform = initTransform;
 
   get [noPathFoundTemplate](){
     return T(`<div>No path found.</div>`, SwagTagBase, noPathFound$);
@@ -177,26 +161,12 @@ export class SwagTagBase extends XtalFetchViewElement<WCSuiteInfo> {
   importReferencedModule() {
     const selfResolvingModuleSplitPath = this.href?.split('/');
     selfResolvingModuleSplitPath?.pop();
-    const selfResolvingModulePath = selfResolvingModuleSplitPath?.join('/') + this._wcInfo.path!.substring(1) + '?module';
+    const selfResolvingModulePath = selfResolvingModuleSplitPath?.join('/') + this.path!.substring(1) + '?module';
     import(selfResolvingModulePath);
   }
-
-
-
-
 
 }
 
 define(SwagTagBase);
 
-const pdxJSONParser = extend({
-  name: 'json-parsed',
-  valFromEvent: e => {
-    if ((<any>e).target.dataset.propType === 'boolean') {
-      return (<any>e).target.value !== null;
-    } else {
-      return JSON.parse((<any>e).target.value);
-    }
 
-  }
-})
