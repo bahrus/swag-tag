@@ -49,7 +49,7 @@ export const linkInputType = ({type, self}: SwagTagPrimitiveBase) => {
 export class SwagTagPrimitiveBase extends XtalElement {
     static is = 'swag-tag-primitive-base';
 
-    static attributeProps = ({readOnly, type, testValues, value, disabled, eventScopes, name, description, inputType}: SwagTagPrimitiveBase) => ({
+    static attributeProps : any = ({readOnly, type, testValues, value, disabled, eventScopes, name, description, inputType}: SwagTagPrimitiveBase) => ({
         bool: [readOnly, disabled],
         async: [readOnly, inputType, disabled, value],
         str: [type, value, name, description, inputType],

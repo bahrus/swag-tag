@@ -49,7 +49,7 @@ export class SwagTagObjectBase extends SwagTagPrimitiveBase{
         return mergeProps(ap, SwagTagPrimitiveBase.props);
     }
 
-    propActions = [linkParsedObject, linkInputType];
+    propActions = [linkParsedObject, linkInputType] as SelectiveUpdate<any>[];
 
     mainTemplate = mainTemplate;
     initTransform = {
