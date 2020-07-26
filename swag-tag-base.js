@@ -29,14 +29,12 @@ const mainTemplate = T(/* html */ `
   
 </details>
 <h4>Live Events Fired</h4>
-<dfn -text-content></dfn>
-<json-viewer -object allowlist="detail,type"></json-viewer>
+<json-viewer -object allowlist="detail,type,bubbles,cancelBubble,cancelable,composed,defaultPrevented,eventPhase,isTrusted,returnValue,timeStamp"></json-viewer>
 <main></main>
 <footer></footer>
 `);
 const eventListener = T(/* html */ `
 <p-d m=1 from=details to=json-viewer[-object] val=. skip-init></p-d>
-<p-d m=1 from=details to=dfn[-text-content] val=type></p-d>
 `);
 const symbolGen = ({ editName, fieldset, summary, xtalJsonEditor, var$, eventListeners$ }) => 0;
 const uiRefs = symbolize(symbolGen);
