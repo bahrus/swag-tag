@@ -1,10 +1,7 @@
 import { WCSuiteInfo, WCInfo, PropertyInfo, CustomEventInfo, SlotInfo, AttribInfo } from "wc-info/types.js";
 import {symbolize} from 'xtal-element/symbolize.js';
-import { appendTag } from "trans-render/appendTag.js";
 import { createTemplate as T } from "trans-render/createTemplate.js";
-import {
-  RenderContext, PEATSettings
-} from 'trans-render/types2.d.js';
+import {RenderContext, PEATSettings} from 'trans-render/types2.d.js';
 import { XtalFetchViewElement, define, mergeProps, AttributeProps} from "xtal-element/XtalFetchViewElement.js";
 import {PD} from "p-et-alia/p-d.js";
 import { SwagTagPrimitiveBase } from './swag-tag-primitive-base.js';
@@ -35,13 +32,15 @@ const mainTemplate = T(/* html */ `
   
 </details>
 <h4>Live Events Fired</h4>
+<dfn -text-content></dfn>
 <json-viewer -data></json-viewer>
 <main></main>
 <footer></footer>
 `);
 
 const eventListener = T(/* html */`
-<p-d m=1 from=details to=json-viewer[-data]></p-d>
+<p-d m=1 from=details to=json-viewer[-data] val=detail></p-d>
+<p-d m=1 from=details to=dfn[-text-content] val=type></p-d>
 `);
 
 interface IUIRef{editName: symbol; fieldset: symbol, summary: symbol; xtalJsonEditor: symbol; var$: symbol; eventListeners$: symbol;}
