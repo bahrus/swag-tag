@@ -21,11 +21,11 @@ const initTransform  = {
     input: input$
 };
 
-const updateLabel = ({name}: SwagTagPrimitiveBase) => ({
+export const updateLabel = ({name}: SwagTagPrimitiveBase) => ({
     [label$]: name,
 });
 
-const updateInput = ({readOnly, inputType, disabled, value}: SwagTagPrimitiveBase) =>({
+export const updateInput = ({readOnly, inputType, disabled, value}: SwagTagPrimitiveBase) =>({
     [input$]: [,,{'readonly': readOnly, type: inputType, disabled: disabled, value: value}]
 });
 
@@ -61,7 +61,7 @@ export class SwagTagPrimitiveBase extends XtalElement {
 
     readyToRender = true;
 
-    initTransform = initTransform;
+    initTransform: any = initTransform;
 
     propActions = [
         linkInputType,

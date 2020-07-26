@@ -14,10 +14,10 @@ const initTransform = {
     label: label$,
     input: input$
 };
-const updateLabel = ({ name }) => ({
+export const updateLabel = ({ name }) => ({
     [label$]: name,
 });
-const updateInput = ({ readOnly, inputType, disabled, value }) => ({
+export const updateInput = ({ readOnly, inputType, disabled, value }) => ({
     [input$]: [, , { 'readonly': readOnly, type: inputType, disabled: disabled, value: value }]
 });
 const linkInputType = ({ type, self }) => {
