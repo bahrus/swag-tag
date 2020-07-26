@@ -58,6 +58,6 @@ SwagTagPrimitiveBase.attributeProps = ({ readOnly, type, testValues, value, disa
     str: [type, value, name, description, inputType],
     obj: ['default', testValues, eventScopes],
     jsonProp: [eventScopes],
-    reflect: [readOnly, type, value, disabled, name, inputType]
+    reflect: [readOnly, type, disabled, name, inputType]
 });
 define(SwagTagPrimitiveBase);
