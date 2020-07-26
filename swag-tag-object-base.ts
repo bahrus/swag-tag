@@ -17,7 +17,7 @@ const mainTemplate = createTemplate(/* html */`
       }
   </style>
   <label for=myInput part=fieldLabel></label>
-  <textarea id=myInput part=inputElement part=textarea debug></textarea>
+  <textarea id=myInput part=textarea></textarea>
 `);
 
 
@@ -52,7 +52,7 @@ export class SwagTagObjectBase extends SwagTagPrimitiveBase{
     propActions = [linkParsedObject, linkInputType] as SelectiveUpdate<any>[];
 
     mainTemplate = mainTemplate;
-    initTransform = {
+    initTransform: any = {
         label: label$,
         textarea: [,{'input': this.handleInput},,, textarea$]
     };

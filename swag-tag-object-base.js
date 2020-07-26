@@ -15,7 +15,7 @@ const mainTemplate = createTemplate(/* html */ `
       }
   </style>
   <label for=myInput part=fieldLabel></label>
-  <textarea id=myInput part=inputElement part=textarea debug></textarea>
+  <textarea id=myInput part=textarea></textarea>
 `);
 const [label$, textarea$] = [Symbol('label'), Symbol('textarea')];
 const updateLabel = ({ name }) => ({
