@@ -23,22 +23,29 @@ const mainTemplate = T(/* html */ `
 <header>
 </header>
 <form>
-  <fieldset data-open="true">
+  <fieldset data-open="false">
     <legend>✏️Edit <var></var>'s properties</legend>
   </fieldset>
 </form>
 <details open>
   <summary></summary>
-  <var></var>
+  <var>
+    <div></div>
+  </var>
+  
 </details>
 <h4>Live Events Fired</h4>
-<json-viewer></json-viewer>
+<json-viewer -data></json-viewer>
 <main></main>
 <footer></footer>
 `);
 
-interface IUIRef{editName: symbol; fieldset: symbol, summary: symbol; xtalJsonEditor: symbol; var$: symbol;}
-const symbolGen = ({editName, fieldset, summary, xtalJsonEditor, var$}: IUIRef) => 0;
+const eventListener = T(/* html */`
+<p-d m=1 from=details to=json-viewer[-data]></p-d>
+`);
+
+interface IUIRef{editName: symbol; fieldset: symbol, summary: symbol; xtalJsonEditor: symbol; var$: symbol; eventListeners$: symbol;}
+const symbolGen = ({editName, fieldset, summary, xtalJsonEditor, var$, eventListeners$}: IUIRef) => 0;
 const uiRefs = symbolize(symbolGen) as IUIRef;
 
 
@@ -47,7 +54,12 @@ const updateTransforms = [
   ({name}: SwagTagBase) => ({
     [uiRefs.summary]: name,
     [uiRefs.editName]: name,
-    [uiRefs.var$]: [name]
+    [uiRefs.var$]: [name, 'afterBegin'],
+  }),
+  ({events, name}: SwagTagBase) => ({
+    [uiRefs.eventListeners$]: [events, eventListener,,{
+      [PD.is]:({item}) => [{observe: name, on: item.name}]
+    }]
   }),
   ({massagedProps, name}: SwagTagBase) => ({
     [uiRefs.fieldset]: [massagedProps, ({item}) => (<any>item).isPrimitive ?  SwagTagPrimitiveBase.is : SwagTagObjectBase.is,, {
@@ -112,6 +124,7 @@ export class SwagTagBase extends XtalFetchViewElement<WCSuiteInfo> implements WC
   noShadow = true;
 
   mainTemplate = mainTemplate;
+  readyToRender = true;
 
   static attributeProps: any = ({tag, name, properties, path, events, slots, testCaseNames} : SwagTagBase) =>{
     const ap = {
@@ -131,13 +144,16 @@ export class SwagTagBase extends XtalFetchViewElement<WCSuiteInfo> implements WC
       fieldset: uiRefs.fieldset,
       '"':{
         legend: [,{click: this.toggleForm},,{
-          var: uiRefs.editName,
+          var: uiRefs.editName
         }] as PEATSettings
       },
     },
     details:{
       summary: uiRefs.summary,
-      var: uiRefs.var$
+      var: uiRefs.var$,
+      '"': {
+        div: uiRefs.eventListeners$
+      }
     },
   } as TransformRules;
 
@@ -161,16 +177,6 @@ export class SwagTagBase extends XtalFetchViewElement<WCSuiteInfo> implements WC
   attribs: AttribInfo[] | undefined; 
 
   testCaseNames: string[] | undefined;
-  //#region Required Methods / Properties
-
-  get readyToRender(){
-    if(this.name === undefined) return false;
-    if(this.path !== undefined) {
-      this.importReferencedModule();
-      return true;
-    }
-    return noPathFoundTemplate;
-  }
 
   toggleForm(e: Event){
     const fieldset = (e.target as HTMLElement).closest('fieldset') as HTMLFieldSetElement;

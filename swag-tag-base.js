@@ -16,26 +16,37 @@ const mainTemplate = T(/* html */ `
 <header>
 </header>
 <form>
-  <fieldset data-open="true">
+  <fieldset data-open="false">
     <legend>✏️Edit <var></var>'s properties</legend>
   </fieldset>
 </form>
 <details open>
   <summary></summary>
-  <var></var>
+  <var>
+    <div></div>
+  </var>
+  
 </details>
 <h4>Live Events Fired</h4>
-<json-viewer></json-viewer>
+<json-viewer -data></json-viewer>
 <main></main>
 <footer></footer>
 `);
-const symbolGen = ({ editName, fieldset, summary, xtalJsonEditor, var$ }) => 0;
+const eventListener = T(/* html */ `
+<p-d m=1 from=details to=json-viewer[-data]></p-d>
+`);
+const symbolGen = ({ editName, fieldset, summary, xtalJsonEditor, var$, eventListeners$ }) => 0;
 const uiRefs = symbolize(symbolGen);
 const updateTransforms = [
     ({ name }) => ({
         [uiRefs.summary]: name,
         [uiRefs.editName]: name,
-        [uiRefs.var$]: [name]
+        [uiRefs.var$]: [name, 'afterBegin'],
+    }),
+    ({ events, name }) => ({
+        [uiRefs.eventListeners$]: [events, eventListener, , {
+                [PD.is]: ({ item }) => [{ observe: name, on: item.name }]
+            }]
     }),
     ({ massagedProps, name }) => ({
         [uiRefs.fieldset]: [massagedProps, ({ item }) => item.isPrimitive ? SwagTagPrimitiveBase.is : SwagTagObjectBase.is, , {
@@ -90,6 +101,7 @@ export class SwagTagBase extends XtalFetchViewElement {
         super();
         this.noShadow = true;
         this.mainTemplate = mainTemplate;
+        this.readyToRender = true;
         this.propActions = [
             linkWcInfo, linkMassagedProps, triggerImportReferencedModule
         ];
@@ -98,27 +110,20 @@ export class SwagTagBase extends XtalFetchViewElement {
                 fieldset: uiRefs.fieldset,
                 '"': {
                     legend: [, { click: this.toggleForm }, , {
-                            var: uiRefs.editName,
+                            var: uiRefs.editName
                         }]
                 },
             },
             details: {
                 summary: uiRefs.summary,
-                var: uiRefs.var$
+                var: uiRefs.var$,
+                '"': {
+                    div: uiRefs.eventListeners$
+                }
             },
         };
         this.updateTransforms = updateTransforms;
         import('@alenaksu/json-viewer/build/index.js');
-    }
-    //#region Required Methods / Properties
-    get readyToRender() {
-        if (this.name === undefined)
-            return false;
-        if (this.path !== undefined) {
-            this.importReferencedModule();
-            return true;
-        }
-        return noPathFoundTemplate;
     }
     toggleForm(e) {
         const fieldset = e.target.closest('fieldset');
