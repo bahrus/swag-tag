@@ -51,7 +51,7 @@ const updateTransforms = [
             }]
     }),
     ({ massagedProps, name }) => ({
-        [uiRefs.fieldset]: [massagedProps, ({ item }) => item.isPrimitive ? SwagTagPrimitiveBase.is : SwagTagObjectBase.is, , {
+        [uiRefs.fieldset]: [massagedProps, ({ item }) => item.editor, , {
                 [SwagTagPrimitiveBase.is]: ({ item, target }) => {
                     Object.assign(target, item);
                 },
@@ -76,13 +76,16 @@ export const linkMassagedProps = ({ properties, self }) => {
     if (properties === undefined || properties[massaged])
         return;
     properties.forEach(prop => {
-        prop.value = prop.default;
+        const anyProp = prop;
+        prop.value = anyProp.default;
         switch (prop.type) {
             case 'string':
             case 'number':
             case 'boolean':
-                prop.isPrimitive = true;
+                anyProp.editor = SwagTagPrimitiveBase.is;
                 break;
+            default:
+                anyProp.editor = SwagTagObjectBase.is;
         }
     });
     properties[massaged] = true;

@@ -23,11 +23,11 @@ const initTransform = {
     'mwc-textfield': tf
 }
 
-const updateInput = ({readOnly, inputType, disabled, value, name}: SwagTagPrimitiveMWCTextField) =>({
+const updateInput = ({readOnly, inputType, disabled, value, name}: SwagTagMWCTextField) =>({
     [tf]: [,,{'readonly': readOnly, type: inputType, disabled: disabled, value: value, label: name}]
 });
 
-export const linkInputType = ({type, self}: SwagTagPrimitiveBase) => {
+export const linkInputType = ({type, self}: SwagTagMWCTextField) => {
     switch(type){
         case 'number':
             self.inputType = 'number';
@@ -38,8 +38,8 @@ export const linkInputType = ({type, self}: SwagTagPrimitiveBase) => {
     }
 }
 
-export class SwagTagPrimitiveMWCTextField extends SwagTagPrimitiveBase{
-    static is = 'swag-tag-primitive-mwc-textfield';
+export class SwagTagMWCTextField extends SwagTagPrimitiveBase{
+    static is = 'swag-tag-mwc-textfield';
     
     mainTemplate = mainTemplate;
 
@@ -53,4 +53,4 @@ export class SwagTagPrimitiveMWCTextField extends SwagTagPrimitiveBase{
         linkInputType,
     ];
 }
-define(SwagTagPrimitiveMWCTextField);
+define(SwagTagMWCTextField);

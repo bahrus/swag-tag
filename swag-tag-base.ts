@@ -61,7 +61,7 @@ const updateTransforms = [
     }]
   }),
   ({massagedProps, name}: SwagTagBase) => ({
-    [uiRefs.fieldset]: [massagedProps, ({item}) => (<any>item).isPrimitive ?  SwagTagPrimitiveBase.is : SwagTagObjectBase.is,, {
+    [uiRefs.fieldset]: [massagedProps, ({item}) => (<any>item).editor,, {
       [SwagTagPrimitiveBase.is]: ({item, target}: RenderContext<SwagTagPrimitiveBase, PropertyInfo>) => {
         Object.assign(target, item);
       },
@@ -88,13 +88,16 @@ const massaged = Symbol();
 export const linkMassagedProps = ({properties, self}: SwagTagBase) => {
   if(properties === undefined || (<any>properties)[massaged as any as string]) return;
   properties.forEach(prop =>{
-    prop.value = (<any>prop).default;
+    const anyProp = <any>prop;
+    prop.value = anyProp.default;
     switch(prop.type){
       case 'string':
       case 'number':
       case 'boolean':
-        (<any>prop).isPrimitive = true;
+        anyProp.editor = SwagTagPrimitiveBase.is;
         break;
+      default:
+        anyProp.editor = SwagTagObjectBase.is;
     }
   });
   (<any>properties)[massaged as any as string] = true;

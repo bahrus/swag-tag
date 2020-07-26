@@ -30,7 +30,7 @@ export const linkInputType = ({ type, self }) => {
             break;
     }
 };
-export class SwagTagPrimitiveMWCTextField extends SwagTagPrimitiveBase {
+export class SwagTagMWCTextField extends SwagTagPrimitiveBase {
     constructor() {
         super(...arguments);
         this.mainTemplate = mainTemplate;
@@ -43,5 +43,5 @@ export class SwagTagPrimitiveMWCTextField extends SwagTagPrimitiveBase {
         ];
     }
 }
-SwagTagPrimitiveMWCTextField.is = 'swag-tag-primitive-mwc-textfield';
-define(SwagTagPrimitiveMWCTextField);
+SwagTagMWCTextField.is = 'swag-tag-mwc-textfield';
+define(SwagTagMWCTextField);
