@@ -3,6 +3,7 @@ import { createTemplate as T } from "trans-render/createTemplate.js";
 import { XtalFetchViewElement, define, mergeProps } from "xtal-element/XtalFetchViewElement.js";
 import { PD } from "p-et-alia/p-d.js";
 import { SwagTagPrimitiveBase } from './swag-tag-primitive-base.js';
+import { SwagTagObjectBase } from './swag-tag-object-base.js';
 const mainTemplate = T(/* html */ `
 <header>
 </header>
@@ -43,11 +44,15 @@ const updateTransforms = [
         [uiRefs.var$]: [name]
     }),
     ({ massagedProps, name }) => ({
-        [uiRefs.fieldset]: [massagedProps, SwagTagPrimitiveBase.is, , {
+        [uiRefs.fieldset]: [massagedProps, ({ item }) => item.isPrimitive ? SwagTagPrimitiveBase.is : SwagTagObjectBase.is, , {
                 [SwagTagPrimitiveBase.is]: ({ item, target }) => {
                     Object.assign(target, item);
                 },
-                '"': ({ item }) => ([PD.is, 'afterEnd', [{ on: 'input', from: 'form', to: 'details', careOf: name, prop: item.name, val: 'target.value', m: 1 }]])
+                '"': ({ item }) => ([PD.is, 'afterEnd', [{ on: 'input', from: 'form', to: 'details', careOf: name, prop: item.name, val: 'target.value', m: 1 }]]),
+                [SwagTagObjectBase.is]: ({ item, target }) => {
+                    Object.assign(target, item);
+                },
+                '""': ({ item }) => ([PD.is, 'afterEnd', [{ on: 'input', from: 'form', to: 'details', careOf: name, prop: item.name, val: 'target.value', m: 1 }]])
             }]
     })
 ];
@@ -65,6 +70,13 @@ export const linkMassagedProps = ({ properties, self }) => {
         return;
     properties.forEach(prop => {
         prop.value = prop.default;
+        switch (prop.type) {
+            case 'string':
+            case 'number':
+            case 'boolean':
+                prop.isPrimitive = true;
+                break;
+        }
     });
     properties[massaged] = true;
     self.massagedProps = properties;

@@ -20,6 +20,7 @@ import { PDProps } from 'p-et-alia/types.d.js';
 import { extend } from "p-et-alia/p-d-x.js";
 import { XtalJsonEditor } from "xtal-json-editor/xtal-json-editor.js";
 import { SwagTagPrimitiveBase } from './swag-tag-primitive-base.js';
+import {SwagTagObjectBase} from './swag-tag-object-base.js';
 import { SelectiveUpdate } from "../xtal-element/types.js";
 
 const mainTemplate = T(/* html */ `
@@ -66,11 +67,15 @@ const updateTransforms = [
     [uiRefs.var$]: [name]
   }),
   ({massagedProps, name}: SwagTagBase) => ({
-    [uiRefs.fieldset]: [massagedProps, SwagTagPrimitiveBase.is,, {
+    [uiRefs.fieldset]: [massagedProps, ({item}) => (<any>item).isPrimitive ?  SwagTagPrimitiveBase.is : SwagTagObjectBase.is,, {
       [SwagTagPrimitiveBase.is]: ({item, target}: RenderContext<SwagTagPrimitiveBase, PropertyInfo>) => {
         Object.assign(target, item);
       },
-      '"': ({item}) => ([PD.is, 'afterEnd', [{on:'input', from:'form', to: 'details', careOf: name, prop: item.name, val: 'target.value', m:1}]])
+      '"': ({item}) => ([PD.is, 'afterEnd', [{on:'input', from:'form', to: 'details', careOf: name, prop: item.name, val: 'target.value', m:1}]]),
+      [SwagTagObjectBase.is]: ({item, target}: RenderContext<SwagTagPrimitiveBase, PropertyInfo>) => {
+        Object.assign(target, item);
+      },
+      '""': ({item}) => ([PD.is, 'afterEnd', [{on:'input', from:'form', to: 'details', careOf: name, prop: item.name, val: 'target.value', m:1}]])
 
     }]
   })
@@ -90,6 +95,13 @@ export const linkMassagedProps = ({properties, self}: SwagTagBase) => {
   if(properties === undefined || (<any>properties)[massaged as any as string]) return;
   properties.forEach(prop =>{
     prop.value = (<any>prop).default;
+    switch(prop.type){
+      case 'string':
+      case 'number':
+      case 'boolean':
+        (<any>prop).isPrimitive = true;
+        break;
+    }
   });
   (<any>properties)[massaged as any as string] = true;
   self.massagedProps = properties;
