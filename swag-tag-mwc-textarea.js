@@ -1,4 +1,5 @@
 import { SwagTagObjectBase } from './swag-tag-object-base.js';
+import { define } from 'xtal-element/xtal-latx.js';
 import { createTemplate } from 'trans-render/createTemplate.js';
 import("@material/mwc-textarea/mwc-textarea.js");
 const mainTemplate = createTemplate(/* html */ `
@@ -6,9 +7,10 @@ const mainTemplate = createTemplate(/* html */ `
       :host{
           display:block;
       }
-      textarea{
+      mwc-textarea{
           height: 200px;
           width: 100%;
+          display:block;
       }
       label{
           display:block
@@ -33,3 +35,4 @@ export class SwagTagMWCTextarea extends SwagTagObjectBase {
     }
 }
 SwagTagMWCTextarea.is = 'swag-tag-mwc-textarea';
+define(SwagTagMWCTextarea);

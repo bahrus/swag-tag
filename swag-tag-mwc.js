@@ -1,67 +1,58 @@
-import { SwagTagBase, propInfo$ } from './swag-tag-base.js';
-import { define } from "trans-render/define.js";
-import { createTemplate } from "trans-render/createTemplate.js";
-import { init } from "trans-render/init.js";
-import { replaceElementWithTemplate as replace } from "trans-render/replaceElementWithTemplate.js";
-const styleTemplate = createTemplate(/* html */ `
-<style>
-    mwc-textarea {
-        width: 95%;
-        resize: vertical;
-        margin-bottom:20px
-    }
-
-</style>
-`);
-import("@material/mwc-checkbox/mwc-checkbox.js");
-import("@material/mwc-textarea/mwc-textarea.js");
-import("@material/mwc-formfield/mwc-formfield.js");
-import("@material/mwc-textfield/mwc-textfield.js");
-const string$ = Symbol();
-const object$ = Symbol();
-const bool$ = Symbol();
+import { SwagTagBase, uiRefs, createUiRefs, addEventListeners, linkWcInfo, triggerImportReferencedModule } from './swag-tag-base.js';
+import { define } from 'xtal-element/XtalElement.js';
+import { PD } from "p-et-alia/p-d.js";
+import { SwagTagMWCTextField } from './swag-tag-mwc-textfield.js';
+import { SwagTagMWCCheckbox } from './swag-tag-mwc-checkbox.js';
+import { SwagTagMWCTextarea } from './swag-tag-mwc-textarea.js';
+export const addEditors = ({ massagedProps, name }) => ({
+    [uiRefs.fieldset]: [massagedProps, ({ item }) => item.editor, , {
+            [`${SwagTagMWCTextField.is},${SwagTagMWCCheckbox.is}`]: ({ item, target }) => {
+                Object.assign(target, item);
+                target.setAttribute('role', 'textbox');
+            },
+            '"': ({ item }) => ([PD.is, 'afterEnd', [{ on: 'input', from: 'form', to: 'details', careOf: name, prop: item.name, val: 'target.value', m: 1 }]]),
+            [SwagTagMWCTextarea.is]: ({ item, target }) => {
+                Object.assign(target, item);
+                target.setAttribute('role', 'textbox');
+            },
+            '""': ({ item }) => ([PD.is, 'afterEnd', [{ on: 'parsed-object-changed', from: 'form', to: 'details', careOf: name, prop: item.name, val: 'target.parsedObject', m: 1 }]])
+        }]
+});
+const massaged = Symbol();
+export const linkMassagedProps = ({ properties, self }) => {
+    if (properties === undefined || properties[massaged])
+        return;
+    properties.forEach(prop => {
+        const anyProp = prop;
+        prop.value = anyProp.default;
+        switch (prop.type) {
+            case 'string':
+            case 'number':
+                anyProp.editor = SwagTagMWCTextField.is;
+                break;
+            case 'boolean':
+                anyProp.editor = SwagTagMWCCheckbox.is;
+                break;
+            default:
+                anyProp.editor = SwagTagMWCTextarea.is;
+        }
+    });
+    properties[massaged] = true;
+    self.massagedProps = properties;
+};
+const updateTransforms = [
+    createUiRefs,
+    addEventListeners,
+    addEditors
+];
 export class SwagTagMWC extends SwagTagBase {
     constructor() {
         super(...arguments);
-        this.initPostTransform = {
-            header: styleTemplate,
-            fieldset: {
-                form: {
-                    div: {
-                        //static declarative rules
-                        label: false,
-                        textarea: ({ ctx, target }) => replace(target, ctx, [object$, /* html */ `
-                        <mwc-textarea disabled></mwc-textarea>
-                    `]),
-                        '[on][data-type="boolean"]': [{ on: 'change', val: 'target.checked' }],
-                        'input[type="text"]': ({ ctx, target }) => replace(target, ctx, [string$, /*html */ `
-                    <mwc-textfield disabled></mwc-textfield>
-                    `]),
-                        'input[type="checkbox"]': ({ ctx, target }) => replace(target, ctx, [bool$, /* html */ `
-                        <mwc-formfield disabled>
-                            <mwc-checkbox></mwc-checkbox>
-                        </mwc-formfield>
-                    `]),
-                    },
-                    // dynamic rules
-                    '"': ({ target }) => {
-                        const propInfo = target[propInfo$];
-                        return {
-                            'mwc-textarea, mwc-textfield': [{ label: propInfo.name, value: propInfo.default ?? '', helper: propInfo.description ?? '' }],
-                            'mwc-formfield': [{ label: propInfo.name }],
-                        };
-                    },
-                }
-            }
-        };
-    }
-    static get is() { return 'swag-tag-mwc'; }
-    get noShadow() {
-        return false;
-    }
-    afterInitRenderCallback(ctx, target, renderOptions) {
-        ctx.Transform = this.initPostTransform;
-        init(target, ctx);
+        this.updateTransforms = updateTransforms;
+        this.propActions = [
+            linkWcInfo, linkMassagedProps, triggerImportReferencedModule
+        ];
     }
 }
+SwagTagMWC.is = 'swag-tag-mwc';
 define(SwagTagMWC);

@@ -9,9 +9,10 @@ const mainTemplate = createTemplate(/* html */`
       :host{
           display:block;
       }
-      textarea{
+      mwc-textarea{
           height: 200px;
           width: 100%;
+          display:block;
       }
       label{
           display:block
@@ -38,3 +39,4 @@ export class SwagTagMWCTextarea extends SwagTagObjectBase{
         updateTextArea
     ]  as SelectiveUpdate<any>[];
 }
+define(SwagTagMWCTextarea);

@@ -10,7 +10,7 @@ const mainTemplate = T(/* html */ `
   legend{
     cursor: pointer;
   }
-  fieldset[data-open="false"] ${SwagTagPrimitiveBase.is}, fieldset[data-open="false"] ${SwagTagObjectBase.is} {
+  fieldset[data-open="false"] [role="textbox"]{
     display: none;
   }
 </style>
@@ -26,41 +26,43 @@ const mainTemplate = T(/* html */ `
   <var>
     <div></div>
   </var>
-  
 </details>
 <h4>Live Events Fired</h4>
 <json-viewer -object allowlist="detail,type,bubbles,cancelBubble,cancelable,composed,defaultPrevented,eventPhase,isTrusted,returnValue,timeStamp"></json-viewer>
-<main></main>
-<footer></footer>
 `);
 const eventListener = T(/* html */ `
 <p-d m=1 from=details to=json-viewer[-object] val=. skip-init></p-d>
 `);
 const symbolGen = ({ editName, fieldset, summary, xtalJsonEditor, var$, eventListeners$ }) => 0;
-const uiRefs = symbolize(symbolGen);
+export const uiRefs = symbolize(symbolGen);
+export const createUiRefs = ({ name }) => ({
+    [uiRefs.summary]: name,
+    [uiRefs.editName]: name,
+    [uiRefs.var$]: [name, 'afterBegin'],
+});
+export const addEventListeners = ({ events, name }) => ({
+    [uiRefs.eventListeners$]: [events, eventListener, , {
+            [PD.is]: ({ item }) => [{ observe: name, on: item.name }]
+        }]
+});
+export const addEditors = ({ massagedProps, name }) => ({
+    [uiRefs.fieldset]: [massagedProps, ({ item }) => item.editor, , {
+            [SwagTagPrimitiveBase.is]: ({ item, target }) => {
+                Object.assign(target, item);
+                target.setAttribute('role', 'textbox');
+            },
+            '"': ({ item }) => ([PD.is, 'afterEnd', [{ on: 'input', from: 'form', to: 'details', careOf: name, prop: item.name, val: 'target.value', m: 1 }]]),
+            [SwagTagObjectBase.is]: ({ item, target }) => {
+                Object.assign(target, item);
+                target.setAttribute('role', 'textbox');
+            },
+            '""': ({ item }) => ([PD.is, 'afterEnd', [{ on: 'parsed-object-changed', from: 'form', to: 'details', careOf: name, prop: item.name, val: 'target.parsedObject', m: 1 }]])
+        }]
+});
 const updateTransforms = [
-    ({ name }) => ({
-        [uiRefs.summary]: name,
-        [uiRefs.editName]: name,
-        [uiRefs.var$]: [name, 'afterBegin'],
-    }),
-    ({ events, name }) => ({
-        [uiRefs.eventListeners$]: [events, eventListener, , {
-                [PD.is]: ({ item }) => [{ observe: name, on: item.name }]
-            }]
-    }),
-    ({ massagedProps, name }) => ({
-        [uiRefs.fieldset]: [massagedProps, ({ item }) => item.editor, , {
-                [SwagTagPrimitiveBase.is]: ({ item, target }) => {
-                    Object.assign(target, item);
-                },
-                '"': ({ item }) => ([PD.is, 'afterEnd', [{ on: 'input', from: 'form', to: 'details', careOf: name, prop: item.name, val: 'target.value', m: 1 }]]),
-                [SwagTagObjectBase.is]: ({ item, target }) => {
-                    Object.assign(target, item);
-                },
-                '""': ({ item }) => ([PD.is, 'afterEnd', [{ on: 'parsed-object-changed', from: 'form', to: 'details', careOf: name, prop: item.name, val: 'target.parsedObject', m: 1 }]])
-            }]
-    })
+    createUiRefs,
+    addEventListeners,
+    addEditors
 ];
 export const linkWcInfo = ({ viewModel, tag, self }) => {
     if (tag === undefined || viewModel === undefined)
@@ -96,8 +98,6 @@ export const triggerImportReferencedModule = ({ path, self }) => {
     }
 };
 const pdxEvent = 'event';
-export const propInfo$ = Symbol();
-export const propBase$ = Symbol();
 export const noPathFound$ = Symbol();
 export const noPathFoundTemplate = 'noPathFoundTemplate';
 export class SwagTagBase extends XtalFetchViewElement {
