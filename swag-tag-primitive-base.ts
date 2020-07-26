@@ -32,7 +32,7 @@ const updateInput = ({readOnly, inputType, disabled, value}: SwagTagPrimitiveBas
     [input$]: [,,{'readonly': readOnly, type: inputType, disabled: disabled, value: value}]
 });
 
-const linkInputType = ({type, self}: SwagTagPrimitiveBase) => {
+export const linkInputType = ({type, self}: SwagTagPrimitiveBase) => {
     switch(type){
         case 'boolean':
             self.inputType = 'checkbox';

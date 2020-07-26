@@ -23,7 +23,7 @@ const updateLabel = ({ name }) => ({
 const updateInput = ({ readOnly, inputType, disabled, value }) => ({
     [input$]: [, , { 'readonly': readOnly, type: inputType, disabled: disabled, value: value }]
 });
-const linkInputType = ({ type, self }) => {
+export const linkInputType = ({ type, self }) => {
     switch (type) {
         case 'boolean':
             self.inputType = 'checkbox';
