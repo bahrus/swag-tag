@@ -17,6 +17,7 @@
     "xtal-element": "0.0.256",
     "p-et-alia": "0.0.106",
     "@alenaksu/json-viewer": "0.1.0",
+    "@power-elements/json-viewer": "2.0.3",
     "xtal-text-input-md": "0.0.19",
     "xtal-text-area-md": "0.0.21",
     "xtal-checkbox-input-md": "0.0.5",

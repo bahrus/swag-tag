@@ -7,6 +7,7 @@ import {PD} from "p-et-alia/p-d.js";
 import { SwagTagPrimitiveBase } from './swag-tag-primitive-base.js';
 import {SwagTagObjectBase} from './swag-tag-object-base.js';
 import { SelectiveUpdate, TransformRules} from "../xtal-element/types.js";
+import('@power-elements/json-viewer/json-viewer.js');
 
 const mainTemplate = T(/* html */ `
 <style id=collapsibleForm>
@@ -33,13 +34,13 @@ const mainTemplate = T(/* html */ `
 </details>
 <h4>Live Events Fired</h4>
 <dfn -text-content></dfn>
-<json-viewer -data></json-viewer>
+<json-viewer -object allowlist="detail,type"></json-viewer>
 <main></main>
 <footer></footer>
 `);
 
 const eventListener = T(/* html */`
-<p-d m=1 from=details to=json-viewer[-data] val=detail></p-d>
+<p-d m=1 from=details to=json-viewer[-object] val=. skip-init></p-d>
 <p-d m=1 from=details to=dfn[-text-content] val=type></p-d>
 `);
 
@@ -117,10 +118,7 @@ export const propBase$ = Symbol();
 export const noPathFound$ = Symbol();
 export const noPathFoundTemplate = 'noPathFoundTemplate';
 export class SwagTagBase extends XtalFetchViewElement<WCSuiteInfo> implements WCInfo {
-  constructor(){
-    super();
-    import('@alenaksu/json-viewer/build/index.js');
-  }
+
   static is = "swag-tag-base";
 
   noShadow = true;

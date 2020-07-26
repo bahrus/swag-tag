@@ -4,6 +4,7 @@ import { XtalFetchViewElement, define, mergeProps } from "xtal-element/XtalFetch
 import { PD } from "p-et-alia/p-d.js";
 import { SwagTagPrimitiveBase } from './swag-tag-primitive-base.js';
 import { SwagTagObjectBase } from './swag-tag-object-base.js';
+import('@power-elements/json-viewer/json-viewer.js');
 const mainTemplate = T(/* html */ `
 <style id=collapsibleForm>
   legend{
@@ -29,12 +30,12 @@ const mainTemplate = T(/* html */ `
 </details>
 <h4>Live Events Fired</h4>
 <dfn -text-content></dfn>
-<json-viewer -data></json-viewer>
+<json-viewer -object allowlist="detail,type"></json-viewer>
 <main></main>
 <footer></footer>
 `);
 const eventListener = T(/* html */ `
-<p-d m=1 from=details to=json-viewer[-data] val=detail></p-d>
+<p-d m=1 from=details to=json-viewer[-object] val=. skip-init></p-d>
 <p-d m=1 from=details to=dfn[-text-content] val=type></p-d>
 `);
 const symbolGen = ({ editName, fieldset, summary, xtalJsonEditor, var$, eventListeners$ }) => 0;
@@ -103,7 +104,7 @@ export const noPathFound$ = Symbol();
 export const noPathFoundTemplate = 'noPathFoundTemplate';
 export class SwagTagBase extends XtalFetchViewElement {
     constructor() {
-        super();
+        super(...arguments);
         this.noShadow = true;
         this.mainTemplate = mainTemplate;
         this.readyToRender = true;
@@ -128,7 +129,6 @@ export class SwagTagBase extends XtalFetchViewElement {
             },
         };
         this.updateTransforms = updateTransforms;
-        import('@alenaksu/json-viewer/build/index.js');
     }
     toggleForm(e) {
         const fieldset = e.target.closest('fieldset');
