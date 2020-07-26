@@ -1,33 +1,29 @@
 import { WCSuiteInfo, WCInfo, PropertyInfo, CustomEventInfo, SlotInfo, AttribInfo } from "wc-info/types.js";
-//import { repeat } from "trans-render/repeat.js";
-import { replaceTargetWithTag } from "trans-render/replaceTargetWithTag2.js";
 import {symbolize} from 'xtal-element/symbolize.js';
 import { appendTag } from "trans-render/appendTag.js";
 import { createTemplate as T } from "trans-render/createTemplate.js";
 import {
-  RenderOptions,
-  TransformRules,
-  PSettings,
-  PESettings,
-  PEASettings
-} from "trans-render/types.d.js";
-import {
-  RenderContext
+  RenderContext, PEATSettings
 } from 'trans-render/types2.d.js';
 import { XtalFetchViewElement, define, mergeProps, AttributeProps} from "xtal-element/XtalFetchViewElement.js";
 import {PD} from "p-et-alia/p-d.js";
-import { PDProps } from 'p-et-alia/types.d.js';
-import { extend } from "p-et-alia/p-d-x.js";
-import { XtalJsonEditor } from "xtal-json-editor/xtal-json-editor.js";
 import { SwagTagPrimitiveBase } from './swag-tag-primitive-base.js';
 import {SwagTagObjectBase} from './swag-tag-object-base.js';
-import { SelectiveUpdate } from "../xtal-element/types.js";
+import { SelectiveUpdate, TransformRules} from "../xtal-element/types.js";
 
 const mainTemplate = T(/* html */ `
+<style id=collapsibleForm>
+  legend{
+    cursor: pointer;
+  }
+  fieldset[data-open="false"] ${SwagTagPrimitiveBase.is}, fieldset[data-open="false"] ${SwagTagObjectBase.is} {
+    display: none;
+  }
+</style>
 <header>
 </header>
 <form>
-  <fieldset>
+  <fieldset data-open="true">
     <legend>✏️Edit <var></var>'s properties</legend>
   </fieldset>
 </form>
@@ -45,20 +41,7 @@ interface IUIRef{editName: symbol; fieldset: symbol, summary: symbol; xtalJsonEd
 const symbolGen = ({editName, fieldset, summary, xtalJsonEditor, var$}: IUIRef) => 0;
 const uiRefs = symbolize(symbolGen) as IUIRef;
 
-const initTransform = {
-  form:{
-    fieldset: uiRefs.fieldset,
-    '"':{
-      legend: {
-        var: uiRefs.editName,
-      }
-    },
-  },
-  details:{
-    summary: uiRefs.summary,
-    var: uiRefs.var$
-  },
-};
+
 
 const updateTransforms = [
   ({name}: SwagTagBase) => ({
@@ -143,6 +126,21 @@ export class SwagTagBase extends XtalFetchViewElement<WCSuiteInfo> implements WC
     linkWcInfo, linkMassagedProps, triggerImportReferencedModule
   ];
 
+  initTransform = {
+    form:{
+      fieldset: uiRefs.fieldset,
+      '"':{
+        legend: [,{click: this.toggleForm},,{
+          var: uiRefs.editName,
+        }] as PEATSettings
+      },
+    },
+    details:{
+      summary: uiRefs.summary,
+      var: uiRefs.var$
+    },
+  } as TransformRules;
+
   updateTransforms = updateTransforms;
 
   tag: string | undefined;
@@ -174,7 +172,11 @@ export class SwagTagBase extends XtalFetchViewElement<WCSuiteInfo> implements WC
     return noPathFoundTemplate;
   }
 
-  initTransform = initTransform;
+  toggleForm(e: Event){
+    const fieldset = (e.target as HTMLElement).closest('fieldset') as HTMLFieldSetElement;
+    const currentVal = fieldset.dataset.open;
+    fieldset.dataset.open = currentVal === 'true'? 'false': 'true';
+  }
 
   get [noPathFoundTemplate](){
     return T(`<div>No path found.</div>`, SwagTagBase, noPathFound$);

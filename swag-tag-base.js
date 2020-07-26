@@ -5,10 +5,18 @@ import { PD } from "p-et-alia/p-d.js";
 import { SwagTagPrimitiveBase } from './swag-tag-primitive-base.js';
 import { SwagTagObjectBase } from './swag-tag-object-base.js';
 const mainTemplate = T(/* html */ `
+<style id=collapsibleForm>
+  legend{
+    cursor: pointer;
+  }
+  fieldset[data-open="false"] ${SwagTagPrimitiveBase.is}, fieldset[data-open="false"] ${SwagTagObjectBase.is} {
+    display: none;
+  }
+</style>
 <header>
 </header>
 <form>
-  <fieldset>
+  <fieldset data-open="true">
     <legend>✏️Edit <var></var>'s properties</legend>
   </fieldset>
 </form>
@@ -23,20 +31,6 @@ const mainTemplate = T(/* html */ `
 `);
 const symbolGen = ({ editName, fieldset, summary, xtalJsonEditor, var$ }) => 0;
 const uiRefs = symbolize(symbolGen);
-const initTransform = {
-    form: {
-        fieldset: uiRefs.fieldset,
-        '"': {
-            legend: {
-                var: uiRefs.editName,
-            }
-        },
-    },
-    details: {
-        summary: uiRefs.summary,
-        var: uiRefs.var$
-    },
-};
 const updateTransforms = [
     ({ name }) => ({
         [uiRefs.summary]: name,
@@ -99,8 +93,21 @@ export class SwagTagBase extends XtalFetchViewElement {
         this.propActions = [
             linkWcInfo, linkMassagedProps, triggerImportReferencedModule
         ];
+        this.initTransform = {
+            form: {
+                fieldset: uiRefs.fieldset,
+                '"': {
+                    legend: [, { click: this.toggleForm }, , {
+                            var: uiRefs.editName,
+                        }]
+                },
+            },
+            details: {
+                summary: uiRefs.summary,
+                var: uiRefs.var$
+            },
+        };
         this.updateTransforms = updateTransforms;
-        this.initTransform = initTransform;
         import('@alenaksu/json-viewer/build/index.js');
     }
     //#region Required Methods / Properties
@@ -112,6 +119,11 @@ export class SwagTagBase extends XtalFetchViewElement {
             return true;
         }
         return noPathFoundTemplate;
+    }
+    toggleForm(e) {
+        const fieldset = e.target.closest('fieldset');
+        const currentVal = fieldset.dataset.open;
+        fieldset.dataset.open = currentVal === 'true' ? 'false' : 'true';
     }
     get [noPathFoundTemplate]() {
         return T(`<div>No path found.</div>`, SwagTagBase, noPathFound$);
