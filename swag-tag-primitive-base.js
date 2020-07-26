@@ -5,6 +5,9 @@ const mainTemplate = createTemplate(/* html */ `
       :host{
           display:block;
       }
+      label{
+          display:block;
+      }
   </style>
   <label for=myInput part=fieldLabel></label>
   <input id=myInput part=inputElement>
@@ -14,10 +17,10 @@ const initTransform = {
     label: label$,
     input: input$
 };
-export const updateLabel = ({ name }) => ({
-    [label$]: name,
+const updateLabel = ({ name }) => ({
+    [label$]: name + ':',
 });
-export const updateInput = ({ readOnly, inputType, disabled, value }) => ({
+const updateInput = ({ readOnly, inputType, disabled, value }) => ({
     [input$]: [, , { 'readonly': readOnly, type: inputType, disabled: disabled, value: value }]
 });
 const linkInputType = ({ type, self }) => {

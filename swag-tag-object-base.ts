@@ -1,4 +1,4 @@
-import {SwagTagPrimitiveBase, updateLabel} from './swag-tag-primitive-base.js';
+import {SwagTagPrimitiveBase} from './swag-tag-primitive-base.js';
 import {SelectiveUpdate} from 'xtal-element/types.d.js';
 import {define} from 'xtal-element/XtalElement.js';
 import {createTemplate} from 'trans-render/createTemplate.js';
@@ -8,9 +8,16 @@ const mainTemplate = createTemplate(/* html */`
       :host{
           display:block;
       }
+      textarea{
+          height: 400px;
+          width: 100%;
+      }
+      label{
+          display:block
+      }
   </style>
   <label for=myInput part=fieldLabel></label>
-  <textarea id=myInput part=inputElement></textarea>
+  <textarea id=myInput part=inputElement part=textarea></textarea>
 `);
 
 
@@ -20,8 +27,11 @@ const initTransform  = {
     textarea: textarea$
 };
 
-export const updateTextArea = ({readOnly, inputType, disabled, value}: SwagTagPrimitiveBase) =>({
-    [textarea$]: [{value: value},,{'readonly': readOnly, type: inputType, disabled: disabled}]
+const updateLabel = ({name}: SwagTagPrimitiveBase) => ({
+    [label$]: name + ':',
+});
+const updateTextArea = ({readOnly, inputType, disabled, value}: SwagTagPrimitiveBase) =>({
+    [textarea$]: [{value: value || ''},,{'readonly': readOnly, type: inputType, disabled: disabled}]
 });
 
 export class SwagTagObjectBase extends SwagTagPrimitiveBase{

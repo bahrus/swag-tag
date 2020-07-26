@@ -10,6 +10,9 @@ const mainTemplate = createTemplate(/* html */`
       :host{
           display:block;
       }
+      label{
+          display:block;
+      }
   </style>
   <label for=myInput part=fieldLabel></label>
   <input id=myInput part=inputElement>
@@ -21,11 +24,11 @@ const initTransform  = {
     input: input$
 };
 
-export const updateLabel = ({name}: SwagTagPrimitiveBase) => ({
-    [label$]: name,
+const updateLabel = ({name}: SwagTagPrimitiveBase) => ({
+    [label$]: name + ':',
 });
 
-export const updateInput = ({readOnly, inputType, disabled, value}: SwagTagPrimitiveBase) =>({
+const updateInput = ({readOnly, inputType, disabled, value}: SwagTagPrimitiveBase) =>({
     [input$]: [,,{'readonly': readOnly, type: inputType, disabled: disabled, value: value}]
 });
 
