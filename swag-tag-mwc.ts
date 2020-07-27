@@ -1,4 +1,4 @@
-import {SwagTagBase, uiRefs, createUiRefs, addEventListeners, linkWcInfo, triggerImportReferencedModule} from './swag-tag-base.js';
+import {SwagTagBase, uiRefs, bindName, addEventListeners, linkWcInfo, triggerImportReferencedModule} from './swag-tag-base.js';
 import { WCSuiteInfo, WCInfo, PropertyInfo, CustomEventInfo, SlotInfo, AttribInfo } from "wc-info/types.js";
 import {define} from 'xtal-element/XtalElement.js';
 import {RenderContext, PEATSettings} from 'trans-render/types2.d.js';
@@ -47,7 +47,7 @@ export const linkMassagedProps = ({properties, self}: SwagTagBase) => {
   }
 
 const updateTransforms = [
-    createUiRefs,
+    bindName,
     addEventListeners,
     addEditors
   ] as SelectiveUpdate<any>[];

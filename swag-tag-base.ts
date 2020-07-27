@@ -19,6 +19,10 @@ const mainTemplate = T(/* html */ `
   }
 </style>
 <header>
+  <details>
+    <summary><var></var> schema</summary>
+    <json-viewer allowlist="name,properties,attributes,slots,events"></json-viewer>
+  </details>
 </header>
 <form>
   <fieldset data-open="false">
@@ -39,17 +43,18 @@ const eventListener = T(/* html */`
 <p-d m=1 from=details to=json-viewer[-object] val=. skip-init></p-d>
 `);
 
-interface IUIRef{editName: symbol; fieldset: symbol, summary: symbol; xtalJsonEditor: symbol; var$: symbol; eventListeners$: symbol;}
-const symbolGen = ({editName, fieldset, summary, xtalJsonEditor, var$, eventListeners$}: IUIRef) => 0;
+interface IUIRef{editName: symbol; fieldset: symbol, summary: symbol;editingName: symbol; schemaName: symbol; eventListeners: symbol; tagInfoViewer: symbol}
+const symbolGen = ({editName, fieldset, summary, editingName, schemaName, eventListeners, tagInfoViewer}: IUIRef) => 0;
 export const uiRefs = symbolize(symbolGen) as IUIRef;
 
-export const createUiRefs = ({name}: SwagTagBase) => ({
+export const bindName = ({name}: SwagTagBase) => ({
   [uiRefs.summary]: name,
   [uiRefs.editName]: name,
-  [uiRefs.var$]: [name, 'afterBegin'],
+  [uiRefs.schemaName]: name,
+  [uiRefs.editingName]: [name, 'afterBegin'],
 });
 export const addEventListeners =   ({events, name}: SwagTagBase) => ({
-  [uiRefs.eventListeners$]: [events, eventListener,,{
+  [uiRefs.eventListeners]: [events, eventListener,,{
     [PD.is]:({item}: RenderContext) => [{observe: name, on: item.name}]
   }]
 });
@@ -69,10 +74,15 @@ export const addEditors =   ({massagedProps, name}: SwagTagBase) => ({
   }]
 });
 
+export const bindSelf = ({attribs, self}: SwagTagBase) => ({
+  [uiRefs.tagInfoViewer]: [{object: self}]
+});
+
 const updateTransforms = [
-  createUiRefs,
+  bindName,
   addEventListeners,
-  addEditors
+  addEditors,
+  bindSelf
 ] as SelectiveUpdate<any>[];
 
 
@@ -123,10 +133,10 @@ export class SwagTagBase extends XtalFetchViewElement<WCSuiteInfo> implements WC
   mainTemplate = mainTemplate;
   readyToRender = true;
 
-  static attributeProps: any = ({tag, name, properties, path, events, slots, testCaseNames} : SwagTagBase) =>{
+  static attributeProps: any = ({tag, name, properties, path, events, slots, testCaseNames, attribs} : SwagTagBase) =>{
     const ap = {
       str: [tag, name, path],
-      obj: [properties, events, slots, testCaseNames],
+      obj: [properties, events, slots, testCaseNames, attribs],
       reflect: [tag]
     } as AttributeProps;
     return mergeProps(ap, (<any>XtalFetchViewElement).props);
@@ -137,6 +147,14 @@ export class SwagTagBase extends XtalFetchViewElement<WCSuiteInfo> implements WC
   ];
 
   initTransform = {
+    header:{
+      details:{
+        summary:{
+          var: uiRefs.schemaName
+        },
+        'json-viewer': uiRefs.tagInfoViewer
+      },
+    },
     form:{
       fieldset: uiRefs.fieldset,
       '"':{
@@ -147,9 +165,9 @@ export class SwagTagBase extends XtalFetchViewElement<WCSuiteInfo> implements WC
     },
     details:{
       summary: uiRefs.summary,
-      var: uiRefs.var$,
+      var: uiRefs.editingName,
       '"': {
-        div: uiRefs.eventListeners$
+        div: uiRefs.eventListeners
       }
     },
   } as TransformRules;

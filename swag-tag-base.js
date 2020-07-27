@@ -15,6 +15,10 @@ const mainTemplate = T(/* html */ `
   }
 </style>
 <header>
+  <details>
+    <summary><var></var> schema</summary>
+    <json-viewer allowlist="name,properties,attributes,slots,events"></json-viewer>
+  </details>
 </header>
 <form>
   <fieldset data-open="false">
@@ -33,15 +37,16 @@ const mainTemplate = T(/* html */ `
 const eventListener = T(/* html */ `
 <p-d m=1 from=details to=json-viewer[-object] val=. skip-init></p-d>
 `);
-const symbolGen = ({ editName, fieldset, summary, xtalJsonEditor, var$, eventListeners$ }) => 0;
+const symbolGen = ({ editName, fieldset, summary, editingName, schemaName, eventListeners, tagInfoViewer }) => 0;
 export const uiRefs = symbolize(symbolGen);
-export const createUiRefs = ({ name }) => ({
+export const bindName = ({ name }) => ({
     [uiRefs.summary]: name,
     [uiRefs.editName]: name,
-    [uiRefs.var$]: [name, 'afterBegin'],
+    [uiRefs.schemaName]: name,
+    [uiRefs.editingName]: [name, 'afterBegin'],
 });
 export const addEventListeners = ({ events, name }) => ({
-    [uiRefs.eventListeners$]: [events, eventListener, , {
+    [uiRefs.eventListeners]: [events, eventListener, , {
             [PD.is]: ({ item }) => [{ observe: name, on: item.name }]
         }]
 });
@@ -59,10 +64,14 @@ export const addEditors = ({ massagedProps, name }) => ({
             '""': ({ item }) => ([PD.is, 'afterEnd', [{ on: 'parsed-object-changed', from: 'form', to: 'details', careOf: name, prop: item.name, val: 'target.parsedObject', m: 1 }]])
         }]
 });
+export const bindSelf = ({ attribs, self }) => ({
+    [uiRefs.tagInfoViewer]: [{ object: self }]
+});
 const updateTransforms = [
-    createUiRefs,
+    bindName,
     addEventListeners,
-    addEditors
+    addEditors,
+    bindSelf
 ];
 export const linkWcInfo = ({ viewModel, tag, self }) => {
     if (tag === undefined || viewModel === undefined)
@@ -110,6 +119,14 @@ export class SwagTagBase extends XtalFetchViewElement {
             linkWcInfo, linkMassagedProps, triggerImportReferencedModule
         ];
         this.initTransform = {
+            header: {
+                details: {
+                    summary: {
+                        var: uiRefs.schemaName
+                    },
+                    'json-viewer': uiRefs.tagInfoViewer
+                },
+            },
             form: {
                 fieldset: uiRefs.fieldset,
                 '"': {
@@ -120,9 +137,9 @@ export class SwagTagBase extends XtalFetchViewElement {
             },
             details: {
                 summary: uiRefs.summary,
-                var: uiRefs.var$,
+                var: uiRefs.editingName,
                 '"': {
-                    div: uiRefs.eventListeners$
+                    div: uiRefs.eventListeners
                 }
             },
         };
@@ -144,10 +161,10 @@ export class SwagTagBase extends XtalFetchViewElement {
     }
 }
 SwagTagBase.is = "swag-tag-base";
-SwagTagBase.attributeProps = ({ tag, name, properties, path, events, slots, testCaseNames }) => {
+SwagTagBase.attributeProps = ({ tag, name, properties, path, events, slots, testCaseNames, attribs }) => {
     const ap = {
         str: [tag, name, path],
-        obj: [properties, events, slots, testCaseNames],
+        obj: [properties, events, slots, testCaseNames, attribs],
         reflect: [tag]
     };
     return mergeProps(ap, XtalFetchViewElement.props);
