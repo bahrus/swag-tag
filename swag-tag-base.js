@@ -155,7 +155,7 @@ export class SwagTagBase extends XtalFetchViewElement {
         return T(`<div>No path found.</div>`, SwagTagBase, noPathFound$);
     }
     importReferencedModule() {
-        if (this.href.indexOf('//') < 7) {
+        if (this.href.indexOf('//') > -1 && this.href.indexOf('//') < 7) {
             const selfResolvingModuleSplitPath = this.href.split('/');
             selfResolvingModuleSplitPath?.pop();
             const selfResolvingModulePath = selfResolvingModuleSplitPath?.join('/') + this.path.substring(1) + '?module';
