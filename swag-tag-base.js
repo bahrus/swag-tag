@@ -46,7 +46,7 @@ export const bindName = ({ name }) => ({
     [uiRefs.editingName]: [name, 'afterBegin'],
 });
 export const addEventListeners = ({ events, name }) => ({
-    [uiRefs.eventListeners]: [events, eventListener, , {
+    [uiRefs.eventListeners]: [events || [], eventListener, , {
             [PD.is]: ({ item }) => [{ observe: name, on: item.name }]
         }]
 });

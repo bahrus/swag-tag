@@ -54,7 +54,7 @@ export const bindName = ({name}: SwagTagBase) => ({
   [uiRefs.editingName]: [name, 'afterBegin'],
 });
 export const addEventListeners =   ({events, name}: SwagTagBase) => ({
-  [uiRefs.eventListeners]: [events, eventListener,,{
+  [uiRefs.eventListeners]: [events || [], eventListener,,{
     [PD.is]:({item}: RenderContext) => [{observe: name, on: item.name}]
   }]
 });
@@ -204,10 +204,22 @@ export class SwagTagBase extends XtalFetchViewElement<WCSuiteInfo> implements WC
   }
 
   importReferencedModule() {
-    const selfResolvingModuleSplitPath = this.href?.split('/');
-    selfResolvingModuleSplitPath?.pop();
-    const selfResolvingModulePath = selfResolvingModuleSplitPath?.join('/') + this.path!.substring(1) + '?module';
-    import(selfResolvingModulePath);
+    if(this.href!.indexOf('//') < 7){
+      const selfResolvingModuleSplitPath = this.href!.split('/');
+      selfResolvingModuleSplitPath?.pop();
+      const selfResolvingModulePath = selfResolvingModuleSplitPath?.join('/') + this.path!.substring(1) + '?module';
+      import(selfResolvingModulePath);
+    }else{
+      const splitPath = (location.origin + location.pathname).split('/');
+      splitPath.pop();
+      let path = this.path!;
+      while(path.startsWith('../')){
+        splitPath.pop();
+        path = path.substr(3);
+      }
+      const importPath = splitPath.join('/') + '/' + path;
+    }
+
   }
 
 }
