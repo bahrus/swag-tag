@@ -9,6 +9,10 @@ import {SwagTagObjectBase} from './swag-tag-object-base.js';
 import { SelectiveUpdate, TransformRules} from "../xtal-element/types.js";
 import('@power-elements/json-viewer/json-viewer.js');
 
+interface IUIRef{editName: symbol; fieldset: symbol, summary: symbol;editingName: symbol; schemaName: symbol; eventListeners: symbol; tagInfoViewer: symbol}
+const symbolGen = ({editName, fieldset, summary, editingName, schemaName, eventListeners, tagInfoViewer}: IUIRef) => 0;
+export const uiRefs = symbolize(symbolGen) as IUIRef;
+
 const mainTemplate = T(/* html */ `
 <style id=collapsibleForm>
   legend{
@@ -43,9 +47,34 @@ const eventListener = T(/* html */`
 <p-d m=1 from=details to=json-viewer[-object] val=. skip-init></p-d>
 `);
 
-interface IUIRef{editName: symbol; fieldset: symbol, summary: symbol;editingName: symbol; schemaName: symbol; eventListeners: symbol; tagInfoViewer: symbol}
-const symbolGen = ({editName, fieldset, summary, editingName, schemaName, eventListeners, tagInfoViewer}: IUIRef) => 0;
-export const uiRefs = symbolize(symbolGen) as IUIRef;
+
+const initTransform = ({self}: SwagTagBase) =>({
+  header:{
+    details:{
+      summary:{
+        var: uiRefs.schemaName
+      },
+      'json-viewer': uiRefs.tagInfoViewer
+    },
+  },
+  form:{
+    fieldset: uiRefs.fieldset,
+    '"':{
+      legend: [,{click: self.toggleForm},,{
+        var: uiRefs.editName
+      }] as PEATSettings
+    },
+  },
+  details:{
+    summary: uiRefs.summary,
+    var: uiRefs.editingName,
+    '"': {
+      div: uiRefs.eventListeners
+    }
+  },
+} as TransformRules);
+
+
 
 export const bindName = ({name}: SwagTagBase) => ({
   [uiRefs.summary]: name,
@@ -146,31 +175,8 @@ export class SwagTagBase extends XtalFetchViewElement<WCSuiteInfo> implements WC
     linkWcInfo, linkMassagedProps, triggerImportReferencedModule
   ];
 
-  initTransform = {
-    header:{
-      details:{
-        summary:{
-          var: uiRefs.schemaName
-        },
-        'json-viewer': uiRefs.tagInfoViewer
-      },
-    },
-    form:{
-      fieldset: uiRefs.fieldset,
-      '"':{
-        legend: [,{click: this.toggleForm},,{
-          var: uiRefs.editName
-        }] as PEATSettings
-      },
-    },
-    details:{
-      summary: uiRefs.summary,
-      var: uiRefs.editingName,
-      '"': {
-        div: uiRefs.eventListeners
-      }
-    },
-  } as TransformRules;
+  initTransform = initTransform;
+  
 
   updateTransforms = updateTransforms;
 

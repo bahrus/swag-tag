@@ -5,6 +5,8 @@ import { PD } from "p-et-alia/p-d.js";
 import { SwagTagPrimitiveBase } from './swag-tag-primitive-base.js';
 import { SwagTagObjectBase } from './swag-tag-object-base.js';
 import('@power-elements/json-viewer/json-viewer.js');
+const symbolGen = ({ editName, fieldset, summary, editingName, schemaName, eventListeners, tagInfoViewer }) => 0;
+export const uiRefs = symbolize(symbolGen);
 const mainTemplate = T(/* html */ `
 <style id=collapsibleForm>
   legend{
@@ -37,8 +39,31 @@ const mainTemplate = T(/* html */ `
 const eventListener = T(/* html */ `
 <p-d m=1 from=details to=json-viewer[-object] val=. skip-init></p-d>
 `);
-const symbolGen = ({ editName, fieldset, summary, editingName, schemaName, eventListeners, tagInfoViewer }) => 0;
-export const uiRefs = symbolize(symbolGen);
+const initTransform = ({ self }) => ({
+    header: {
+        details: {
+            summary: {
+                var: uiRefs.schemaName
+            },
+            'json-viewer': uiRefs.tagInfoViewer
+        },
+    },
+    form: {
+        fieldset: uiRefs.fieldset,
+        '"': {
+            legend: [, { click: self.toggleForm }, , {
+                    var: uiRefs.editName
+                }]
+        },
+    },
+    details: {
+        summary: uiRefs.summary,
+        var: uiRefs.editingName,
+        '"': {
+            div: uiRefs.eventListeners
+        }
+    },
+});
 export const bindName = ({ name }) => ({
     [uiRefs.summary]: name,
     [uiRefs.editName]: name,
@@ -118,31 +143,7 @@ export class SwagTagBase extends XtalFetchViewElement {
         this.propActions = [
             linkWcInfo, linkMassagedProps, triggerImportReferencedModule
         ];
-        this.initTransform = {
-            header: {
-                details: {
-                    summary: {
-                        var: uiRefs.schemaName
-                    },
-                    'json-viewer': uiRefs.tagInfoViewer
-                },
-            },
-            form: {
-                fieldset: uiRefs.fieldset,
-                '"': {
-                    legend: [, { click: this.toggleForm }, , {
-                            var: uiRefs.editName
-                        }]
-                },
-            },
-            details: {
-                summary: uiRefs.summary,
-                var: uiRefs.editingName,
-                '"': {
-                    div: uiRefs.eventListeners
-                }
-            },
-        };
+        this.initTransform = initTransform;
         this.updateTransforms = updateTransforms;
     }
     toggleForm(e) {
@@ -154,10 +155,22 @@ export class SwagTagBase extends XtalFetchViewElement {
         return T(`<div>No path found.</div>`, SwagTagBase, noPathFound$);
     }
     importReferencedModule() {
-        const selfResolvingModuleSplitPath = this.href?.split('/');
-        selfResolvingModuleSplitPath?.pop();
-        const selfResolvingModulePath = selfResolvingModuleSplitPath?.join('/') + this.path.substring(1) + '?module';
-        import(selfResolvingModulePath);
+        if (this.href.indexOf('//') < 7) {
+            const selfResolvingModuleSplitPath = this.href.split('/');
+            selfResolvingModuleSplitPath?.pop();
+            const selfResolvingModulePath = selfResolvingModuleSplitPath?.join('/') + this.path.substring(1) + '?module';
+            import(selfResolvingModulePath);
+        }
+        else {
+            const splitPath = (location.origin + location.pathname).split('/');
+            splitPath.pop();
+            let path = this.path;
+            while (path.startsWith('../')) {
+                splitPath.pop();
+                path = path.substr(3);
+            }
+            const importPath = splitPath.join('/') + '/' + path;
+        }
     }
 }
 SwagTagBase.is = "swag-tag-base";
