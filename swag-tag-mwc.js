@@ -10,7 +10,7 @@ export const addEditors = ({ massagedProps, name }) => ({
                 Object.assign(target, item);
                 target.setAttribute('role', 'textbox');
             },
-            '"': ({ item }) => ([PD.is, 'afterEnd', [{ on: 'input', from: 'form', to: 'details', careOf: name, prop: item.name, val: 'target.value', m: 1 }]]),
+            '"': ({ item }) => ([PD.is, 'afterEnd', [{ on: 'edited-value-changed', from: 'form', to: 'details', careOf: name, prop: item.name, val: 'target.editedValue', m: 1 }]]),
             [SwagTagMWCTextarea.is]: ({ item, target }) => {
                 Object.assign(target, item);
                 target.setAttribute('role', 'textbox');
@@ -34,7 +34,20 @@ export const linkMassagedProps = ({ properties, self }) => {
                 anyProp.editor = SwagTagMWCCheckbox.is;
                 break;
             default:
-                anyProp.editor = SwagTagMWCTextarea.is;
+                switch (typeof anyProp.default) {
+                    case 'string':
+                    case 'number':
+                        anyProp.editor = SwagTagMWCTextField.is;
+                        break;
+                    case 'object':
+                        anyProp.editor = SwagTagMWCTextField.is;
+                        break;
+                    case 'boolean':
+                        anyProp.editor = SwagTagMWCCheckbox.is;
+                        break;
+                    default:
+                        anyProp.editor = SwagTagMWCTextarea.is;
+                }
         }
     });
     properties[massaged] = true;

@@ -1,0 +1,156 @@
+{
+  "version": "experimental",
+  "tags": [
+    {
+      "name": "mwc-textfield-example1",
+      "path": "./mwc-textfield-example1.js",
+      "properties": [
+        {
+          "name": "styles",
+          "type": "CSSResult"
+        },
+        {
+          "name": "value",
+          "type": "string"
+        },
+        {
+          "name": "type",
+          "type": "TextFieldType"
+        },
+        {
+          "name": "placeholder",
+          "type": "string"
+        },
+        {
+          "name": "label",
+          "type": "string"
+        },
+        {
+          "name": "icon",
+          "type": "string"
+        },
+        {
+          "name": "iconTrailing",
+          "type": "string"
+        },
+        {
+          "name": "disabled",
+          "type": "boolean"
+        },
+        {
+          "name": "required",
+          "type": "boolean"
+        },
+        {
+          "name": "minLength",
+          "type": "number"
+        },
+        {
+          "name": "maxLength",
+          "type": "number"
+        },
+        {
+          "name": "outlined",
+          "type": "boolean"
+        },
+        {
+          "name": "helper",
+          "type": "string"
+        },
+        {
+          "name": "validateOnInitialRender",
+          "type": "boolean"
+        },
+        {
+          "name": "validationMessage",
+          "type": "string"
+        },
+        {
+          "name": "autoValidate",
+          "type": "boolean"
+        },
+        {
+          "name": "pattern",
+          "type": "string"
+        },
+        {
+          "name": "min",
+          "type": "string | number"
+        },
+        {
+          "name": "max",
+          "type": "string | number"
+        },
+        {
+          "name": "step",
+          "type": "number | null"
+        },
+        {
+          "name": "size",
+          "type": "number | null"
+        },
+        {
+          "name": "helperPersistent",
+          "type": "boolean"
+        },
+        {
+          "name": "charCounter",
+          "type": "boolean | \"external\" | \"internal\""
+        },
+        {
+          "name": "endAligned",
+          "type": "boolean"
+        },
+        {
+          "name": "prefix",
+          "type": "string"
+        },
+        {
+          "name": "suffix",
+          "type": "string"
+        },
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "inputMode",
+          "type": "TextFieldInputMode"
+        },
+        {
+          "name": "readOnly",
+          "type": "boolean"
+        },
+        {
+          "name": "autocapitalize",
+          "type": "string"
+        },
+        {
+          "name": "validity",
+          "type": "ValidityState"
+        },
+        {
+          "name": "willValidate",
+          "type": "boolean"
+        },
+        {
+          "name": "selectionStart",
+          "type": "number | null"
+        },
+        {
+          "name": "selectionEnd",
+          "type": "number | null"
+        },
+        {
+          "name": "validityTransform",
+          "type": "((value: string, nativeValidity: ValidityState) => Partial<ValidityState>) | null"
+        },
+        {
+          "name": "ripple",
+          "description": "Implement ripple getter for Ripple integration with mwc-formfield",
+          "type": "RippleInterface | Promise<RippleInterface | null> | undefined"
+        }
+      ]
+    }
+  ]
+}

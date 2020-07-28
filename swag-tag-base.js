@@ -81,7 +81,7 @@ export const addEditors = ({ massagedProps, name }) => ({
                 Object.assign(target, item);
                 target.setAttribute('role', 'textbox');
             },
-            '"': ({ item }) => ([PD.is, 'afterEnd', [{ on: 'input', from: 'form', to: 'details', careOf: name, prop: item.name, val: 'target.value', m: 1 }]]),
+            '"': ({ item }) => ([PD.is, 'afterEnd', [{ on: 'edited-value-changed', from: 'form', to: 'details', careOf: name, prop: item.name, val: 'target.editedValue', m: 1 }]]),
             [SwagTagObjectBase.is]: ({ item, target }) => {
                 Object.assign(target, item);
                 target.setAttribute('role', 'textbox');
@@ -170,6 +170,7 @@ export class SwagTagBase extends XtalFetchViewElement {
                 path = path.substr(3);
             }
             const importPath = splitPath.join('/') + '/' + path;
+            import(importPath);
         }
     }
 }

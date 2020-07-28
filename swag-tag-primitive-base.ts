@@ -14,15 +14,17 @@ const mainTemplate = createTemplate(/* html */`
           display:block;
       }
   </style>
-  <label for=myInput part=fieldLabel></label>
-  <input id=myInput part=inputElement>
+  <div>
+    <label for=myInput part=fieldLabel></label>
+    <input id=myInput part=inputElement>
+  </div>
 `);
 
 const [label$, input$] = [Symbol('label'), Symbol('input')];
-const initTransform  = {
+const initTransform  = ({self}: SwagTagPrimitiveBase) => ({
     label: label$,
-    input: input$
-};
+    input: [,{input: self.handleInput},,,input$]
+});
 
 const updateLabel = ({name}: SwagTagPrimitiveBase) => ({
     [label$]: name + ':',
@@ -46,17 +48,26 @@ export const linkInputType = ({type, self}: SwagTagPrimitiveBase) => {
     }
 }
 
+export const linkEditedValue = ({value, self}: SwagTagPrimitiveBase) => {
+    self.editedValue = value;
+}
+
 export class SwagTagPrimitiveBase extends XtalElement {
     static is = 'swag-tag-primitive-base';
 
-    static attributeProps : any = ({readOnly, type, testValues, value, disabled, eventScopes, name, description, inputType}: SwagTagPrimitiveBase) => ({
+    static attributeProps : any = ({readOnly, type, testValues, value, disabled, eventScopes, name, description, inputType, editedValue}: SwagTagPrimitiveBase) => ({
         bool: [readOnly, disabled],
         async: [readOnly, inputType, disabled, value],
-        str: [type, value, name, description, inputType],
+        str: [type, value, name, description, inputType, editedValue],
+        notify: [editedValue],
         obj: ['default', testValues, eventScopes],
         jsonProp: [eventScopes],
         reflect: [readOnly, type, disabled, name, inputType]
     } as AttributeProps);
+
+    handleInput(e: Event){
+        this.editedValue = (<any>e.target!).value;
+    }
 
     readyToInit = true;
 
@@ -66,8 +77,10 @@ export class SwagTagPrimitiveBase extends XtalElement {
 
     initTransform: any = initTransform;
 
+    editedValue: any;
+
     propActions = [
-        linkInputType,
+        linkInputType, linkEditedValue
     ];
 
     updateTransforms = [

@@ -19,9 +19,9 @@ const mainTemplate = createTemplate(/* html */`
 
 const [tf] = [Symbol('tf')];
 
-const initTransform = {
-    'mwc-textfield': tf
-}
+const initTransform = ({self}: SwagTagMWCTextField) => ({
+    'mwc-textfield': [,{input:self.handleInput},,,tf]
+});
 
 const updateInput = ({readOnly, inputType, disabled, value, name}: SwagTagMWCTextField) =>({
     [tf]: [,,{'readonly': readOnly, type: inputType, disabled: disabled, value: value, label: name}]
@@ -38,6 +38,10 @@ export const linkInputType = ({type, self}: SwagTagMWCTextField) => {
     }
 }
 
+export const linkEditedValue = ({value, self}: SwagTagMWCTextField) => {
+    self.editedValue = value;
+}
+
 export class SwagTagMWCTextField extends SwagTagPrimitiveBase{
     static is = 'swag-tag-mwc-textfield';
     
@@ -50,7 +54,7 @@ export class SwagTagMWCTextField extends SwagTagPrimitiveBase{
     ]  as SelectiveUpdate<any>[];
 
     propActions = [
-        linkInputType,
+        linkInputType, linkEditedValue
     ];
 }
 define(SwagTagMWCTextField);

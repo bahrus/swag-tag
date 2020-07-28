@@ -9,14 +9,16 @@ const mainTemplate = createTemplate(/* html */ `
           display:block;
       }
   </style>
-  <label for=myInput part=fieldLabel></label>
-  <input id=myInput part=inputElement>
+  <div>
+    <label for=myInput part=fieldLabel></label>
+    <input id=myInput part=inputElement>
+  </div>
 `);
 const [label$, input$] = [Symbol('label'), Symbol('input')];
-const initTransform = {
+const initTransform = ({ self }) => ({
     label: label$,
-    input: input$
-};
+    input: [, { input: self.handleInput }, , , input$]
+});
 const updateLabel = ({ name }) => ({
     [label$]: name + ':',
 });
@@ -36,6 +38,9 @@ export const linkInputType = ({ type, self }) => {
             break;
     }
 };
+export const linkEditedValue = ({ value, self }) => {
+    self.editedValue = value;
+};
 export class SwagTagPrimitiveBase extends XtalElement {
     constructor() {
         super(...arguments);
@@ -44,18 +49,22 @@ export class SwagTagPrimitiveBase extends XtalElement {
         this.readyToRender = true;
         this.initTransform = initTransform;
         this.propActions = [
-            linkInputType,
+            linkInputType, linkEditedValue
         ];
         this.updateTransforms = [
             updateLabel, updateInput
         ];
     }
+    handleInput(e) {
+        this.editedValue = e.target.value;
+    }
 }
 SwagTagPrimitiveBase.is = 'swag-tag-primitive-base';
-SwagTagPrimitiveBase.attributeProps = ({ readOnly, type, testValues, value, disabled, eventScopes, name, description, inputType }) => ({
+SwagTagPrimitiveBase.attributeProps = ({ readOnly, type, testValues, value, disabled, eventScopes, name, description, inputType, editedValue }) => ({
     bool: [readOnly, disabled],
     async: [readOnly, inputType, disabled, value],
-    str: [type, value, name, description, inputType],
+    str: [type, value, name, description, inputType, editedValue],
+    notify: [editedValue],
     obj: ['default', testValues, eventScopes],
     jsonProp: [eventScopes],
     reflect: [readOnly, type, disabled, name, inputType]

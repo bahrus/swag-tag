@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "serve": "node node_modules/xtal-test/serve.js",
-    "start": "es-dev-server --app-index demo/dev-mwc.html --node-resolve --watch --open"
+    "start": "es-dev-server --app-index demo/dev-mwc.html --node-resolve --watch --open",
+    "test::spec": "wca analyze mwc-textfield-example1.js --outFile mwc-textfield-example1.json"
   },
   "repository": {
     "type": "git",
