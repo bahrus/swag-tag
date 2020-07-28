@@ -11,27 +11,33 @@
         },
         {
           "name": "value",
-          "type": "string"
+          "type": "string",
+          "default": "\"My value\""
         },
         {
           "name": "type",
-          "type": "TextFieldType"
+          "type": "string",
+          "default": "\"string\""
         },
         {
           "name": "placeholder",
-          "type": "string"
+          "type": "string",
+          "default": "\"My placeholder\""
         },
         {
           "name": "label",
-          "type": "string"
+          "type": "string",
+          "default": "\"My label\""
         },
         {
           "name": "icon",
-          "type": "string"
+          "type": "string",
+          "default": "\"\""
         },
         {
           "name": "iconTrailing",
-          "type": "string"
+          "type": "string",
+          "default": "\"\""
         },
         {
           "name": "disabled",
@@ -47,7 +53,8 @@
         },
         {
           "name": "maxLength",
-          "type": "number"
+          "type": "number",
+          "default": "300"
         },
         {
           "name": "outlined",
@@ -55,7 +62,8 @@
         },
         {
           "name": "helper",
-          "type": "string"
+          "type": "string",
+          "default": "\"My helper text\""
         },
         {
           "name": "validateOnInitialRender",
@@ -63,7 +71,8 @@
         },
         {
           "name": "validationMessage",
-          "type": "string"
+          "type": "string",
+          "default": "\"My error\""
         },
         {
           "name": "autoValidate",
@@ -75,19 +84,23 @@
         },
         {
           "name": "min",
-          "type": "string | number"
+          "type": "number",
+          "default": "0"
         },
         {
           "name": "max",
-          "type": "string | number"
+          "type": "number",
+          "default": "10000"
         },
         {
           "name": "step",
-          "type": "number | null"
+          "type": "number",
+          "default": "10"
         },
         {
           "name": "size",
-          "type": "number | null"
+          "type": "number",
+          "default": "10000"
         },
         {
           "name": "helperPersistent",
@@ -95,7 +108,8 @@
         },
         {
           "name": "charCounter",
-          "type": "boolean | \"external\" | \"internal\""
+          "type": "boolean",
+          "default": "false"
         },
         {
           "name": "endAligned",
@@ -103,19 +117,23 @@
         },
         {
           "name": "prefix",
-          "type": "string"
+          "type": "string",
+          "default": "\"My prefix\""
         },
         {
           "name": "suffix",
-          "type": "string"
+          "type": "string",
+          "default": "\"My suffix\""
         },
         {
           "name": "name",
-          "type": "string"
+          "type": "string",
+          "default": "\"My name\""
         },
         {
           "name": "inputMode",
-          "type": "TextFieldInputMode"
+          "type": "string",
+          "default": "\"\""
         },
         {
           "name": "readOnly",
@@ -127,7 +145,8 @@
         },
         {
           "name": "validity",
-          "type": "ValidityState"
+          "type": "string",
+          "default": "\"\""
         },
         {
           "name": "willValidate",
@@ -135,11 +154,13 @@
         },
         {
           "name": "selectionStart",
-          "type": "number | null"
+          "type": "number",
+          "default": "0"
         },
         {
           "name": "selectionEnd",
-          "type": "number | null"
+          "type": "number",
+          "default": "1000"
         },
         {
           "name": "validityTransform",

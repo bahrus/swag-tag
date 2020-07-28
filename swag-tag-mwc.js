@@ -24,7 +24,12 @@ export const linkMassagedProps = ({ properties, self }) => {
         return;
     properties.forEach(prop => {
         const anyProp = prop;
-        prop.value = anyProp.default;
+        let defaultVal = anyProp.default;
+        try {
+            defaultVal = JSON.parse(defaultVal);
+        }
+        catch (e) { }
+        prop.value = defaultVal;
         switch (prop.type) {
             case 'string':
             case 'number':
