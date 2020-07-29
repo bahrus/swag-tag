@@ -13,6 +13,9 @@ const mainTemplate = createTemplate(/* html */`
       label{
           display:block;
       }
+      mwc-textfield{
+          width: 100%;
+      }
   </style>
   <mwc-textfield></mwc-textfield>
 `);

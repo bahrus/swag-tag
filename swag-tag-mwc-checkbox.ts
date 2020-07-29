@@ -14,6 +14,9 @@ const mainTemplate = createTemplate(/* html */`
       label{
           display:block;
       }
+      mwc-formfield{
+          width:100%;
+      }
   </style>
   <mwc-formfield>
     <mwc-checkbox></mwc-checkbox>
