@@ -146,6 +146,7 @@ export function tryParsed(prop: PropertyInfo){
       case 'boolean':
         prop.value = defaultVal;
         prop.type = 'boolean';
+        break;
       default:
         prop.value = (<any>prop).default;
         prop.type = 'object';

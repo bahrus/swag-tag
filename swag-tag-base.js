@@ -130,6 +130,7 @@ export function tryParsed(prop) {
             case 'boolean':
                 prop.value = defaultVal;
                 prop.type = 'boolean';
+                break;
             default:
                 prop.value = prop.default;
                 prop.type = 'object';
