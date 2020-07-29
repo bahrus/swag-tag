@@ -23,7 +23,7 @@ const mainTemplate = T(/* html */ `
 <header>
   <details>
     <summary><var></var> schema</summary>
-    <json-viewer allowlist="name,properties,attributes,slots,events"></json-viewer>
+    
   </details>
 </header>
 <form>
@@ -39,6 +39,12 @@ const mainTemplate = T(/* html */ `
 </details>
 <h4>Live Events Fired</h4>
 <json-viewer -object allowlist="detail,type,bubbles,cancelBubble,cancelable,composed,defaultPrevented,eventPhase,isTrusted,returnValue,timeStamp"></json-viewer>
+<aside>
+  <details>
+    <summary>View Schema</summary>
+    <json-viewer allowlist="name,properties,attributes,slots,events"></json-viewer>
+  </details>
+</aside>
 `);
 const eventListener = T(/* html */ `
 <p-d m=1 from=details to=json-viewer[-object] val=. skip-init></p-d>
@@ -49,7 +55,6 @@ const initTransform = ({ self }) => ({
             summary: {
                 var: uiRefs.schemaName
             },
-            'json-viewer': uiRefs.tagInfoViewer
         },
     },
     form: {
@@ -67,6 +72,11 @@ const initTransform = ({ self }) => ({
             div: uiRefs.eventListeners
         }
     },
+    aside: {
+        details: {
+            'json-viewer': uiRefs.tagInfoViewer
+        }
+    }
 });
 export const bindName = ({ name }) => ({
     [uiRefs.summary]: name,
