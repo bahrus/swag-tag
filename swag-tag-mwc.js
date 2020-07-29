@@ -1,4 +1,4 @@
-import { SwagTagBase, uiRefs, bindName, addEventListeners, linkWcInfo, triggerImportReferencedModule, tryParsed } from './swag-tag-base.js';
+import { SwagTagBase, uiRefs, bindName, addEventListeners, linkWcInfo, triggerImportReferencedModule, tryParsed, bindSelf } from './swag-tag-base.js';
 import { define } from 'xtal-element/XtalElement.js';
 import { PD } from "p-et-alia/p-d.js";
 import { SwagTagMWCTextField } from './swag-tag-mwc-textfield.js';
@@ -47,7 +47,8 @@ export const linkMassagedProps = ({ properties, self }) => {
 const updateTransforms = [
     bindName,
     addEventListeners,
-    addEditors
+    addEditors,
+    bindSelf,
 ];
 export class SwagTagMWC extends SwagTagBase {
     constructor() {
