@@ -124,19 +124,61 @@ export const linkWcInfo = ({viewModel, tag, self} : SwagTagBase) => {
 }
 
 const massaged = Symbol();
+export function tryParsed(prop: PropertyInfo){
+  let defaultVal = (<any>prop).default;
+  if(defaultVal !== undefined){
+    try{
+      defaultVal = JSON.parse(defaultVal);
+    }catch(e){}
+    switch(typeof defaultVal){
+      case 'object':
+        prop.value = (<any>prop).default;
+        prop.type = 'object'
+        break;
+      case 'string':
+        prop.value = defaultVal;
+        prop.type = 'string';
+        break;
+      case 'number':
+        prop.value = defaultVal;
+        prop.type = 'number';
+        break;
+      case 'boolean':
+        prop.value = defaultVal;
+        prop.type = 'boolean';
+      default:
+        prop.value = (<any>prop).default;
+        prop.type = 'object';
+    }
+  }else{
+    switch(prop.type){
+      case 'string':
+      case 'boolean':
+      case 'number':
+        break;
+      default:
+        prop.type = 'object';
+    }
+  }
+
+
+}
 export const linkMassagedProps = ({properties, self}: SwagTagBase) => {
   if(properties === undefined || (<any>properties)[massaged as any as string]) return;
   properties.forEach(prop =>{
+    tryParsed(prop);
     const anyProp = <any>prop;
-    prop.value = JSON.parse(anyProp.default);
     switch(prop.type){
       case 'string':
       case 'number':
       case 'boolean':
         anyProp.editor = SwagTagPrimitiveBase.is;
         break;
-      default:
+      case 'object':
         anyProp.editor = SwagTagObjectBase.is;
+        break;
+      default:
+        throw 'not implemented';
     }
   });
   (<any>properties)[massaged as any as string] = true;

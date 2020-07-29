@@ -1,4 +1,4 @@
-import {SwagTagBase, uiRefs, bindName, addEventListeners, linkWcInfo, triggerImportReferencedModule} from './swag-tag-base.js';
+import {SwagTagBase, uiRefs, bindName, addEventListeners, linkWcInfo, triggerImportReferencedModule, tryParsed} from './swag-tag-base.js';
 import { WCSuiteInfo, WCInfo, PropertyInfo, CustomEventInfo, SlotInfo, AttribInfo } from "wc-info/types.js";
 import {define} from 'xtal-element/XtalElement.js';
 import {RenderContext, PEATSettings} from 'trans-render/types2.d.js';
@@ -28,12 +28,9 @@ const massaged = Symbol();
 export const linkMassagedProps = ({properties, self}: SwagTagBase) => {
     if(properties === undefined || (<any>properties)[massaged as any as string]) return;
     properties.forEach(prop =>{
+      tryParsed(prop);
       const anyProp = <any>prop;
       let defaultVal = anyProp.default;
-      try{
-        defaultVal = JSON.parse(defaultVal);
-      }catch(e){}
-      prop.value = defaultVal;
       switch(prop.type){
         case 'string':
         case 'number':
@@ -42,21 +39,11 @@ export const linkMassagedProps = ({properties, self}: SwagTagBase) => {
         case 'boolean':
           anyProp.editor = SwagTagMWCCheckbox.is;
           break;
+        case 'object':
+          anyProp.editor = SwagTagMWCTextarea.is;
+          break;
         default:
-          switch(typeof anyProp.default){
-            case 'string':
-            case 'number':
-              anyProp.editor = SwagTagMWCTextField.is;
-              break;
-            case 'object':
-              anyProp.editor = SwagTagMWCTextField.is;
-              break;
-            case 'boolean':
-              anyProp.editor = SwagTagMWCCheckbox.is;
-              break;
-            default:
-              anyProp.editor = SwagTagMWCTextarea.is;
-          }
+          throw 'Not implemented';
           
       }
     });
