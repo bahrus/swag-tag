@@ -1,7 +1,7 @@
 {
 	"compilerOptions": {
-		"target": "esnext",
-		"module":"esnext",
+		"target": "ES2016",
+		"module":"ESNext",
 		"sourceMap": false,
 		"experimentalDecorators": true,
 		"strict": true,
