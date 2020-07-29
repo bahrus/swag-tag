@@ -15,7 +15,7 @@ const mainTemplate = T(/* html */ `
   fieldset[data-open="false"] [role="textbox"]{
     display: none;
   }
-  form{
+  fieldset[data-open="true"]{
     height: 500px;
     overflow-y:auto;
   }
