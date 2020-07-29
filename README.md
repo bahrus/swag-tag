@@ -2,6 +2,8 @@
 
 <a href="https://nodei.co/npm/swag-tag/"><img src="https://nodei.co/npm/swag-tag.png"></a>
 
+<img src="https://badgen.net/bundlephobia/minzip/swag-tag">
+
 # swag-tag
 
 swag-tag is an old-fashioned custom element designed to demo and edit other web components.

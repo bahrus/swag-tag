@@ -2,7 +2,8 @@
   "name": "swag-tag",
   "version": "0.0.9",
   "description": "TBD",
-  "main": "swag-tag.js",
+  "main": "swag-tag-base.js",
+  "module": "swag-tag-base.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "serve": "node node_modules/xtal-test/serve.js",
