@@ -9,20 +9,20 @@ import { SelectiveUpdate, TransformRules} from "../xtal-element/types.js";
 import('@power-elements/json-viewer/json-viewer.js');
 
 const mainTemplate = T(/* html */ `
-<style id=collapsibleForm>
-  legend{
+<style id=collapsible>
+  fieldset[data-guid="0f0d62e5-0d00-4e70-ad90-277fcd94c963"]>legend{
     cursor: pointer;
   }
-  fieldset[data-open="false"] [role="textbox"]{
+  fieldset[data-guid="0f0d62e5-0d00-4e70-ad90-277fcd94c963"][data-open="false"] [role="textbox"]{
     display: none;
   }
-  fieldset[data-open="true"]{
+  fieldset[data-guid="0f0d62e5-0d00-4e70-ad90-277fcd94c963"][data-open="true"]{
     height: 500px;
     overflow-y:auto;
   }
 </style>
 <form>
-  <fieldset data-open="false">
+  <fieldset data-open="false" data-guid="0f0d62e5-0d00-4e70-ad90-277fcd94c963">
     <legend>✏️Edit <var></var>'s properties</legend>
   </fieldset>
 </form>
@@ -77,7 +77,6 @@ const initTransform = ({self}: SwagTagBase) =>({
 export const bindName = ({name}: SwagTagBase) => ({
   [uiRefs.dSummary]: name,
   [uiRefs.fflVar]: name,
-  [uiRefs.hdsVar]: name,
   [uiRefs.dVar]: [name, 'afterBegin'],
 });
 export const addEventListeners =   ({events, name}: SwagTagBase) => ({
