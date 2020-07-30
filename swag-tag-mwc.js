@@ -5,7 +5,7 @@ import { SwagTagMWCTextField } from './swag-tag-mwc-textfield.js';
 import { SwagTagMWCCheckbox } from './swag-tag-mwc-checkbox.js';
 import { SwagTagMWCTextarea } from './swag-tag-mwc-textarea.js';
 export const addEditors = ({ massagedProps, name }) => ({
-    [uiRefs.fieldset]: [massagedProps, ({ item }) => item.editor, , {
+    [uiRefs.fFieldset]: [massagedProps, ({ item }) => item.editor, , {
             [`${SwagTagMWCTextField.is},${SwagTagMWCCheckbox.is}`]: ({ item, target }) => {
                 Object.assign(target, item);
                 target.setAttribute('role', 'textbox');

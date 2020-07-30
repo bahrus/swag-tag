@@ -1,17 +1,12 @@
 import { WCSuiteInfo, WCInfo, PropertyInfo, CustomEventInfo, SlotInfo, AttribInfo } from "wc-info/types.js";
-import {symbolize} from 'xtal-element/symbolize.js';
 import { createTemplate as T } from "trans-render/createTemplate.js";
 import {RenderContext, PEATSettings} from 'trans-render/types2.d.js';
-import { XtalFetchViewElement, define, mergeProps, AttributeProps} from "xtal-element/XtalFetchViewElement.js";
+import { XtalFetchViewElement, define, mergeProps, AttributeProps, p, symbolize} from "xtal-element/XtalFetchViewElement.js";
 import {PD} from "p-et-alia/p-d.js";
 import { SwagTagPrimitiveBase } from './swag-tag-primitive-base.js';
 import {SwagTagObjectBase} from './swag-tag-object-base.js';
 import { SelectiveUpdate, TransformRules} from "../xtal-element/types.js";
 import('@power-elements/json-viewer/json-viewer.js');
-
-interface IUIRef{editName: symbol; fieldset: symbol, summary: symbol;editingName: symbol; schemaName: symbol; eventListeners: symbol; tagInfoViewer: symbol}
-const symbolGen = ({editName, fieldset, summary, editingName, schemaName, eventListeners, tagInfoViewer}: IUIRef) => 0;
-export const uiRefs = symbolize(symbolGen) as IUIRef;
 
 const mainTemplate = T(/* html */ `
 <style id=collapsibleForm>
@@ -26,12 +21,6 @@ const mainTemplate = T(/* html */ `
     overflow-y:auto;
   }
 </style>
-<header>
-  <details>
-    <summary><var></var> schema</summary>
-    
-  </details>
-</header>
 <form>
   <fieldset data-open="false">
     <legend>✏️Edit <var></var>'s properties</legend>
@@ -54,37 +43,31 @@ const mainTemplate = T(/* html */ `
 `);
 
 const eventListener = T(/* html */`
-<p-d m=1 from=details to=json-viewer[-object] val=. skip-init></p-d>
+<p-d from=details to=json-viewer[-object] val=. skip-init m=1></p-d>
 `);
 
+export const uiRefs = {fflVar: p, dSummary: p, dVar: p, dsvDiv: p, adJV: p, fFieldset: p,}
+symbolize(uiRefs);
 
 const initTransform = ({self}: SwagTagBase) =>({
-  header:{
-    details:{
-      summary:{
-        var: uiRefs.schemaName
-      },
-      
-    },
-  },
   form:{
-    fieldset: uiRefs.fieldset,
+    fieldset: uiRefs.fFieldset,
     '"':{
       legend: [,{click: self.toggleForm},,{
-        var: uiRefs.editName
+        var: uiRefs.fflVar
       }] as PEATSettings
     },
   },
   details:{
-    summary: uiRefs.summary,
-    var: uiRefs.editingName,
+    summary: uiRefs.dSummary,
+    var: uiRefs.dVar,
     '"': {
-      div: uiRefs.eventListeners
+      div: uiRefs.dsvDiv
     }
   },
   aside:{
     details:{
-      'json-viewer': uiRefs.tagInfoViewer
+      'json-viewer': uiRefs.adJV
     }
   }
 } as TransformRules);
@@ -92,18 +75,18 @@ const initTransform = ({self}: SwagTagBase) =>({
 
 
 export const bindName = ({name}: SwagTagBase) => ({
-  [uiRefs.summary]: name,
-  [uiRefs.editName]: name,
-  [uiRefs.schemaName]: name,
-  [uiRefs.editingName]: [name, 'afterBegin'],
+  [uiRefs.dSummary]: name,
+  [uiRefs.fflVar]: name,
+  [uiRefs.hdsVar]: name,
+  [uiRefs.dVar]: [name, 'afterBegin'],
 });
 export const addEventListeners =   ({events, name}: SwagTagBase) => ({
-  [uiRefs.eventListeners]: [events || [], eventListener,,{
+  [uiRefs.dsvDiv]: [events || [], eventListener,,{
     [PD.is]:({item}: RenderContext) => [{observe: name, on: item.name}]
   }]
 });
 export const addEditors =   ({massagedProps, name}: SwagTagBase) => ({
-  [uiRefs.fieldset]: [massagedProps, ({item}: RenderContext) => (<any>item).editor,, {
+  [uiRefs.fFieldset]: [massagedProps, ({item}: RenderContext) => (<any>item).editor,, {
     [SwagTagPrimitiveBase.is]: ({item, target}: RenderContext<SwagTagPrimitiveBase, PropertyInfo>) => {
       Object.assign(target, item);
       target!.setAttribute('role', 'textbox');
@@ -114,12 +97,11 @@ export const addEditors =   ({massagedProps, name}: SwagTagBase) => ({
       target!.setAttribute('role', 'textbox');
     },
     '""': ({item}: RenderContext) => ([PD.is, 'afterEnd', [{on:'parsed-object-changed', from:'form', to: 'details', careOf: name, prop: item.name, val: 'target.parsedObject', m:1}]])
-
   }]
 });
 
 export const bindSelf = ({attribs, self}: SwagTagBase) => ({
-  [uiRefs.tagInfoViewer]: [{object: self}]
+  [uiRefs.adJV]: [{object: self}]
 });
 
 const updateTransforms = [
@@ -176,9 +158,8 @@ export function tryParsed(prop: PropertyInfo){
         prop.type = 'object';
     }
   }
-
-
 }
+
 export const linkMassagedProps = ({properties, self}: SwagTagBase) => {
   if(properties === undefined || (<any>properties)[massaged as any as string]) return;
   properties.forEach(prop =>{
@@ -208,7 +189,6 @@ export const triggerImportReferencedModule = ({path, self}: SwagTagBase) => {
 }
 
 
-const pdxEvent = 'event';
 export const noPathFound$ = Symbol();
 export const noPathFoundTemplate = 'noPathFoundTemplate';
 export class SwagTagBase extends XtalFetchViewElement<WCSuiteInfo> implements WCInfo {

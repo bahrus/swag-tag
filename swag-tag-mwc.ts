@@ -9,7 +9,7 @@ import {SwagTagMWCTextarea} from './swag-tag-mwc-textarea.js';
 import { SelectiveUpdate, TransformRules} from "../xtal-element/types.js";
 
 export const addEditors =   ({massagedProps, name}: SwagTagBase) => ({
-    [uiRefs.fieldset]: [massagedProps, ({item}: RenderContext) => (<any>item).editor,, {
+    [uiRefs.fFieldset]: [massagedProps, ({item}: RenderContext) => (<any>item).editor,, {
       [`${SwagTagMWCTextField.is},${SwagTagMWCCheckbox.is}`]: ({item, target}: RenderContext<SwagTagMWCTextField, PropertyInfo>) => {
         Object.assign(target, item);
         target!.setAttribute('role', 'textbox');
