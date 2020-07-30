@@ -1,8 +1,20 @@
 import { TextField } from "@material/mwc-textfield/mwc-textfield.js";
+import { css } from 'lit-element/lit-element.js';
+class TextField2 extends TextField {
+    static get styles() {
+        return css `
+        :host{
+                --mdc-theme-primary: black;
+                --mdc-theme-on-primary: white;
+            }
+            ${TextField.styles}
+        `;
+    }
+}
 /**
  * @element mwc-textfield-example1
  */
-export class MWCTextFieldExample1 extends TextField {
+export class MWCTextFieldExample1 extends TextField2 {
     constructor() {
         super(...arguments);
         this.value = 'My value';

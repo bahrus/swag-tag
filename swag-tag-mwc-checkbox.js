@@ -20,12 +20,12 @@ const mainTemplate = createTemplate(/* html */ `
   </mwc-formfield>
 `);
 const [ff, cb] = [Symbol('ff'), Symbol('cb')];
-const initTransform = {
+const initTransform = ({ self }) => ({
     'mwc-formfield': ff,
     '"': {
-        'mwc-checkbox': cb
+        'mwc-checkbox': [, { input: self.handleInput }, , , cb]
     }
-};
+});
 const updateInput = ({ readOnly, inputType, disabled, value, name }) => ({
     [cb]: [, , { 'readonly': readOnly, type: inputType, disabled: disabled, value: value, label: name }]
 });
@@ -41,6 +41,9 @@ export class SwagTagMWCCheckbox extends SwagTagPrimitiveBase {
             updateInput, updateLabel
         ];
         this.propActions = [];
+    }
+    handleInput(e) {
+        this.editedValue = !e.target.checked;
     }
 }
 SwagTagMWCCheckbox.is = 'swag-tag-mwc-checkbox';
