@@ -201,10 +201,6 @@ export const triggerImportReferencedModule = ({path, self}: SwagTagBase) => {
     }
   }
 }
-
-
-export const noPathFound$ = Symbol();
-export const noPathFoundTemplate = 'noPathFoundTemplate';
 export class SwagTagBase extends XtalFetchViewElement<WCSuiteInfo> implements WCInfo {
 
   static is = "swag-tag-base";
@@ -255,10 +251,6 @@ export class SwagTagBase extends XtalFetchViewElement<WCSuiteInfo> implements WC
     const fieldset = (e.target as HTMLElement).closest('fieldset') as HTMLFieldSetElement;
     const currentVal = fieldset.dataset.open;
     fieldset.dataset.open = currentVal === 'true'? 'false': 'true';
-  }
-
-  get [noPathFoundTemplate](){
-    return T(`<div>No path found.</div>`, SwagTagBase, noPathFound$);
   }
 
 }

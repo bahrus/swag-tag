@@ -189,8 +189,6 @@ export const triggerImportReferencedModule = ({ path, self }) => {
         }
     }
 };
-export const noPathFound$ = Symbol();
-export const noPathFoundTemplate = 'noPathFoundTemplate';
 export class SwagTagBase extends XtalFetchViewElement {
     constructor() {
         super(...arguments);
@@ -207,9 +205,6 @@ export class SwagTagBase extends XtalFetchViewElement {
         const fieldset = e.target.closest('fieldset');
         const currentVal = fieldset.dataset.open;
         fieldset.dataset.open = currentVal === 'true' ? 'false' : 'true';
-    }
-    get [noPathFoundTemplate]() {
-        return T(`<div>No path found.</div>`, SwagTagBase, noPathFound$);
     }
 }
 SwagTagBase.is = "swag-tag-base";
