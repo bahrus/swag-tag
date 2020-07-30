@@ -40,7 +40,7 @@ const mainTemplate = T(/* html */ `
 const eventListener = T(/* html */ `
 <p-d from=details to=json-viewer[-object] val=. skip-init m=1></p-d>
 `);
-export const uiRefs = { fflVar: p, dSummary: p, dVar: p, dsvDiv: p, adJV: p, fFieldset: p, };
+export const uiRefs = { fflVar: p, dSummary: p, dVar: p, dvDiv: p, adJsonViewer: p, fFieldset: p, };
 symbolize(uiRefs);
 const initTransform = ({ self }) => ({
     form: {
@@ -55,12 +55,12 @@ const initTransform = ({ self }) => ({
         summary: uiRefs.dSummary,
         var: uiRefs.dVar,
         '"': {
-            div: uiRefs.dsvDiv
+            div: uiRefs.dvDiv
         }
     },
     aside: {
         details: {
-            'json-viewer': uiRefs.adJV
+            'json-viewer': uiRefs.adJsonViewer
         }
     }
 });
@@ -70,7 +70,7 @@ export const bindName = ({ name }) => ({
     [uiRefs.dVar]: [name, 'afterBegin'],
 });
 export const addEventListeners = ({ events, name }) => ({
-    [uiRefs.dsvDiv]: [events || [], eventListener, , {
+    [uiRefs.dvDiv]: [events || [], eventListener, , {
             [PD.is]: ({ item }) => [{ observe: name, on: item.name }]
         }]
 });
@@ -89,7 +89,7 @@ export const addEditors = ({ massagedProps, name }) => ({
         }]
 });
 export const bindSelf = ({ attribs, self }) => ({
-    [uiRefs.adJV]: [{ object: self }]
+    [uiRefs.adJsonViewer]: [{ object: self }]
 });
 const updateTransforms = [
     bindName,
@@ -170,7 +170,23 @@ export const linkMassagedProps = ({ properties, self }) => {
 };
 export const triggerImportReferencedModule = ({ path, self }) => {
     if (path !== undefined) {
-        self.importReferencedModule();
+        if (self.href.indexOf('//') > -1 && self.href.indexOf('//') < 7) {
+            const selfResolvingModuleSplitPath = self.href.split('/');
+            selfResolvingModuleSplitPath.pop();
+            const selfResolvingModulePath = selfResolvingModuleSplitPath.join('/') + self.path.substring(1) + '?module';
+            import(selfResolvingModulePath);
+        }
+        else {
+            const splitPath = (location.origin + location.pathname).split('/');
+            splitPath.pop();
+            let path = self.path;
+            while (path.startsWith('../')) {
+                splitPath.pop();
+                path = path.substr(3);
+            }
+            const importPath = splitPath.join('/') + '/' + path;
+            import(importPath);
+        }
     }
 };
 export const noPathFound$ = Symbol();
@@ -194,25 +210,6 @@ export class SwagTagBase extends XtalFetchViewElement {
     }
     get [noPathFoundTemplate]() {
         return T(`<div>No path found.</div>`, SwagTagBase, noPathFound$);
-    }
-    importReferencedModule() {
-        if (this.href.indexOf('//') > -1 && this.href.indexOf('//') < 7) {
-            const selfResolvingModuleSplitPath = this.href.split('/');
-            selfResolvingModuleSplitPath.pop();
-            const selfResolvingModulePath = selfResolvingModuleSplitPath.join('/') + this.path.substring(1) + '?module';
-            import(selfResolvingModulePath);
-        }
-        else {
-            const splitPath = (location.origin + location.pathname).split('/');
-            splitPath.pop();
-            let path = this.path;
-            while (path.startsWith('../')) {
-                splitPath.pop();
-                path = path.substr(3);
-            }
-            const importPath = splitPath.join('/') + '/' + path;
-            import(importPath);
-        }
     }
 }
 SwagTagBase.is = "swag-tag-base";
