@@ -189,6 +189,9 @@ export const triggerImportReferencedModule = ({ path, self }) => {
         }
     }
 };
+export const showHideEditor = ({ editOpen, self }) => {
+    self[uiRefs.fFieldset].dataset.open = (editOpen || false).toString();
+};
 export class SwagTagBase extends XtalFetchViewElement {
     constructor() {
         super(...arguments);
@@ -196,23 +199,22 @@ export class SwagTagBase extends XtalFetchViewElement {
         this.mainTemplate = mainTemplate;
         this.readyToRender = true;
         this.propActions = [
-            linkWcInfo, linkMassagedProps, triggerImportReferencedModule
+            linkWcInfo, linkMassagedProps, triggerImportReferencedModule, showHideEditor
         ];
         this.initTransform = initTransform;
         this.updateTransforms = updateTransforms;
     }
     toggleForm(e) {
-        const fieldset = e.target.closest('fieldset');
-        const currentVal = fieldset.dataset.open;
-        fieldset.dataset.open = currentVal === 'true' ? 'false' : 'true';
+        this.editOpen = !this.editOpen;
     }
 }
 SwagTagBase.is = "swag-tag-base";
-SwagTagBase.attributeProps = ({ tag, name, properties, path, events, slots, testCaseNames, attribs }) => {
+SwagTagBase.attributeProps = ({ tag, name, properties, path, events, slots, testCaseNames, attribs, editOpen }) => {
     const ap = {
         str: [tag, name, path],
+        bool: [editOpen],
         obj: [properties, events, slots, testCaseNames, attribs],
-        reflect: [tag]
+        reflect: [tag, editOpen]
     };
     return mergeProps(ap, XtalFetchViewElement.props);
 };

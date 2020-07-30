@@ -201,6 +201,11 @@ export const triggerImportReferencedModule = ({path, self}: SwagTagBase) => {
     }
   }
 }
+
+export const showHideEditor = ({editOpen, self}: SwagTagBase) => {
+  (<any>self)[uiRefs.fFieldset].dataset.open = (editOpen || false).toString();
+}
+
 export class SwagTagBase extends XtalFetchViewElement<WCSuiteInfo> implements WCInfo {
 
   static is = "swag-tag-base";
@@ -210,17 +215,18 @@ export class SwagTagBase extends XtalFetchViewElement<WCSuiteInfo> implements WC
   mainTemplate = mainTemplate;
   readyToRender = true;
 
-  static attributeProps: any = ({tag, name, properties, path, events, slots, testCaseNames, attribs} : SwagTagBase) =>{
+  static attributeProps: any = ({tag, name, properties, path, events, slots, testCaseNames, attribs, editOpen} : SwagTagBase) =>{
     const ap = {
       str: [tag, name, path],
+      bool: [editOpen],
       obj: [properties, events, slots, testCaseNames, attribs],
-      reflect: [tag]
+      reflect: [tag, editOpen]
     } as AttributeProps;
     return mergeProps(ap, (<any>XtalFetchViewElement).props);
   }
 
   propActions = [
-    linkWcInfo, linkMassagedProps, triggerImportReferencedModule
+    linkWcInfo, linkMassagedProps, triggerImportReferencedModule, showHideEditor
   ];
 
   initTransform = initTransform;
@@ -247,10 +253,10 @@ export class SwagTagBase extends XtalFetchViewElement<WCSuiteInfo> implements WC
 
   testCaseNames: string[] | undefined;
 
+  editOpen: boolean | undefined;
+
   toggleForm(e: Event){
-    const fieldset = (e.target as HTMLElement).closest('fieldset') as HTMLFieldSetElement;
-    const currentVal = fieldset.dataset.open;
-    fieldset.dataset.open = currentVal === 'true'? 'false': 'true';
+    this.editOpen = !this.editOpen;
   }
 
 }

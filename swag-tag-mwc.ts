@@ -1,4 +1,4 @@
-import {SwagTagBase, uiRefs, bindName, addEventListeners, linkWcInfo, triggerImportReferencedModule, tryParsed, bindSelf} from './swag-tag-base.js';
+import {SwagTagBase, uiRefs, bindName, addEventListeners, linkWcInfo, triggerImportReferencedModule, tryParsed, bindSelf, showHideEditor} from './swag-tag-base.js';
 import { WCSuiteInfo, WCInfo, PropertyInfo, CustomEventInfo, SlotInfo, AttribInfo } from "wc-info/types.js";
 import {define} from 'xtal-element/XtalElement.js';
 import {RenderContext, PEATSettings} from 'trans-render/types2.d.js';
@@ -64,7 +64,7 @@ export class SwagTagMWC extends SwagTagBase{
     updateTransforms = updateTransforms;
 
     propActions = [
-        linkWcInfo, linkMassagedProps, triggerImportReferencedModule
+        linkWcInfo, linkMassagedProps, triggerImportReferencedModule, showHideEditor
     ];
 
 }
