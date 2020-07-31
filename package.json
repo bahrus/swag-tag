@@ -25,6 +25,8 @@
     "@material/mwc-textarea": "0.17.2",
     "@material/mwc-formfield": "0.17.2",
     "@material/mwc-checkbox": "0.17.2",
+    "@material/mwc-select": "0.17.2",
+    "@material/mwc-list": "0.17.2",
     "@material/mwc-textfield": "0.17.2",
     "@ui5/webcomponents": "1.0.0-rc.7",
     "weightless": "0.0.37",

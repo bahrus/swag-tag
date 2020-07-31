@@ -18,7 +18,10 @@ export class MWCTextFieldExample1 extends TextField2 {
     constructor() {
         super(...arguments);
         this.value = 'My value';
-        this.type = 'string';
+        /**
+         * @type {"text"|"search"|"tel"|"url"|"email"|"password"|"date"|"month"|"week"|"time"|"datetime-local"|"number"|"color"}
+         */
+        this.type = 'text';
         this.label = 'My label';
         this.placeholder = 'My placeholder';
         this.prefix = 'My prefix';

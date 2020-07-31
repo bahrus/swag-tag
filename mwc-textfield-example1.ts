@@ -18,7 +18,10 @@ class TextField2 extends TextField{
  */
 export class MWCTextFieldExample1 extends TextField2{
     value='My value';
-    type='string';
+    /**
+     * @type {"text"|"search"|"tel"|"url"|"email"|"password"|"date"|"month"|"week"|"time"|"datetime-local"|"number"|"color"}
+     */
+    type='text';
     label='My label';
     placeholder = 'My placeholder';
     prefix = 'My prefix';
@@ -38,5 +41,6 @@ export class MWCTextFieldExample1 extends TextField2{
     validity = '';
     selectionStart = 0;
     selectionEnd = 1000;
+
 }
 customElements.define('mwc-textfield-example1', MWCTextFieldExample1);

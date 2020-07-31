@@ -20,14 +20,14 @@ const mainTemplate = createTemplate(/* html */`
   <mwc-textfield></mwc-textfield>
 `);
 
-const [tf] = [Symbol('tf')];
+const [mwcTxtFld] = [Symbol('txtFld')];
 
 const initTransform = ({self}: SwagTagMWCTextField) => ({
-    'mwc-textfield': [,{input:self.handleInput},,,tf]
+    'mwc-textfield': [,{input:self.handleInput},,,mwcTxtFld]
 });
 
 const updateInput = ({readOnly, inputType, disabled, value, name}: SwagTagMWCTextField) =>({
-    [tf]: [,,{'readonly': readOnly, type: inputType, disabled: disabled, value: value, label: name}]
+    [mwcTxtFld]: [,,{'readonly': readOnly, type: inputType, disabled: disabled, value: value, label: name}]
 });
 
 export const linkInputType = ({type, self}: SwagTagMWCTextField) => {

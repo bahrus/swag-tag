@@ -16,8 +16,8 @@
         },
         {
           "name": "type",
-          "type": "string",
-          "default": "\"string\""
+          "type": "\"text\"|\"search\"|\"tel\"|\"url\"|\"email\"|\"password\"|\"date\"|\"month\"|\"week\"|\"time\"|\"datetime-local\"|\"number\"|\"color\"",
+          "default": "\"text\""
         },
         {
           "name": "placeholder",

@@ -9,7 +9,7 @@ const mainTemplate = T(/* html */ `
   fieldset[data-guid="0f0d62e5-0d00-4e70-ad90-277fcd94c963"]>legend{
     cursor: pointer;
   }
-  fieldset[data-guid="0f0d62e5-0d00-4e70-ad90-277fcd94c963"][data-open="false"] [role="textbox"]{
+  fieldset[data-guid="0f0d62e5-0d00-4e70-ad90-277fcd94c963"][data-open="false"] [role]{
     display: none;
   }
   fieldset[data-guid="0f0d62e5-0d00-4e70-ad90-277fcd94c963"][data-open="true"]{
@@ -108,11 +108,19 @@ export const linkWcInfo = ({ viewModel, tag, self }) => {
 const massaged = Symbol();
 export function tryParsed(prop) {
     let defaultVal = prop.default;
+    let parsedType = undefined;
     if (defaultVal !== undefined) {
         try {
             defaultVal = JSON.parse(defaultVal);
+            parsedType = JSON.parse('[' + prop.type.replace(/\|/g, ',') + ']');
         }
         catch (e) { }
+        if (Array.isArray(parsedType)) {
+            prop.value = defaultVal;
+            prop.type = 'stringArray';
+            prop.options = parsedType;
+            return;
+        }
         switch (typeof defaultVal) {
             case 'object':
                 prop.value = prop.default;

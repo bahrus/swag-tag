@@ -6,6 +6,7 @@ import {PD} from "p-et-alia/p-d.js";
 import {SwagTagMWCTextField} from './swag-tag-mwc-textfield.js';
 import {SwagTagMWCCheckbox} from './swag-tag-mwc-checkbox.js';
 import {SwagTagMWCTextarea} from './swag-tag-mwc-textarea.js';
+import {SwagTagMWCSelect} from './swag-tag-mwc-select.js';
 import { SelectiveUpdate, TransformRules} from "../xtal-element/types.js";
 
 export const addEditors =   ({massagedProps, name}: SwagTagBase) => ({
@@ -19,7 +20,11 @@ export const addEditors =   ({massagedProps, name}: SwagTagBase) => ({
         Object.assign(target, item);
         target!.setAttribute('role', 'textbox');
       },
-      '""': ({item}: RenderContext) => ([PD.is, 'afterEnd', [{on:'parsed-object-changed', from:'form', to: 'details', careOf: name, prop: item.name, val: 'target.parsedObject', m:1}]])
+      '""': ({item}: RenderContext) => ([PD.is, 'afterEnd', [{on:'parsed-object-changed', from:'form', to: 'details', careOf: name, prop: item.name, val: 'target.parsedObject', m:1}]]),
+      [SwagTagMWCSelect.is]:  ({item, target}: RenderContext<SwagTagMWCTextarea, PropertyInfo>) => {
+        Object.assign(target, item);
+        target!.setAttribute('role', 'select');
+      },
   
     }]
 });
@@ -41,6 +46,9 @@ export const linkMassagedProps = ({properties, self}: SwagTagBase) => {
           break;
         case 'object':
           anyProp.editor = SwagTagMWCTextarea.is;
+          break;
+        case 'stringArray':
+          anyProp.editor = SwagTagMWCSelect.is;
           break;
         default:
           throw 'Not implemented';
