@@ -40,7 +40,6 @@ export class SwagTagMWCSelect extends SwagTagPrimitiveBase {
         this.updateTransforms = [updateOptions, updateSelect];
     }
     handleSelected(e) {
-        debugger;
     }
 }
 SwagTagMWCSelect.is = 'swag-tag-mwc-select';
