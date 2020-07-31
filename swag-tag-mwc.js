@@ -25,7 +25,7 @@ export const addEditors = ({ massagedProps, name }) => ({
         }]
 });
 const massaged = Symbol();
-export const linkMassagedProps = ({ properties, self }) => {
+export const linkMassagedProps = ({ properties, self, block }) => {
     if (properties === undefined || properties[massaged])
         return;
     properties.forEach(prop => {
@@ -51,7 +51,7 @@ export const linkMassagedProps = ({ properties, self }) => {
         }
     });
     properties[massaged] = true;
-    self.massagedProps = properties;
+    self.massagedProps = block !== undefined ? properties.filter(prop => !block.includes(prop.name)) : properties;
 };
 const updateTransforms = [
     bindName,

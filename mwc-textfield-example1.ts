@@ -12,7 +12,7 @@ export class MWCTextFieldExample1 extends TextField{
     type='text';
     label='My label';
     placeholder = 'My placeholder';
-    prefix = 'My prefix';
+
     suffix = 'My suffix';
     icon = '';
     iconTrailing = '';

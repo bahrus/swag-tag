@@ -168,7 +168,7 @@ export function tryParsed(prop: PropertyInfo){
   }
 }
 
-export const linkMassagedProps = ({properties, self}: SwagTagBase) => {
+export const linkMassagedProps = ({properties, self, block}: SwagTagBase) => {
   if(properties === undefined || (<any>properties)[massaged as any as string]) return;
   properties.forEach(prop =>{
     tryParsed(prop);
@@ -187,7 +187,7 @@ export const linkMassagedProps = ({properties, self}: SwagTagBase) => {
     }
   });
   (<any>properties)[massaged as any as string] = true;
-  self.massagedProps = properties;
+  self.massagedProps = block !== undefined ? properties.filter(prop => !block.includes(prop.name!)) : properties;
 }
 
 export const triggerImportReferencedModule = ({path, self}: SwagTagBase) => {
@@ -224,11 +224,12 @@ export class SwagTagBase extends XtalFetchViewElement<WCSuiteInfo> implements WC
   mainTemplate = mainTemplate;
   readyToRender = true;
 
-  static attributeProps: any = ({tag, name, properties, path, events, slots, testCaseNames, attribs, editOpen} : SwagTagBase) =>{
+  static attributeProps: any = ({tag, name, properties, path, events, slots, testCaseNames, attribs, editOpen, block} : SwagTagBase) =>{
     const ap = {
       str: [tag, name, path],
       bool: [editOpen],
-      obj: [properties, events, slots, testCaseNames, attribs],
+      obj: [properties, events, slots, testCaseNames, attribs, block],
+      jsonProp: [block],
       reflect: [tag, editOpen]
     } as AttributeProps;
     return mergeProps(ap, (<any>XtalFetchViewElement).props);
@@ -246,6 +247,8 @@ export class SwagTagBase extends XtalFetchViewElement<WCSuiteInfo> implements WC
   tag: string | undefined;
 
   name: string | undefined;
+
+  block: string[] | undefined;
 
   description: string | undefined;
 

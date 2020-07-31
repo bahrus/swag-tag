@@ -31,7 +31,7 @@ export const addEditors =   ({massagedProps, name}: SwagTagBase) => ({
 });
 
 const massaged = Symbol();
-export const linkMassagedProps = ({properties, self}: SwagTagBase) => {
+export const linkMassagedProps = ({properties, self, block}: SwagTagBase) => {
     if(properties === undefined || (<any>properties)[massaged as any as string]) return;
     properties.forEach(prop =>{
       tryParsed(prop);
@@ -57,7 +57,7 @@ export const linkMassagedProps = ({properties, self}: SwagTagBase) => {
       }
     });
     (<any>properties)[massaged as any as string] = true;
-    self.massagedProps = properties;
+    self.massagedProps = block !== undefined ? properties.filter(prop => !block.includes(prop.name!)) : properties;
   }
 
 const updateTransforms = [

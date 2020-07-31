@@ -154,7 +154,7 @@ export function tryParsed(prop) {
         }
     }
 }
-export const linkMassagedProps = ({ properties, self }) => {
+export const linkMassagedProps = ({ properties, self, block }) => {
     if (properties === undefined || properties[massaged])
         return;
     properties.forEach(prop => {
@@ -174,7 +174,7 @@ export const linkMassagedProps = ({ properties, self }) => {
         }
     });
     properties[massaged] = true;
-    self.massagedProps = properties;
+    self.massagedProps = block !== undefined ? properties.filter(prop => !block.includes(prop.name)) : properties;
 };
 export const triggerImportReferencedModule = ({ path, self }) => {
     if (path !== undefined) {
@@ -217,11 +217,12 @@ export class SwagTagBase extends XtalFetchViewElement {
     }
 }
 SwagTagBase.is = "swag-tag-base";
-SwagTagBase.attributeProps = ({ tag, name, properties, path, events, slots, testCaseNames, attribs, editOpen }) => {
+SwagTagBase.attributeProps = ({ tag, name, properties, path, events, slots, testCaseNames, attribs, editOpen, block }) => {
     const ap = {
         str: [tag, name, path],
         bool: [editOpen],
-        obj: [properties, events, slots, testCaseNames, attribs],
+        obj: [properties, events, slots, testCaseNames, attribs, block],
+        jsonProp: [block],
         reflect: [tag, editOpen]
     };
     return mergeProps(ap, XtalFetchViewElement.props);

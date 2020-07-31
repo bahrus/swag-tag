@@ -12,7 +12,6 @@ export class MWCTextFieldExample1 extends TextField {
         this.type = 'text';
         this.label = 'My label';
         this.placeholder = 'My placeholder';
-        this.prefix = 'My prefix';
         this.suffix = 'My suffix';
         this.icon = '';
         this.iconTrailing = '';
