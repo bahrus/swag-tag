@@ -21,6 +21,7 @@ export const addEditors = ({ massagedProps, name }) => ({
                 Object.assign(target, item);
                 target.setAttribute('role', 'select');
             },
+            '"""': ({ item }) => ([PD.is, 'afterEnd', [{ on: 'edited-value-changed', from: 'form', to: 'details', careOf: name, prop: item.name, val: 'target.editedValue', m: 1 }]]),
         }]
 });
 const massaged = Symbol();

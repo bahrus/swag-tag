@@ -25,7 +25,7 @@ export const addEditors =   ({massagedProps, name}: SwagTagBase) => ({
         Object.assign(target, item);
         target!.setAttribute('role', 'select');
       },
-  
+      '"""': ({item}: RenderContext) => ([PD.is, 'afterEnd', [{on:'edited-value-changed', from:'form', to: 'details', careOf: name, prop: item.name, val: 'target.editedValue', m:1}]]),
     }]
 });
 
