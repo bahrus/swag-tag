@@ -31,14 +31,15 @@ const mainTemplate = T(/* html */ `
     <component--listeners></component--listeners>
   </component--holder>
 </details>
+<h4>Live Events Fired</h4>
+<json-viewer -object allowlist="detail,type,bubbles,cancelBubble,cancelable,composed,defaultPrevented,eventPhase,isTrusted,returnValue,timeStamp"></json-viewer>
 <form>
   <fieldset data-open="true" data-guid="0f0d62e5-0d00-4e70-ad90-277fcd94c963">
     <legend>✏️Edit <var></var>'s properties</legend>
   </fieldset>
 </form>
 
-<h4>Live Events Fired</h4>
-<json-viewer -object allowlist="detail,type,bubbles,cancelBubble,cancelable,composed,defaultPrevented,eventPhase,isTrusted,returnValue,timeStamp"></json-viewer>
+
 <aside>
   <details>
     <summary>View Schema</summary>
@@ -100,12 +101,6 @@ export const addEditors =   ({massagedProps, name}: SwagTagBase) => ({
       Object.assign(target, item);
       target!.setAttribute('role', 'textbox');
     },
-    //'"': ({item}: RenderContext) => ([PD.is, 'afterEnd', [{on:'edited-value-changed', from:'form', to: 'details', careOf: name, prop: item.name, val: 'target.editedValue', m:1}]]),
-    // [SwagTagObjectBase.is]: ({item, target}: RenderContext<SwagTagPrimitiveBase, PropertyInfo>) => {
-    //   Object.assign(target, item);
-    //   target!.setAttribute('role', 'textbox');
-    // },
-    //'""': ({item}: RenderContext) => ([PD.is, 'afterEnd', [{on:'parsed-object-changed', from:'form', to: 'details', careOf: name, prop: item.name, val: 'target.parsedObject', m:1}]])
   }]
 });
 
@@ -129,10 +124,8 @@ export const linkWcInfo = ({viewModel, tag, self} : SwagTagBase) => {
   Object.assign(self, wcInfo);
 }
 
-const massaged = Symbol();
-export function tryParsed(prop: PropertyInfo){
-  
 
+export function tryParsed(prop: PropertyInfo){
   let defaultVal = (<any>prop).default;
   let parsedType = undefined;
   if(defaultVal !== undefined){
@@ -148,7 +141,6 @@ export function tryParsed(prop: PropertyInfo){
     }
     switch(typeof defaultVal){
       case 'object':
-
         prop.value = (<any>prop).default;
         prop.type = 'object'
         break;
@@ -180,6 +172,7 @@ export function tryParsed(prop: PropertyInfo){
   }
 }
 
+const massaged = Symbol();
 export const linkMassagedProps = ({properties, self, block}: SwagTagBase) => {
   if(properties === undefined || (<any>properties)[massaged as any as string]) return;
   properties.forEach(prop =>{

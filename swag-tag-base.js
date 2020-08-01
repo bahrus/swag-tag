@@ -27,14 +27,15 @@ const mainTemplate = T(/* html */ `
     <component--listeners></component--listeners>
   </component--holder>
 </details>
+<h4>Live Events Fired</h4>
+<json-viewer -object allowlist="detail,type,bubbles,cancelBubble,cancelable,composed,defaultPrevented,eventPhase,isTrusted,returnValue,timeStamp"></json-viewer>
 <form>
   <fieldset data-open="true" data-guid="0f0d62e5-0d00-4e70-ad90-277fcd94c963">
     <legend>✏️Edit <var></var>'s properties</legend>
   </fieldset>
 </form>
 
-<h4>Live Events Fired</h4>
-<json-viewer -object allowlist="detail,type,bubbles,cancelBubble,cancelable,composed,defaultPrevented,eventPhase,isTrusted,returnValue,timeStamp"></json-viewer>
+
 <aside>
   <details>
     <summary>View Schema</summary>
@@ -108,7 +109,6 @@ export const linkWcInfo = ({ viewModel, tag, self }) => {
     delete wcInfo.attributes;
     Object.assign(self, wcInfo);
 };
-const massaged = Symbol();
 export function tryParsed(prop) {
     let defaultVal = prop.default;
     let parsedType = undefined;
@@ -157,6 +157,7 @@ export function tryParsed(prop) {
         }
     }
 }
+const massaged = Symbol();
 export const linkMassagedProps = ({ properties, self, block }) => {
     if (properties === undefined || properties[massaged])
         return;
