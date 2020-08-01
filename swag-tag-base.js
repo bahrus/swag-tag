@@ -24,9 +24,9 @@ const mainTemplate = T(/* html */ `
 </form>
 <details open>
   <summary></summary>
-  <var>
+  <component-holder->
     <div></div>
-  </var>
+  </component-holder->
 </details>
 <h4>Live Events Fired</h4>
 <json-viewer -object allowlist="detail,type,bubbles,cancelBubble,cancelable,composed,defaultPrevented,eventPhase,isTrusted,returnValue,timeStamp"></json-viewer>
@@ -53,7 +53,7 @@ const initTransform = ({ self }) => ({
     },
     details: {
         summary: uiRefs.dSummary,
-        var: uiRefs.dVar,
+        'component-holder-': uiRefs.dVar,
         '"': {
             div: uiRefs.dvDiv
         }
