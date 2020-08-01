@@ -18,6 +18,9 @@ const mainTemplate = T(/* html */ `
   }
 </style>
 <main>
+<!-- pass down edited values / parsed objects to demo component -->
+<p-d on=edited-value-changed to=details -care-of val=target.editedValue prop-from-event=target.name m=1 skip-init></p-d>
+<p-d on=parsed-object-changed to=details -care-of val=target.editedValue prop-fron-event=target.name m=1 skip-init></p-d>
 <form>
   <fieldset data-open="false" data-guid="0f0d62e5-0d00-4e70-ad90-277fcd94c963">
     <legend>✏️Edit <var></var>'s properties</legend>
@@ -39,13 +42,15 @@ const mainTemplate = T(/* html */ `
 </aside>
 </main>
 `);
-const eventListener = T(/* html */ `
+const eventListenerForJsonViewer = T(/* html */ `
 <p-d from=details to=json-viewer[-object] val=. skip-init m=1></p-d>
 `);
-export const uiRefs = { fflVar: p, dSummary: p, dComponentHolder: p, dchComponentListeners: p, adJsonViewer: p, fFieldset: p, };
+export const uiRefs = { fflVar: p, dSummary: p, dComponentHolder: p, dchComponentListenersForJsonViewer: p, adJsonViewer: p, fFieldset: p, };
 symbolize(uiRefs);
-const initTransform = ({ self }) => ({
+const initTransform = ({ self, tag }) => ({
     main: {
+        //'[-care-of]': tag,
+        'p-d': [{ careOf: tag }],
         form: {
             fieldset: uiRefs.fFieldset,
             '"': {
@@ -58,7 +63,7 @@ const initTransform = ({ self }) => ({
             summary: uiRefs.dSummary,
             'component--holder': uiRefs.dComponentHolder,
             '"': {
-                'component--listeners': uiRefs.dchComponentListeners
+                'component--listeners': uiRefs.dchComponentListenersForJsonViewer
             }
         },
         aside: {
@@ -74,22 +79,16 @@ export const bindName = ({ name }) => ({
     [uiRefs.dComponentHolder]: [name, 'afterBegin'],
 });
 export const addEventListeners = ({ events, name }) => ({
-    [uiRefs.dchComponentListeners]: [events || [], eventListener, , {
+    [uiRefs.dchComponentListenersForJsonViewer]: [events || [], eventListenerForJsonViewer, , {
             [PD.is]: ({ item }) => [{ observe: name, on: item.name }]
         }]
 });
 export const addEditors = ({ massagedProps, name }) => ({
     [uiRefs.fFieldset]: [massagedProps, ({ item }) => item.editor, , {
-            [SwagTagPrimitiveBase.is]: ({ item, target }) => {
+            [`${SwagTagPrimitiveBase.is},${SwagTagObjectBase.is}`]: ({ item, target }) => {
                 Object.assign(target, item);
                 target.setAttribute('role', 'textbox');
             },
-            '"': ({ item }) => ([PD.is, 'afterEnd', [{ on: 'edited-value-changed', from: 'form', to: 'details', careOf: name, prop: item.name, val: 'target.editedValue', m: 1 }]]),
-            [SwagTagObjectBase.is]: ({ item, target }) => {
-                Object.assign(target, item);
-                target.setAttribute('role', 'textbox');
-            },
-            '""': ({ item }) => ([PD.is, 'afterEnd', [{ on: 'parsed-object-changed', from: 'form', to: 'details', careOf: name, prop: item.name, val: 'target.parsedObject', m: 1 }]])
         }]
 });
 export const bindSelf = ({ attribs, self }) => ({

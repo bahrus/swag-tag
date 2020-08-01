@@ -17,7 +17,7 @@
   "dependencies": {
     "trans-render": "0.0.233",
     "xtal-element": "0.0.258",
-    "p-et-alia": "0.0.106",
+    "p-et-alia": "0.0.108",
     "@power-elements/json-viewer": "2.0.3",
     "xtal-text-input-md": "0.0.19",
     "xtal-text-area-md": "0.0.21",

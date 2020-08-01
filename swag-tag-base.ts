@@ -1,6 +1,6 @@
 import { WCSuiteInfo, WCInfo, PropertyInfo, CustomEventInfo, SlotInfo, AttribInfo } from "wc-info/types.js";
 import { createTemplate as T } from "trans-render/createTemplate.js";
-import {RenderContext, PEATSettings} from 'trans-render/types2.d.js';
+import {RenderContext, PEATSettings, PEATUnionSettings} from 'trans-render/types2.d.js';
 import { XtalFetchViewElement, define, mergeProps, AttributeProps, p, symbolize} from "xtal-element/XtalFetchViewElement.js";
 import {PD} from "p-et-alia/p-d.js";
 import { SwagTagPrimitiveBase } from './swag-tag-primitive-base.js';
@@ -22,6 +22,9 @@ const mainTemplate = T(/* html */ `
   }
 </style>
 <main>
+<!-- pass down edited values / parsed objects to demo component -->
+<p-d on=edited-value-changed to=details -care-of val=target.editedValue prop-from-event=target.name m=1 skip-init></p-d>
+<p-d on=parsed-object-changed to=details -care-of val=target.editedValue prop-fron-event=target.name m=1 skip-init></p-d>
 <form>
   <fieldset data-open="false" data-guid="0f0d62e5-0d00-4e70-ad90-277fcd94c963">
     <legend>✏️Edit <var></var>'s properties</legend>
@@ -44,15 +47,17 @@ const mainTemplate = T(/* html */ `
 </main>
 `);
 
-const eventListener = T(/* html */`
+const eventListenerForJsonViewer = T(/* html */`
 <p-d from=details to=json-viewer[-object] val=. skip-init m=1></p-d>
 `);
 
-export const uiRefs = {fflVar: p, dSummary: p, dComponentHolder: p, dchComponentListeners: p, adJsonViewer: p, fFieldset: p,}
+export const uiRefs = {fflVar: p, dSummary: p, dComponentHolder: p, dchComponentListenersForJsonViewer: p, adJsonViewer: p, fFieldset: p,}
 symbolize(uiRefs);
 
-const initTransform = ({self}: SwagTagBase) => ({
+const initTransform = ({self, tag}: SwagTagBase) => ({
   main:{
+    //'[-care-of]': tag,
+    'p-d':[{careOf: tag}] as PEATUnionSettings,
     form:{
       fieldset: uiRefs.fFieldset,
       '"':{
@@ -65,7 +70,7 @@ const initTransform = ({self}: SwagTagBase) => ({
       summary: uiRefs.dSummary,
       'component--holder': uiRefs.dComponentHolder,
       '"': {
-        'component--listeners': uiRefs.dchComponentListeners
+        'component--listeners': uiRefs.dchComponentListenersForJsonViewer
       }
     },
     aside:{
@@ -85,22 +90,22 @@ export const bindName = ({name}: SwagTagBase) => ({
   [uiRefs.dComponentHolder]: [name, 'afterBegin'],
 });
 export const addEventListeners =   ({events, name}: SwagTagBase) => ({
-  [uiRefs.dchComponentListeners]: [events || [], eventListener,,{
+  [uiRefs.dchComponentListenersForJsonViewer]: [events || [], eventListenerForJsonViewer,,{
     [PD.is]:({item}: RenderContext) => [{observe: name, on: item.name}]
   }]
 });
 export const addEditors =   ({massagedProps, name}: SwagTagBase) => ({
   [uiRefs.fFieldset]: [massagedProps, ({item}: RenderContext) => (<any>item).editor,, {
-    [SwagTagPrimitiveBase.is]: ({item, target}: RenderContext<SwagTagPrimitiveBase, PropertyInfo>) => {
+    [`${SwagTagPrimitiveBase.is},${SwagTagObjectBase.is}`]: ({item, target}: RenderContext<SwagTagPrimitiveBase, PropertyInfo>) => {
       Object.assign(target, item);
       target!.setAttribute('role', 'textbox');
     },
-    '"': ({item}: RenderContext) => ([PD.is, 'afterEnd', [{on:'edited-value-changed', from:'form', to: 'details', careOf: name, prop: item.name, val: 'target.editedValue', m:1}]]),
-    [SwagTagObjectBase.is]: ({item, target}: RenderContext<SwagTagPrimitiveBase, PropertyInfo>) => {
-      Object.assign(target, item);
-      target!.setAttribute('role', 'textbox');
-    },
-    '""': ({item}: RenderContext) => ([PD.is, 'afterEnd', [{on:'parsed-object-changed', from:'form', to: 'details', careOf: name, prop: item.name, val: 'target.parsedObject', m:1}]])
+    //'"': ({item}: RenderContext) => ([PD.is, 'afterEnd', [{on:'edited-value-changed', from:'form', to: 'details', careOf: name, prop: item.name, val: 'target.editedValue', m:1}]]),
+    // [SwagTagObjectBase.is]: ({item, target}: RenderContext<SwagTagPrimitiveBase, PropertyInfo>) => {
+    //   Object.assign(target, item);
+    //   target!.setAttribute('role', 'textbox');
+    // },
+    //'""': ({item}: RenderContext) => ([PD.is, 'afterEnd', [{on:'parsed-object-changed', from:'form', to: 'details', careOf: name, prop: item.name, val: 'target.parsedObject', m:1}]])
   }]
 });
 
