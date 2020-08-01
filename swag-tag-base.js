@@ -24,9 +24,9 @@ const mainTemplate = T(/* html */ `
 </form>
 <details open>
   <summary></summary>
-  <component-holder->
+  <component--holder>
     <div></div>
-  </component-holder->
+  </component--holder>
 </details>
 <h4>Live Events Fired</h4>
 <json-viewer -object allowlist="detail,type,bubbles,cancelBubble,cancelable,composed,defaultPrevented,eventPhase,isTrusted,returnValue,timeStamp"></json-viewer>
@@ -40,7 +40,7 @@ const mainTemplate = T(/* html */ `
 const eventListener = T(/* html */ `
 <p-d from=details to=json-viewer[-object] val=. skip-init m=1></p-d>
 `);
-export const uiRefs = { fflVar: p, dSummary: p, dVar: p, dvDiv: p, adJsonViewer: p, fFieldset: p, };
+export const uiRefs = { fflVar: p, dSummary: p, dComponentHolder: p, dvDiv: p, adJsonViewer: p, fFieldset: p, };
 symbolize(uiRefs);
 const initTransform = ({ self }) => ({
     form: {
@@ -53,7 +53,7 @@ const initTransform = ({ self }) => ({
     },
     details: {
         summary: uiRefs.dSummary,
-        'component-holder-': uiRefs.dVar,
+        'component--holder': uiRefs.dComponentHolder,
         '"': {
             div: uiRefs.dvDiv
         }
@@ -67,7 +67,7 @@ const initTransform = ({ self }) => ({
 export const bindName = ({ name }) => ({
     [uiRefs.dSummary]: name,
     [uiRefs.fflVar]: name,
-    [uiRefs.dVar]: [name, 'afterBegin'],
+    [uiRefs.dComponentHolder]: [name, 'afterBegin'],
 });
 export const addEventListeners = ({ events, name }) => ({
     [uiRefs.dvDiv]: [events || [], eventListener, , {

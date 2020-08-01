@@ -28,9 +28,9 @@ const mainTemplate = T(/* html */ `
 </form>
 <details open>
   <summary></summary>
-  <component-holder->
+  <component--holder>
     <div></div>
-  </component-holder->
+  </component--holder>
 </details>
 <h4>Live Events Fired</h4>
 <json-viewer -object allowlist="detail,type,bubbles,cancelBubble,cancelable,composed,defaultPrevented,eventPhase,isTrusted,returnValue,timeStamp"></json-viewer>
@@ -46,10 +46,10 @@ const eventListener = T(/* html */`
 <p-d from=details to=json-viewer[-object] val=. skip-init m=1></p-d>
 `);
 
-export const uiRefs = {fflVar: p, dSummary: p, dVar: p, dvDiv: p, adJsonViewer: p, fFieldset: p,}
+export const uiRefs = {fflVar: p, dSummary: p, dComponentHolder: p, dvDiv: p, adJsonViewer: p, fFieldset: p,}
 symbolize(uiRefs);
 
-const initTransform = ({self}: SwagTagBase) =>({
+const initTransform = ({self}: SwagTagBase) => ({
   form:{
     fieldset: uiRefs.fFieldset,
     '"':{
@@ -60,7 +60,7 @@ const initTransform = ({self}: SwagTagBase) =>({
   },
   details:{
     summary: uiRefs.dSummary,
-    'component-holder-': uiRefs.dVar,
+    'component--holder': uiRefs.dComponentHolder,
     '"': {
       div: uiRefs.dvDiv
     }
@@ -77,7 +77,7 @@ const initTransform = ({self}: SwagTagBase) =>({
 export const bindName = ({name}: SwagTagBase) => ({
   [uiRefs.dSummary]: name,
   [uiRefs.fflVar]: name,
-  [uiRefs.dVar]: [name, 'afterBegin'],
+  [uiRefs.dComponentHolder]: [name, 'afterBegin'],
 });
 export const addEventListeners =   ({events, name}: SwagTagBase) => ({
   [uiRefs.dvDiv]: [events || [], eventListener,,{
@@ -121,6 +121,8 @@ export const linkWcInfo = ({viewModel, tag, self} : SwagTagBase) => {
 
 const massaged = Symbol();
 export function tryParsed(prop: PropertyInfo){
+  
+
   let defaultVal = (<any>prop).default;
   let parsedType = undefined;
   if(defaultVal !== undefined){
