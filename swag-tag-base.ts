@@ -31,8 +31,12 @@ const mainTemplate = T(/* html */ `
     <component--listeners></component--listeners>
   </component--holder>
 </details>
-<h4>Live Events Fired</h4>
-<json-viewer -object allowlist="detail,type,bubbles,cancelBubble,cancelable,composed,defaultPrevented,eventPhase,isTrusted,returnValue,timeStamp"></json-viewer>
+<events--viewer>
+  <details open>
+    <summary>Live Events</summary>
+    <json-viewer -object allowlist="detail,type,bubbles,cancelBubble,cancelable,composed,defaultPrevented,eventPhase,isTrusted,returnValue,timeStamp"></json-viewer>
+  </details>
+</events--viewer>
 <form>
   <fieldset data-open="true" data-guid="0f0d62e5-0d00-4e70-ad90-277fcd94c963">
     <legend>✏️Edit <var></var>'s properties</legend>
@@ -50,7 +54,7 @@ const mainTemplate = T(/* html */ `
 `);
 
 const eventListenerForJsonViewer = T(/* html */`
-<p-d from=details to=json-viewer[-object] val=. skip-init m=1></p-d>
+<p-d from=details to=events--viewer care-of=json-viewer[-object] val=. skip-init m=1></p-d>
 `);
 
 export const uiRefs = {fflVar: p, dSummary: p, dComponentHolder: p, dchComponentListenersForJsonViewer: p, adJsonViewer: p, fFieldset: p,}
