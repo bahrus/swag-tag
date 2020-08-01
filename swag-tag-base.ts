@@ -21,6 +21,7 @@ const mainTemplate = T(/* html */ `
     overflow-y:auto;
   }
 </style>
+<main>
 <form>
   <fieldset data-open="false" data-guid="0f0d62e5-0d00-4e70-ad90-277fcd94c963">
     <legend>✏️Edit <var></var>'s properties</legend>
@@ -29,7 +30,7 @@ const mainTemplate = T(/* html */ `
 <details open>
   <summary></summary>
   <component--holder>
-    <div></div>
+    <component--listeners></component--listeners>
   </component--holder>
 </details>
 <h4>Live Events Fired</h4>
@@ -40,36 +41,40 @@ const mainTemplate = T(/* html */ `
     <json-viewer allowlist="name,properties,attributes,slots,events"></json-viewer>
   </details>
 </aside>
+</main>
 `);
 
 const eventListener = T(/* html */`
 <p-d from=details to=json-viewer[-object] val=. skip-init m=1></p-d>
 `);
 
-export const uiRefs = {fflVar: p, dSummary: p, dComponentHolder: p, dvDiv: p, adJsonViewer: p, fFieldset: p,}
+export const uiRefs = {fflVar: p, dSummary: p, dComponentHolder: p, dchComponentListeners: p, adJsonViewer: p, fFieldset: p,}
 symbolize(uiRefs);
 
 const initTransform = ({self}: SwagTagBase) => ({
-  form:{
-    fieldset: uiRefs.fFieldset,
-    '"':{
-      legend: [,{click: self.toggleForm},,{
-        var: uiRefs.fflVar
-      }] as PEATSettings
+  main:{
+    form:{
+      fieldset: uiRefs.fFieldset,
+      '"':{
+        legend: [,{click: self.toggleForm},,{
+          var: uiRefs.fflVar
+        }] as PEATSettings
+      },
     },
-  },
-  details:{
-    summary: uiRefs.dSummary,
-    'component--holder': uiRefs.dComponentHolder,
-    '"': {
-      div: uiRefs.dvDiv
-    }
-  },
-  aside:{
     details:{
-      'json-viewer': uiRefs.adJsonViewer
+      summary: uiRefs.dSummary,
+      'component--holder': uiRefs.dComponentHolder,
+      '"': {
+        'component--listeners': uiRefs.dchComponentListeners
+      }
+    },
+    aside:{
+      details:{
+        'json-viewer': uiRefs.adJsonViewer
+      }
     }
   }
+
 } as TransformRules);
 
 
@@ -80,7 +85,7 @@ export const bindName = ({name}: SwagTagBase) => ({
   [uiRefs.dComponentHolder]: [name, 'afterBegin'],
 });
 export const addEventListeners =   ({events, name}: SwagTagBase) => ({
-  [uiRefs.dvDiv]: [events || [], eventListener,,{
+  [uiRefs.dchComponentListeners]: [events || [], eventListener,,{
     [PD.is]:({item}: RenderContext) => [{observe: name, on: item.name}]
   }]
 });
