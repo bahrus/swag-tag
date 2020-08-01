@@ -50,8 +50,7 @@ export const uiRefs = { fflVar: p, dSummary: p, dComponentHolder: p, dchComponen
 symbolize(uiRefs);
 const initTransform = ({ self, tag }) => ({
     main: {
-        //'[-care-of]': tag,
-        'p-d': [{ careOf: tag }],
+        '[-care-of]': tag,
         form: {
             fieldset: uiRefs.fFieldset,
             '"': {

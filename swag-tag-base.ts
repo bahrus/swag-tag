@@ -57,8 +57,7 @@ symbolize(uiRefs);
 
 const initTransform = ({self, tag}: SwagTagBase) => ({
   main:{
-    //'[-care-of]': tag,
-    'p-d':[{careOf: tag}] as PEATUnionSettings,
+    '[-care-of]': tag,
     form:{
       fieldset: uiRefs.fFieldset,
       '"':{
