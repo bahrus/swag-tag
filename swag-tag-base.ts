@@ -102,6 +102,7 @@ export const addEventListeners =   ({events, name}: SwagTagBase) => ({
   }]
 });
 export const addEditors =   ({massagedProps, name}: SwagTagBase) => ({
+  // Loop over massagedProps, and insert dynamic editor via tag name (item.editor is the tag name)
   [uiRefs.fFieldset]: [massagedProps, ({item}: RenderContext) => (<any>item).editor,, {
     [`${SwagTagPrimitiveBase.is},${SwagTagObjectBase.is}`]: ({item, target}: RenderContext<SwagTagPrimitiveBase, PropertyInfo>) => {
       Object.assign(target, item);
