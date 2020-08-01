@@ -24,18 +24,19 @@ const mainTemplate = T(/* html */ `
 <main>
 <!-- pass down edited values / parsed objects to demo component -->
 <p-d on=edited-value-changed to=details -care-of val=target.editedValue prop-from-event=target.name m=1 skip-init></p-d>
-<p-d on=parsed-object-changed to=details -care-of val=target.editedValue prop-fron-event=target.name m=1 skip-init></p-d>
-<form>
-  <fieldset data-open="false" data-guid="0f0d62e5-0d00-4e70-ad90-277fcd94c963">
-    <legend>✏️Edit <var></var>'s properties</legend>
-  </fieldset>
-</form>
+<p-d on=parsed-object-changed to=details -care-of val=target.editedValue prop-from-event=target.name m=1 skip-init></p-d>
 <details open>
   <summary></summary>
   <component--holder>
     <component--listeners></component--listeners>
   </component--holder>
 </details>
+<form>
+  <fieldset data-open="false" data-guid="0f0d62e5-0d00-4e70-ad90-277fcd94c963">
+    <legend>✏️Edit <var></var>'s properties</legend>
+  </fieldset>
+</form>
+
 <h4>Live Events Fired</h4>
 <json-viewer -object allowlist="detail,type,bubbles,cancelBubble,cancelable,composed,defaultPrevented,eventPhase,isTrusted,returnValue,timeStamp"></json-viewer>
 <aside>
