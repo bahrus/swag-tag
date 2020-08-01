@@ -4,8 +4,10 @@ import { PD } from "p-et-alia/p-d.js";
 import { SwagTagPrimitiveBase } from './swag-tag-primitive-base.js';
 import { SwagTagObjectBase } from './swag-tag-object-base.js';
 import('@power-elements/json-viewer/json-viewer.js');
+//Very little top level styling used, so consumers can take the first crack at styling.
+//So make what little styling there is  guaranteed to not affect anything else via guid.
 const mainTemplate = T(/* html */ `
-<style id=collapsible>
+<style id=0f0d62e5-0d00-4e70-ad90-277fcd94c963>
   fieldset[data-guid="0f0d62e5-0d00-4e70-ad90-277fcd94c963"]>legend{
     cursor: pointer;
   }
@@ -113,7 +115,7 @@ export const linkWcInfo = ({ viewModel, tag, self }) => {
     delete wcInfo.attributes;
     Object.assign(self, wcInfo);
 };
-export function tryParsed(prop) {
+export function adjustValueAndType(prop) {
     let defaultVal = prop.default;
     let parsedType = undefined;
     if (defaultVal !== undefined) {
@@ -166,7 +168,7 @@ export const linkMassagedProps = ({ properties, self, block }) => {
     if (properties === undefined || properties[massaged])
         return;
     properties.forEach(prop => {
-        tryParsed(prop);
+        adjustValueAndType(prop);
         const anyProp = prop;
         switch (prop.type) {
             case 'string':

@@ -8,8 +8,10 @@ import {SwagTagObjectBase} from './swag-tag-object-base.js';
 import { SelectiveUpdate, TransformRules} from "../xtal-element/types.js";
 import('@power-elements/json-viewer/json-viewer.js');
 
+//Very little top level styling used, so consumers can take the first crack at styling.
+//So make what little styling there is  guaranteed to not affect anything else via guid.
 const mainTemplate = T(/* html */ `
-<style id=collapsible>
+<style id=0f0d62e5-0d00-4e70-ad90-277fcd94c963>
   fieldset[data-guid="0f0d62e5-0d00-4e70-ad90-277fcd94c963"]>legend{
     cursor: pointer;
   }
@@ -129,7 +131,7 @@ export const linkWcInfo = ({viewModel, tag, self} : SwagTagBase) => {
 }
 
 
-export function tryParsed(prop: PropertyInfo){
+export function adjustValueAndType(prop: PropertyInfo){
   let defaultVal = (<any>prop).default;
   let parsedType = undefined;
   if(defaultVal !== undefined){
@@ -180,7 +182,7 @@ const massaged = Symbol();
 export const linkMassagedProps = ({properties, self, block}: SwagTagBase) => {
   if(properties === undefined || (<any>properties)[massaged as any as string]) return;
   properties.forEach(prop =>{
-    tryParsed(prop);
+    adjustValueAndType(prop);
     const anyProp = <any>prop;
     switch(prop.type){
       case 'string':

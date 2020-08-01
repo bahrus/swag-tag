@@ -1,4 +1,4 @@
-import {SwagTagBase, uiRefs, bindName, addEventListeners, linkWcInfo, triggerImportReferencedModule, tryParsed, bindSelf, showHideEditor} from './swag-tag-base.js';
+import {SwagTagBase, uiRefs, bindName, addEventListeners, linkWcInfo, triggerImportReferencedModule, adjustValueAndType, bindSelf, showHideEditor} from './swag-tag-base.js';
 import { WCSuiteInfo, WCInfo, PropertyInfo, CustomEventInfo, SlotInfo, AttribInfo } from "wc-info/types.js";
 import {define} from 'xtal-element/XtalElement.js';
 import {RenderContext, PEATSettings} from 'trans-render/types2.d.js';
@@ -11,22 +11,12 @@ import {SwagTagMWCSelect} from './swag-tag-mwc-select.js';
 import { SelectiveUpdate, TransformRules} from "../xtal-element/types.js";
 
 export const addEditors =   ({massagedProps, name}: SwagTagBase) => ({
-    [uiRefs.fFieldset]: [massagedProps, ({item}: RenderContext) => (<any>item).editor,, {
+    // Loop over massagedProps, and insert dynamic editor via tag name (item.editor is the tag name)
+    [uiRefs.fFieldset]: [massagedProps || [], ({item}: RenderContext) => (<any>item).editor,, {
       [`${SwagTagMWCTextField.is},${SwagTagMWCCheckbox.is},${SwagTagMWCTextarea.is},${SwagTagMWCSelect.is}`]: ({item, target}: RenderContext<SwagTagMWCTextField, PropertyInfo>) => {
         Object.assign(target, item);
         target!.setAttribute('role', 'textbox');
       },
-      // '"': ({item}: RenderContext) => ([PD.is, 'afterEnd', [{on:'edited-value-changed', from:'form', to: 'details', careOf: name, prop: item.name, val: 'target.editedValue', m:1}]]),
-      // [SwagTagMWCTextarea.is]: ({item, target}: RenderContext<SwagTagMWCTextarea, PropertyInfo>) => {
-      //   Object.assign(target, item);
-      //   target!.setAttribute('role', 'textbox');
-      // },
-      // '""': ({item}: RenderContext) => ([PD.is, 'afterEnd', [{on:'parsed-object-changed', from:'form', to: 'details', careOf: name, prop: item.name, val: 'target.parsedObject', m:1}]]),
-      // [SwagTagMWCSelect.is]:  ({item, target}: RenderContext<SwagTagMWCTextarea, PropertyInfo>) => {
-      //   Object.assign(target, item);
-      //   target!.setAttribute('role', 'select');
-      // },
-      // '"""': ({item}: RenderContext) => ([PD.is, 'afterEnd', [{on:'edited-value-changed', from:'form', to: 'details', careOf: name, prop: item.name, val: 'target.editedValue', m:1}]]),
     }]
 });
 
@@ -34,7 +24,7 @@ const massaged = Symbol();
 export const linkMassagedProps = ({properties, self, block}: SwagTagBase) => {
     if(properties === undefined || (<any>properties)[massaged as any as string]) return;
     properties.forEach(prop =>{
-      tryParsed(prop);
+      adjustValueAndType(prop);
       const anyProp = <any>prop;
       let defaultVal = anyProp.default;
       switch(prop.type){

@@ -1,11 +1,12 @@
-import { SwagTagBase, uiRefs, bindName, addEventListeners, linkWcInfo, triggerImportReferencedModule, tryParsed, bindSelf, showHideEditor } from './swag-tag-base.js';
+import { SwagTagBase, uiRefs, bindName, addEventListeners, linkWcInfo, triggerImportReferencedModule, adjustValueAndType, bindSelf, showHideEditor } from './swag-tag-base.js';
 import { define } from 'xtal-element/XtalElement.js';
 import { SwagTagMWCTextField } from './swag-tag-mwc-textfield.js';
 import { SwagTagMWCCheckbox } from './swag-tag-mwc-checkbox.js';
 import { SwagTagMWCTextarea } from './swag-tag-mwc-textarea.js';
 import { SwagTagMWCSelect } from './swag-tag-mwc-select.js';
 export const addEditors = ({ massagedProps, name }) => ({
-    [uiRefs.fFieldset]: [massagedProps, ({ item }) => item.editor, , {
+    // Loop over massagedProps, and insert dynamic editor via tag name (item.editor is the tag name)
+    [uiRefs.fFieldset]: [massagedProps || [], ({ item }) => item.editor, , {
             [`${SwagTagMWCTextField.is},${SwagTagMWCCheckbox.is},${SwagTagMWCTextarea.is},${SwagTagMWCSelect.is}`]: ({ item, target }) => {
                 Object.assign(target, item);
                 target.setAttribute('role', 'textbox');
@@ -17,7 +18,7 @@ export const linkMassagedProps = ({ properties, self, block }) => {
     if (properties === undefined || properties[massaged])
         return;
     properties.forEach(prop => {
-        tryParsed(prop);
+        adjustValueAndType(prop);
         const anyProp = prop;
         let defaultVal = anyProp.default;
         switch (prop.type) {
