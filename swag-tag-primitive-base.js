@@ -43,7 +43,7 @@ export const linkEditedValue = ({ value, self }) => {
 };
 export class SwagTagPrimitiveBase extends XtalElement {
     constructor() {
-        super(...arguments);
+        super();
         this.readyToInit = true;
         this.mainTemplate = mainTemplate;
         this.readyToRender = true;
@@ -54,6 +54,7 @@ export class SwagTagPrimitiveBase extends XtalElement {
         this.updateTransforms = [
             updateLabel, updateInput
         ];
+        this.eventScopes = [[, 'bubbles']];
     }
     handleInput(e) {
         this.editedValue = e.target.value;

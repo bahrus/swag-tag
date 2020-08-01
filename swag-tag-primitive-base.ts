@@ -53,6 +53,12 @@ export const linkEditedValue = ({value, self}: SwagTagPrimitiveBase) => {
 }
 
 export class SwagTagPrimitiveBase extends XtalElement {
+
+    constructor(){
+        super();
+        this.eventScopes = [[,'bubbles']];
+    }
+
     static is = 'swag-tag-primitive-base';
 
     static attributeProps : any = ({readOnly, type, testValues, value, disabled, eventScopes, name, description, inputType, editedValue}: SwagTagPrimitiveBase) => ({
