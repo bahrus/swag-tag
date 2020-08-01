@@ -24,7 +24,7 @@ const mainTemplate = T(/* html */ `
 <main>
 <!-- pass down edited values / parsed objects to demo component -->
 <p-d on=edited-value-changed to=details -care-of val=target.editedValue prop-from-event=target.name m=1 skip-init></p-d>
-<p-d on=parsed-object-changed to=details -care-of val=target.editedValue prop-from-event=target.name m=1 skip-init></p-d>
+<p-d on=parsed-object-changed to=details -care-of val=target.parsedObject prop-from-event=target.name m=1 skip-init></p-d>
 <details open>
   <summary></summary>
   <component--holder>
@@ -32,7 +32,7 @@ const mainTemplate = T(/* html */ `
   </component--holder>
 </details>
 <form>
-  <fieldset data-open="false" data-guid="0f0d62e5-0d00-4e70-ad90-277fcd94c963">
+  <fieldset data-open="true" data-guid="0f0d62e5-0d00-4e70-ad90-277fcd94c963">
     <legend>✏️Edit <var></var>'s properties</legend>
   </fieldset>
 </form>
