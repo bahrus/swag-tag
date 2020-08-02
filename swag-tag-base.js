@@ -21,14 +21,15 @@ const mainTemplate = T(/* html */ `
 </style>
 <main>
 <!-- pass down edited values / parsed objects to demo component -->
-<p-d on=edited-value-changed to=details -care-of val=target.editedValue prop-from-event=target.name m=1 skip-init></p-d>
-<p-d on=parsed-object-changed to=details -care-of val=target.parsedObject prop-from-event=target.name m=1 skip-init></p-d>
-<details open>
-  <summary></summary>
+<p-d on=edited-value-changed to=section -care-of val=target.editedValue prop-from-event=target.name m=1 skip-init></p-d>
+<p-d on=parsed-object-changed to=section -care-of val=target.parsedObject prop-from-event=target.name m=1 skip-init></p-d>
+<header>
+</header>
+<section>
   <component--holder>
     <component--listeners></component--listeners>
   </component--holder>
-</details>
+</section>
 <events--viewer>
   <details open>
     <summary>Live Events</summary>
@@ -51,13 +52,20 @@ const mainTemplate = T(/* html */ `
 </main>
 `);
 const eventListenerForJsonViewer = T(/* html */ `
-<p-d from=details to=events--viewer care-of=json-viewer[-object] val=. skip-init m=1></p-d>
+<p-d from=section to=events--viewer care-of=json-viewer[-object] val=. skip-init m=1></p-d>
 `);
-export const uiRefs = { fflVar: p, dSummary: p, dComponentHolder: p, dchComponentListenersForJsonViewer: p, adJsonViewer: p, fFieldset: p, };
+export const uiRefs = { fflVar: p, header: p, dComponentHolder: p, dchComponentListenersForJsonViewer: p, adJsonViewer: p, fFieldset: p, };
 symbolize(uiRefs);
 const initTransform = ({ self, tag }) => ({
     main: {
         '[-care-of]': tag,
+        header: uiRefs.header,
+        section: {
+            'component--holder': uiRefs.dComponentHolder,
+            '"': {
+                'component--listeners': uiRefs.dchComponentListenersForJsonViewer
+            }
+        },
         form: {
             fieldset: uiRefs.fFieldset,
             '"': {
@@ -65,13 +73,6 @@ const initTransform = ({ self, tag }) => ({
                         var: uiRefs.fflVar
                     }]
             },
-        },
-        details: {
-            summary: uiRefs.dSummary,
-            'component--holder': uiRefs.dComponentHolder,
-            '"': {
-                'component--listeners': uiRefs.dchComponentListenersForJsonViewer
-            }
         },
         aside: {
             details: {
@@ -81,7 +82,7 @@ const initTransform = ({ self, tag }) => ({
     }
 });
 export const bindName = ({ name }) => ({
-    [uiRefs.dSummary]: name,
+    [uiRefs.header]: `<${name}>`,
     [uiRefs.fflVar]: name,
     [uiRefs.dComponentHolder]: [name, 'afterBegin'],
 });
