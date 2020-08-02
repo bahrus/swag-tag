@@ -6,14 +6,15 @@ import {PD} from "p-et-alia/p-d.js";
 import {PU} from 'p-et-alia/p-u.js';
 import {SwagTagMWCTextField} from './swag-tag-mwc-textfield.js';
 import {SwagTagMWCCheckbox} from './swag-tag-mwc-checkbox.js';
-import {SwagTagMWCTextarea} from './swag-tag-mwc-textarea.js';
+//import {SwagTagMWCTextarea} from './swag-tag-mwc-textarea.js';
+import {SwagTagJsonEditor} from './swag-tag-json-editor.js';
 import {SwagTagMWCSelect} from './swag-tag-mwc-select.js';
 import { SelectiveUpdate, TransformRules} from "../xtal-element/types.js";
 
 export const addEditors =   ({massagedProps, name}: SwagTagBase) => ({
     // Loop over massagedProps, and insert dynamic editor via tag name (item.editor is the tag name)
     [uiRefs.fFieldset]: [massagedProps || [], ({item}: RenderContext) => (<any>item).editor,, {
-      [`${SwagTagMWCTextField.is},${SwagTagMWCCheckbox.is},${SwagTagMWCTextarea.is},${SwagTagMWCSelect.is}`]: ({item, target}: RenderContext<SwagTagMWCTextField, PropertyInfo>) => {
+      [`${SwagTagMWCTextField.is},${SwagTagMWCCheckbox.is},${SwagTagJsonEditor.is},${SwagTagMWCSelect.is}`]: ({item, target}: RenderContext<SwagTagMWCTextField, PropertyInfo>) => {
         Object.assign(target, item);
         target!.setAttribute('role', 'textbox');
       },
@@ -36,7 +37,7 @@ export const linkMassagedProps = ({properties, self, block}: SwagTagBase) => {
           anyProp.editor = SwagTagMWCCheckbox.is;
           break;
         case 'object':
-          anyProp.editor = SwagTagMWCTextarea.is;
+          anyProp.editor = SwagTagJsonEditor.is;
           break;
         case 'stringArray':
           anyProp.editor = SwagTagMWCSelect.is;
