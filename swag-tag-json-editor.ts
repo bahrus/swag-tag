@@ -27,20 +27,20 @@ const mainTemplate = createTemplate(/* html */`
 const [label$, jsonEditor] = [Symbol('label'), Symbol('jsonEditor')];
 
 
-const updateLabel = ({name}: SwagTagJsonEditor) => ({
-    [label$]: name + ':',
+const updateLabel = ({name, value}: SwagTagJsonEditor) => ({
+    [label$]: [{textContent: name + ':', style: {display: value === undefined ? 'none': 'block'}]
 });
 const updateJsonEditor = ({readOnly, inputType, disabled, value}: SwagTagPrimitiveBase) => ({
     [jsonEditor]: [{options: {}, input: JSON.parse(value || {})},,{'readonly': readOnly, type: inputType, disabled: disabled}]
 });
-const adjustMain = ({name, value}: SwagTagPrimitiveBase) => ({
-    main: [value===undefined,{
-        label:[{style: {display: 'none'}}]
-    },{
-        label:[{style: {display: 'block'}}]
-    }
-    ]
-});
+// const adjustMain = ({name, value}: SwagTagPrimitiveBase) => ({
+//     main: [value===undefined,{
+//         label:[{style: {display: 'none'}}]
+//     },{
+//         label:[{style: {display: 'block'}}]
+//     }
+//     ]
+// });
 
 const linkParsedObject = ({value, self}: SwagTagJsonEditor) =>{
     try{
@@ -75,7 +75,7 @@ export class SwagTagJsonEditor extends SwagTagPrimitiveBase{
     }
 
     updateTransforms = [
-        adjustMain, updateLabel, updateJsonEditor
+        updateLabel, updateJsonEditor
     ]  as SelectiveUpdate<any>[];
 
     parsedObject: any;

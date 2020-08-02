@@ -21,20 +21,20 @@ const mainTemplate = createTemplate(/* html */ `
   </main>
 `);
 const [label$, jsonEditor] = [Symbol('label'), Symbol('jsonEditor')];
-const updateLabel = ({ name }) => ({
-    [label$]: name + ':',
+const updateLabel = ({ name, value }) => ({
+    [label$]: [{ textContent: name + ':', style: { display: value === undefined ? 'none' : 'block' } }]
 });
 const updateJsonEditor = ({ readOnly, inputType, disabled, value }) => ({
     [jsonEditor]: [{ options: {}, input: JSON.parse(value || {}) }, , { 'readonly': readOnly, type: inputType, disabled: disabled }]
 });
-const adjustMain = ({ name, value }) => ({
-    main: [value === undefined, {
-            label: [{ style: { display: 'none' } }]
-        }, {
-            label: [{ style: { display: 'block' } }]
-        }
-    ]
-});
+// const adjustMain = ({name, value}: SwagTagPrimitiveBase) => ({
+//     main: [value===undefined,{
+//         label:[{style: {display: 'none'}}]
+//     },{
+//         label:[{style: {display: 'block'}}]
+//     }
+//     ]
+// });
 const linkParsedObject = ({ value, self }) => {
     try {
         const parsed = JSON.parse(value);
@@ -54,7 +54,7 @@ export class SwagTagJsonEditor extends SwagTagPrimitiveBase {
             }
         };
         this.updateTransforms = [
-            adjustMain, updateLabel, updateJsonEditor
+            updateLabel, updateJsonEditor
         ];
     }
     handleChange(e) {
