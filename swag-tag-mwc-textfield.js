@@ -20,8 +20,8 @@ const [mwcTxtFld] = [Symbol('txtFld')];
 const initTransform = ({ self }) => ({
     'mwc-textfield': [, { input: self.handleInput }, , , mwcTxtFld]
 });
-const updateInput = ({ readOnly, inputType, disabled, value, name }) => ({
-    [mwcTxtFld]: [, , { 'readonly': readOnly, type: inputType, disabled: disabled, value: value, label: name }]
+const updateInput = ({ readOnly, inputType, disabled, value, name, description }) => ({
+    [mwcTxtFld]: [{ 'readonly': readOnly, type: inputType, disabled: disabled, value: value, label: name, helper: description }, ,]
 });
 export const linkInputType = ({ type, self }) => {
     switch (type) {

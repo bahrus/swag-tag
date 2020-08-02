@@ -26,8 +26,8 @@ const initTransform = ({self}: SwagTagMWCTextField) => ({
     'mwc-textfield': [,{input:self.handleInput},,,mwcTxtFld]
 });
 
-const updateInput = ({readOnly, inputType, disabled, value, name}: SwagTagMWCTextField) =>({
-    [mwcTxtFld]: [,,{'readonly': readOnly, type: inputType, disabled: disabled, value: value, label: name}]
+const updateInput = ({readOnly, inputType, disabled, value, name, description}: SwagTagMWCTextField) =>({
+    [mwcTxtFld]: [{'readonly': readOnly, type: inputType, disabled: disabled, value: value, label: name, helper: description},,]
 });
 
 export const linkInputType = ({type, self}: SwagTagMWCTextField) => {
