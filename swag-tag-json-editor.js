@@ -15,8 +15,10 @@ const mainTemplate = createTemplate(/* html */ `
           display:block
       }
   </style>
-  <label for=myInput part=fieldLabel></label>
-  <xtal-json-editor as=json></xtal-json-editor>
+  <main>
+    <label for=myInput part=fieldLabel></label>
+    <xtal-json-editor as=json></xtal-json-editor>
+  </main>
 `);
 const [label$, jsonEditor] = [Symbol('label'), Symbol('jsonEditor')];
 const updateLabel = ({ name }) => ({
@@ -24,6 +26,14 @@ const updateLabel = ({ name }) => ({
 });
 const updateJsonEditor = ({ readOnly, inputType, disabled, value }) => ({
     [jsonEditor]: [{ options: {}, input: JSON.parse(value || {}) }, , { 'readonly': readOnly, type: inputType, disabled: disabled }]
+});
+const adjustMain = ({ name, value }) => ({
+    main: [value === undefined, {
+            label: [{ style: { display: 'none' } }]
+        }, {
+            label: [{ style: { display: 'block' } }]
+        }
+    ]
 });
 const linkParsedObject = ({ value, self }) => {
     try {
@@ -38,11 +48,13 @@ export class SwagTagJsonEditor extends SwagTagPrimitiveBase {
         this.propActions = [linkParsedObject, linkInputType];
         this.mainTemplate = mainTemplate;
         this.initTransform = {
-            label: label$,
-            [XtalJsonEditor.is]: [, { 'edited-result-changed': this.handleChange }, , , jsonEditor]
+            main: {
+                label: label$,
+                [XtalJsonEditor.is]: [, { 'edited-result-changed': this.handleChange }, , , jsonEditor]
+            }
         };
         this.updateTransforms = [
-            updateLabel, updateJsonEditor
+            adjustMain, updateLabel, updateJsonEditor
         ];
     }
     handleChange(e) {
