@@ -24,7 +24,7 @@ const initTransform = {
         'json-viewer': jsonViewer
     },
     '"': [{style:{display:'none'}},,,,details]
-};
+} as TransformRules;
 const allowList = ['detail', 'type', 'bubbles', 'cancelBubble', 'cancelable', 'composed', 'defaultPrevented', 'eventPhase', 'isTruted', 'returnValue', 'timeStamp'];
 export const appendToEventArchive = ({newEvent, self}: JsonEventViewer) =>{
     if(newEvent === undefined) return;
