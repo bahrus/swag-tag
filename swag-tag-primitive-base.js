@@ -17,13 +17,13 @@ const mainTemplate = createTemplate(/* html */ `
 const [label$, input$] = [Symbol('label'), Symbol('input')];
 const initTransform = ({ self }) => ({
     label: label$,
-    input: [, { input: self.handleInput }, , , input$]
+    input: [{}, { input: self.handleInput }, , , input$]
 });
 const updateLabel = ({ name }) => ({
     [label$]: name + ':',
 });
 const updateInput = ({ readOnly, inputType, disabled, value }) => ({
-    [input$]: [, , { 'readonly': readOnly, type: inputType, disabled: disabled, value: value }]
+    [input$]: [{}, , { 'readonly': readOnly, type: inputType, disabled: disabled, value: value }]
 });
 export const linkInputType = ({ type, self }) => {
     switch (type) {

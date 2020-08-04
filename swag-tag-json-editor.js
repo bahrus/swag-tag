@@ -27,14 +27,6 @@ const updateLabel = ({ name, value }) => ({
 const updateJsonEditor = ({ readOnly, inputType, disabled, value }) => ({
     [jsonEditor]: [{ options: {}, input: JSON.parse(value || {}) }, , { 'readonly': readOnly, type: inputType, disabled: disabled }]
 });
-// const adjustMain = ({name, value}: SwagTagPrimitiveBase) => ({
-//     main: [value===undefined,{
-//         label:[{style: {display: 'none'}}]
-//     },{
-//         label:[{style: {display: 'block'}}]
-//     }
-//     ]
-// });
 const linkParsedObject = ({ value, self }) => {
     try {
         const parsed = JSON.parse(value);
@@ -50,7 +42,7 @@ export class SwagTagJsonEditor extends SwagTagPrimitiveBase {
         this.initTransform = {
             main: {
                 label: label$,
-                [XtalJsonEditor.is]: [, { 'edited-result-changed': this.handleChange }, , , jsonEditor]
+                [XtalJsonEditor.is]: [{}, { 'edited-result-changed': this.handleChange }, , , jsonEditor]
             }
         };
         this.updateTransforms = [

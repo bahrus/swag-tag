@@ -71,7 +71,7 @@ const initTransform = ({ self, tag }) => ({
         form: {
             fieldset: uiRefs.fFieldset,
             '"': {
-                legend: [, { click: self.toggleForm }, , {
+                legend: [{}, { click: self.toggleForm }, , {
                         var: uiRefs.fflVar
                     }]
             },

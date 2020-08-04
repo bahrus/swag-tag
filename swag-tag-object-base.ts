@@ -27,9 +27,12 @@ const [label$, textarea$] = [Symbol('label'), Symbol('textarea')];
 const updateLabel = ({name}: SwagTagObjectBase) => ({
     [label$]: name + ':',
 });
-const updateTextArea = ({readOnly, inputType, disabled, value}: SwagTagPrimitiveBase) => ({
-    [textarea$]: [{value: value || ''},,{'readonly': readOnly, type: inputType, disabled: disabled}]
-});
+// const updateTextArea = ({readOnly, inputType, disabled, value}: SwagTagPrimitiveBase) => ({
+//     [textarea$]: [{value: value || ''},,{'readonly': readOnly, type: inputType, disabled: disabled}]
+// });
+const updateTextArea = ({readOnly, inputType, disabled, value, self}: SwagTagPrimitiveBase) => {
+    (<any>self)[textarea$].value = value;
+}
 
 const linkParsedObject = ({value, self}: SwagTagObjectBase) =>{
     try{
@@ -54,7 +57,7 @@ export class SwagTagObjectBase extends SwagTagPrimitiveBase{
     mainTemplate = mainTemplate;
     initTransform: any = {
         label: label$,
-        textarea: [,{'input': this.handleInput},,, textarea$]
+        textarea: [{},{'input': this.handleInput},,, textarea$]
     };
 
     handleInput(e: Event){

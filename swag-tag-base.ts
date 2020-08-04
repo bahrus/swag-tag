@@ -78,7 +78,7 @@ const initTransform = ({self, tag}: SwagTagBase) => ({
     form:{
       fieldset: uiRefs.fFieldset,
       '"':{
-        legend: [,{click: self.toggleForm},,{
+        legend: [{},{click: self.toggleForm},,{
           var: uiRefs.fflVar
         }] as PEATSettings
       },

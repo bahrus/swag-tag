@@ -22,10 +22,10 @@ const optionTemplate = createTemplate(/* html */ `
 `);
 const [mwcSel] = [Symbol()];
 const initTransform = ({ self }) => ({
-    'mwc-select': [, { selected: self.handleSelected }, { label: name }, , mwcSel]
+    'mwc-select': [{}, { selected: self.handleSelected }, { label: name }, , mwcSel]
 });
 const updateSelect = ({ readOnly, inputType, disabled, value, name }) => ({
-    [mwcSel]: [, , { 'readonly': readOnly, disabled: disabled, value: value, label: name }]
+    [mwcSel]: [{}, , { 'readonly': readOnly, disabled: disabled, value: value, label: name }]
 });
 const updateOptions = ({ self, options }) => ({
     [mwcSel]: [options || [], optionTemplate, , {

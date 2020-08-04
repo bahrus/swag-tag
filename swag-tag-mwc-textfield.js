@@ -18,7 +18,7 @@ const mainTemplate = createTemplate(/* html */ `
 `);
 const [mwcTxtFld] = [Symbol('txtFld')];
 const initTransform = ({ self }) => ({
-    'mwc-textfield': [, { input: self.handleInput }, , , mwcTxtFld]
+    'mwc-textfield': [{}, { input: self.handleInput }, , , mwcTxtFld]
 });
 const updateInput = ({ readOnly, inputType, disabled, value, name, description }) => ({
     [mwcTxtFld]: [{ 'readonly': readOnly, type: inputType, disabled: disabled, value: value, label: name, helper: description }, ,]

@@ -32,7 +32,7 @@ export class SwagTagMWCTextarea extends SwagTagObjectBase{
     mainTemplate = mainTemplate;
 
     initTransform = {
-        'mwc-textarea': [,{'input': this.handleInput},,, ta]
+        'mwc-textarea': [{},{'input': this.handleInput},,, ta]
     }
 
     updateTransforms = [

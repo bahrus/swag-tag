@@ -29,12 +29,12 @@ const [ff, cb] = [Symbol('ff'), Symbol('cb')];
 const initTransform = ({self}: SwagTagMWCCheckbox) => ({
     'mwc-formfield': ff,
     '"':{
-        'mwc-checkbox': [,{input:self.handleInput},,,cb]
+        'mwc-checkbox': [{},{input:self.handleInput},,,cb]
     }
 });
 
 const updateInput = ({readOnly, inputType, disabled, value, name}: SwagTagMWCCheckbox) =>({
-    [cb]: [,,{'readonly': readOnly, type: inputType, disabled: disabled, value: value, label: name}]
+    [cb]: [{},,{'readonly': readOnly, type: inputType, disabled: disabled, value: value, label: name}]
 });
 
 const updateLabel = ({name}: SwagTagMWCCheckbox) =>({
