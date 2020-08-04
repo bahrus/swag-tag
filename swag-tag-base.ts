@@ -20,7 +20,7 @@ const mainTemplate = T(/* html */ `
     display: none;
   }
   fieldset[data-guid="0f0d62e5-0d00-4e70-ad90-277fcd94c963"][data-open="true"]{
-    height: 500px;
+    max-height: 500px;
     overflow-y:auto;
   }
 </style>

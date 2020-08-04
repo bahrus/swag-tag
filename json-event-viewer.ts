@@ -5,6 +5,12 @@ import { SelectiveUpdate, TransformRules, AttributeProps } from 'xtal-element/ty
 import { PSettings } from '../trans-render/types2';
 
 const mainTemplate = createTemplate(/* html */`
+<style>
+details{
+    max-height: 300px;
+    overflow-y:auto;
+}
+</style>
 <details open>
     <summary>Event History</summary>
     <json-viewer -object></json-viewer>
@@ -12,11 +18,12 @@ const mainTemplate = createTemplate(/* html */`
 `);
 
 const jsonViewer = Symbol('json-viewer');
-
+const details = Symbol('details');
 const initTransform = {
     details:{
         'json-viewer': jsonViewer
-    }
+    },
+    '"': [{style:{display:'none'}},,,,details]
 };
 const allowList = ['detail', 'type', 'bubbles', 'cancelBubble', 'cancelable', 'composed', 'defaultPrevented', 'eventPhase', 'isTruted', 'returnValue', 'timeStamp'];
 export const appendToEventArchive = ({newEvent, self}: JsonEventViewer) =>{
@@ -30,12 +37,13 @@ export const appendToEventArchive = ({newEvent, self}: JsonEventViewer) =>{
             eventHistory: []
         };
     }
-    self.eventArchive.eventHistory.push(safeEvent);
+    self.eventArchive.eventHistory.unshift(safeEvent);
     self.eventArchive = self.eventArchive;
 }
 
 export const bindJsonViewer = ({eventArchive}: JsonEventViewer) => ({
-     [jsonViewer]: [{object: eventArchive}] as PSettings<JsonEventViewer>
+     [jsonViewer]: [{object: eventArchive}] as PSettings<JsonEventViewer>,
+     [details]: [{style:{display:'block'}}]
 } as TransformRules);
 
 export const updateTransforms = [bindJsonViewer] as SelectiveUpdate<any>[];
