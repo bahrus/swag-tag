@@ -6,7 +6,8 @@ import {PD} from "p-et-alia/p-d.js";
 import { SwagTagPrimitiveBase } from './swag-tag-primitive-base.js';
 import {SwagTagObjectBase} from './swag-tag-object-base.js';
 import { SelectiveUpdate, TransformRules} from "../xtal-element/types.js";
-import('@power-elements/json-viewer/json-viewer.js');
+import {JsonEventViewer} from './json-event-viewer.js';
+//import('@power-elements/json-viewer/json-viewer.js');
 
 //Very little top level styling used, so consumers can take the first crack at styling.
 //So make what little styling there is  guaranteed to not affect anything else via guid.
@@ -34,12 +35,13 @@ const mainTemplate = T(/* html */ `
     <component--listeners></component--listeners>
   </component--holder>
 </section>
-<events--viewer>
+<json-event-viewer -new-event></json-event-viewer>
+<!-- <events--viewer>
   <details open>
     <summary>Live Events</summary>
     <json-viewer -object allowlist="detail,type,bubbles,cancelBubble,cancelable,composed,defaultPrevented,eventPhase,isTrusted,returnValue,timeStamp"></json-viewer>
   </details>
-</events--viewer>
+</events--viewer> -->
 <form>
   <fieldset data-open="true" data-guid="0f0d62e5-0d00-4e70-ad90-277fcd94c963">
     <legend>✏️Edit <var></var>'s properties</legend>
@@ -57,7 +59,7 @@ const mainTemplate = T(/* html */ `
 `);
 
 const eventListenerForJsonViewer = T(/* html */`
-<p-d from=section to=events--viewer care-of=json-viewer[-object] val=. skip-init m=1></p-d>
+<p-d from=section to=${JsonEventViewer.is}[-new-event] val=. skip-init m=1></p-d>
 `);
 
 export const uiRefs = {fflVar: p, header: p, dComponentHolder: p, dchComponentListenersForJsonViewer: p, adJsonViewer: p, fFieldset: p,}
