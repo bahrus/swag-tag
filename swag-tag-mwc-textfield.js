@@ -14,7 +14,7 @@ const mainTemplate = createTemplate(/* html */ `
           width: 100%;
       }
   </style>
-  <mwc-textfield></mwc-textfield>
+  <mwc-textfield part=textfield></mwc-textfield>
 `);
 const [mwcTxtFld] = [Symbol('txtFld')];
 const initTransform = ({ self }) => ({

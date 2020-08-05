@@ -21,9 +21,6 @@ const [label$, textarea$] = [Symbol('label'), Symbol('textarea')];
 const updateLabel = ({ name }) => ({
     [label$]: name + ':',
 });
-// const updateTextArea = ({readOnly, inputType, disabled, value}: SwagTagPrimitiveBase) => ({
-//     [textarea$]: [{value: value || ''},,{'readonly': readOnly, type: inputType, disabled: disabled}]
-// });
 const updateTextArea = ({ readOnly, inputType, disabled, value, self }) => {
     self[textarea$].value = value;
 };

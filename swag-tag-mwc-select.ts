@@ -18,7 +18,7 @@ const mainTemplate = createTemplate(/* html */`
           width: 100%;
       }
   </style>
-  <mwc-select></mwc-select>
+  <mwc-select part=select></mwc-select>
 `);
 
 const optionTemplate = createTemplate(/* html */`
