@@ -1,9 +1,10 @@
 import { WCSuiteInfo, WCInfo, PropertyInfo, CustomEventInfo, SlotInfo, AttribInfo } from "wc-info/types.js";
+import {more} from 'trans-render/transform.js';
 import { createTemplate as T } from "trans-render/createTemplate.js";
 import {RenderContext, PEATSettings, PEATUnionSettings} from 'trans-render/types2.d.js';
 import { XtalFetchViewElement, define, mergeProps, AttributeProps, p, symbolize} from "xtal-element/XtalFetchViewElement.js";
 import {PD} from "p-et-alia/p-d.js";
-import { SwagTagPrimitiveBase } from './swag-tag-primitive-base.js';
+import { SwagTagPrimitiveBase, linkInputType } from './swag-tag-primitive-base.js';
 import {SwagTagObjectBase} from './swag-tag-object-base.js';
 import { SelectiveUpdate, TransformRules} from "../xtal-element/types.js";
 import {JsonEventViewer} from './json-event-viewer.js';
@@ -94,10 +95,17 @@ const initTransform = ({self, tag}: SwagTagBase) => ({
 
 
 
-export const bindName = ({name}: SwagTagBase) => ({
+export const bindName = ({name, innerTemplate}: SwagTagBase) => ({
   [uiRefs.header]: `<${name}>`,
   [uiRefs.fflVar]: name,
   [uiRefs.dComponentHolder]: [name, 'afterBegin'],
+  [more]:{
+    [uiRefs.dComponentHolder]: {
+      [name!]: ({target}: RenderContext) => {
+        target!.appendChild(innerTemplate!.content.cloneNode(true));
+      }
+    }
+  }
 });
 export const addEventListeners =   ({events, name}: SwagTagBase) => ({
   [uiRefs.dchComponentListenersForJsonViewer]: [events || [], eventListenerForJsonViewer,,{
@@ -205,6 +213,18 @@ export const linkMassagedProps = ({properties, self, block}: SwagTagBase) => {
   self.massagedProps = block !== undefined ? properties.filter(prop => !block.includes(prop.name!)) : properties;
 }
 
+export const linkInnerTemplate = ({useInnerTemplate, self}: SwagTagBase) =>{
+  if(!useInnerTemplate) return;
+  const innerTemplate = self.querySelector('template');
+  if(innerTemplate === null){
+    setTimeout(() =>{
+      linkInnerTemplate(self);
+    }, 50);
+    return;
+  }
+  self.innerTemplate = innerTemplate;
+}
+
 export const triggerImportReferencedModule = ({path, self}: SwagTagBase) => {
   if(path !== undefined){
     if(self.href!.indexOf('//') > -1 && self.href!.indexOf('//') < 7){
@@ -239,11 +259,11 @@ export class SwagTagBase extends XtalFetchViewElement<WCSuiteInfo> implements WC
   mainTemplate = mainTemplate;
   readyToRender = true;
 
-  static attributeProps: any = ({tag, name, properties, path, events, slots, testCaseNames, attribs, editOpen, block} : SwagTagBase) =>{
+  static attributeProps: any = ({tag, name, properties, path, events, slots, testCaseNames, attribs, editOpen, block, useInnerTemplate, innerTemplate} : SwagTagBase) =>{
     const ap = {
       str: [tag, name, path],
-      bool: [editOpen],
-      obj: [properties, events, slots, testCaseNames, attribs, block],
+      bool: [editOpen, useInnerTemplate],
+      obj: [properties, events, slots, testCaseNames, attribs, block, innerTemplate],
       jsonProp: [block],
       reflect: [tag, editOpen]
     } as AttributeProps;
@@ -251,11 +271,10 @@ export class SwagTagBase extends XtalFetchViewElement<WCSuiteInfo> implements WC
   }
 
   propActions = [
-    linkWcInfo, linkMassagedProps, triggerImportReferencedModule, showHideEditor
+    linkWcInfo, linkMassagedProps, triggerImportReferencedModule, showHideEditor, linkInnerTemplate
   ];
 
   initTransform = initTransform;
-  
 
   updateTransforms = updateTransforms;
 
@@ -281,6 +300,10 @@ export class SwagTagBase extends XtalFetchViewElement<WCSuiteInfo> implements WC
   testCaseNames: string[] | undefined;
 
   editOpen: boolean | undefined;
+
+  useInnerTemplate: boolean | undefined;
+
+  innerTemplate: HTMLTemplateElement | undefined;
 
   toggleForm(e: Event){
     this.editOpen = !this.editOpen;

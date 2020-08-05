@@ -1,3 +1,4 @@
+import { more } from 'trans-render/transform.js';
 import { createTemplate as T } from "trans-render/createTemplate.js";
 import { XtalFetchViewElement, define, mergeProps, p, symbolize } from "xtal-element/XtalFetchViewElement.js";
 import { PD } from "p-et-alia/p-d.js";
@@ -83,10 +84,17 @@ const initTransform = ({ self, tag }) => ({
         }
     }
 });
-export const bindName = ({ name }) => ({
+export const bindName = ({ name, innerTemplate }) => ({
     [uiRefs.header]: `<${name}>`,
     [uiRefs.fflVar]: name,
     [uiRefs.dComponentHolder]: [name, 'afterBegin'],
+    [more]: {
+        [uiRefs.dComponentHolder]: {
+            [name]: ({ target }) => {
+                target.appendChild(innerTemplate.content.cloneNode(true));
+            }
+        }
+    }
 });
 export const addEventListeners = ({ events, name }) => ({
     [uiRefs.dchComponentListenersForJsonViewer]: [events || [], eventListenerForJsonViewer, , {
@@ -190,6 +198,18 @@ export const linkMassagedProps = ({ properties, self, block }) => {
     properties[massaged] = true;
     self.massagedProps = block !== undefined ? properties.filter(prop => !block.includes(prop.name)) : properties;
 };
+export const linkInnerTemplate = ({ useInnerTemplate, self }) => {
+    if (!useInnerTemplate)
+        return;
+    const innerTemplate = self.querySelector('template');
+    if (innerTemplate === null) {
+        setTimeout(() => {
+            linkInnerTemplate(self);
+        }, 50);
+        return;
+    }
+    self.innerTemplate = innerTemplate;
+};
 export const triggerImportReferencedModule = ({ path, self }) => {
     if (path !== undefined) {
         if (self.href.indexOf('//') > -1 && self.href.indexOf('//') < 7) {
@@ -221,7 +241,7 @@ export class SwagTagBase extends XtalFetchViewElement {
         this.mainTemplate = mainTemplate;
         this.readyToRender = true;
         this.propActions = [
-            linkWcInfo, linkMassagedProps, triggerImportReferencedModule, showHideEditor
+            linkWcInfo, linkMassagedProps, triggerImportReferencedModule, showHideEditor, linkInnerTemplate
         ];
         this.initTransform = initTransform;
         this.updateTransforms = updateTransforms;
@@ -231,11 +251,11 @@ export class SwagTagBase extends XtalFetchViewElement {
     }
 }
 SwagTagBase.is = "swag-tag-base";
-SwagTagBase.attributeProps = ({ tag, name, properties, path, events, slots, testCaseNames, attribs, editOpen, block }) => {
+SwagTagBase.attributeProps = ({ tag, name, properties, path, events, slots, testCaseNames, attribs, editOpen, block, useInnerTemplate, innerTemplate }) => {
     const ap = {
         str: [tag, name, path],
-        bool: [editOpen],
-        obj: [properties, events, slots, testCaseNames, attribs, block],
+        bool: [editOpen, useInnerTemplate],
+        obj: [properties, events, slots, testCaseNames, attribs, block, innerTemplate],
         jsonProp: [block],
         reflect: [tag, editOpen]
     };
