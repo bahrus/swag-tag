@@ -91,7 +91,9 @@ export const bindName = ({ name, innerTemplate }) => ({
     [more]: {
         [uiRefs.dComponentHolder]: {
             [name]: ({ target }) => {
-                target.appendChild(innerTemplate.content.cloneNode(true));
+                if (innerTemplate !== undefined) {
+                    target.appendChild(innerTemplate.content.cloneNode(true));
+                }
             }
         }
     }

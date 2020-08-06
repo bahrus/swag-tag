@@ -102,7 +102,10 @@ export const bindName = ({name, innerTemplate}: SwagTagBase) => ({
   [more]:{
     [uiRefs.dComponentHolder]: {
       [name!]: ({target}: RenderContext) => {
-        target!.appendChild(innerTemplate!.content.cloneNode(true));
+        if(innerTemplate !== undefined){
+          target!.appendChild(innerTemplate!.content.cloneNode(true));
+        }
+        
       }
     }
   }
