@@ -17,7 +17,7 @@
     "url": "git+https://github.com/bahrus/swag-tag.git"
   },
   "dependencies": {
-    "trans-render": "0.0.236",
+    "trans-render": "0.0.237",
     "xtal-element": "0.0.261",
     "p-et-alia": "0.0.108",
     "@power-elements/json-viewer": "2.0.3",
@@ -25,18 +25,12 @@
     "xtal-text-input-md": "0.0.19",
     "xtal-text-area-md": "0.0.21",
     "xtal-checkbox-input-md": "0.0.5",
-    "@ionic/core": "5.3.1",
-    "@stencil/core": "1.17.1",
-    "@material/mwc-textarea": "0.17.2",
-    "@material/mwc-formfield": "0.17.2",
-    "@material/mwc-checkbox": "0.17.2",
-    "@material/mwc-select": "0.17.2",
-    "@material/mwc-list": "0.17.2",
-    "@material/mwc-textfield": "0.17.2",
-    "@ui5/webcomponents": "1.0.0-rc.8",
-    "@dannymoerkerke/material-webcomponents": "1.2.9",
-    "weightless": "0.0.37",
-    "xy-ui": "1.10.0",
+    "@material/mwc-textarea": "0.18.0",
+    "@material/mwc-formfield": "0.18.0",
+    "@material/mwc-checkbox": "0.18.0",
+    "@material/mwc-select": "0.18.0",
+    "@material/mwc-list": "0.18.0",
+    "@material/mwc-textfield": "0.18.0",
     "wc-info": "0.0.75"
   },
   "devDependencies": {
