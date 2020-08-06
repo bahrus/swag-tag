@@ -9,7 +9,8 @@
     "serve": "node node_modules/xtal-test/serve.js",
     "start": "es-dev-server --app-index demo/dev-mwc.html --node-resolve --watch --open",
     "mwc-textfield-example1": "wca analyze mwc-textfield-example1.js --outFile mwc-textfield-example1.json",
-    "ionic-input-example1": "wca analyze demo/ionic-input-example1.js --outFile demo/ionic-input-example1.json"
+    "ionic-input-example1": "wca analyze demo/ionic-input-example1.js --outFile demo/ionic-input-example1.json",
+    "ui5-input-example1": "wca analyze demo/ui5-input-example1.js --outFile demo/ui5-input-example1.json"
   },
   "repository": {
     "type": "git",
