@@ -1,0 +1,265 @@
+{
+  "version": "experimental",
+  "tags": [
+    {
+      "name": "ionic-input",
+      "path": "./ionic-input-example1.js",
+      "properties": [
+        {
+          "name": "inputId",
+          "type": "string"
+        },
+        {
+          "name": "didBlurAfterEdit",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "hasFocus",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "autocapitalize",
+          "description": "Indicates whether and how the text value should be automatically capitalized as it is entered/edited by the user.",
+          "type": "string",
+          "default": "\"off\""
+        },
+        {
+          "name": "autocomplete",
+          "description": "Indicates whether the value of the control can be automatically completed by the browser.",
+          "type": "string",
+          "default": "\"off\""
+        },
+        {
+          "name": "autocorrect",
+          "description": "Whether auto correction should be enabled when the user is entering/editing the text value.",
+          "type": "string",
+          "default": "\"off\""
+        },
+        {
+          "name": "autofocus",
+          "description": "This Boolean attribute lets you specify that a form control should have input focus when the page loads.",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "clearInput",
+          "description": "If `true`, a clear icon will appear in the input when there is a value. Clicking it clears the input.",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "debounce",
+          "description": "Set the amount of time, in milliseconds, to wait to trigger the `ionChange` event after each keystroke.",
+          "type": "number",
+          "default": "0"
+        },
+        {
+          "name": "disabled",
+          "description": "If `true`, the user cannot interact with the input.",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "name",
+          "description": "The name of the control, which is submitted with the form data.",
+          "type": "string",
+          "default": "\"inputId\""
+        },
+        {
+          "name": "readonly",
+          "description": "If `true`, the user cannot modify the value.",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "required",
+          "description": "If `true`, the user must fill in a value before submitting a form.",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "spellcheck",
+          "description": "If `true`, the element will have its spelling and grammar checked.",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "type",
+          "description": "The type of control to display. The default type is text.",
+          "type": "string",
+          "default": "\"text\""
+        },
+        {
+          "name": "value",
+          "description": "The value of the input.",
+          "type": "string",
+          "default": "\"\""
+        },
+        {
+          "name": "onInput",
+          "type": "object"
+        },
+        {
+          "name": "onBlur",
+          "type": "object"
+        },
+        {
+          "name": "onFocus",
+          "type": "object"
+        },
+        {
+          "name": "onKeydown",
+          "type": "object"
+        },
+        {
+          "name": "clearTextOnEnter",
+          "type": "object"
+        },
+        {
+          "name": "clearTextInput",
+          "type": "object"
+        }
+      ],
+      "events": [
+        {
+          "name": "ionInputDidLoad"
+        },
+        {
+          "name": "ionInputDidUnload"
+        }
+      ]
+    },
+    {
+      "name": "ionic-input-example1",
+      "path": "./ionic-input-example1.js",
+      "properties": [
+        {
+          "name": "inputId",
+          "type": "string"
+        },
+        {
+          "name": "didBlurAfterEdit",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "hasFocus",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "autocapitalize",
+          "description": "Indicates whether and how the text value should be automatically capitalized as it is entered/edited by the user.",
+          "type": "string",
+          "default": "\"off\""
+        },
+        {
+          "name": "autocomplete",
+          "description": "Indicates whether the value of the control can be automatically completed by the browser.",
+          "type": "string",
+          "default": "\"off\""
+        },
+        {
+          "name": "autocorrect",
+          "description": "Whether auto correction should be enabled when the user is entering/editing the text value.",
+          "type": "string",
+          "default": "\"off\""
+        },
+        {
+          "name": "autofocus",
+          "description": "This Boolean attribute lets you specify that a form control should have input focus when the page loads.",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "clearInput",
+          "description": "If `true`, a clear icon will appear in the input when there is a value. Clicking it clears the input.",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "debounce",
+          "description": "Set the amount of time, in milliseconds, to wait to trigger the `ionChange` event after each keystroke.",
+          "type": "number",
+          "default": "0"
+        },
+        {
+          "name": "disabled",
+          "description": "If `true`, the user cannot interact with the input.",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "name",
+          "description": "The name of the control, which is submitted with the form data.",
+          "type": "string",
+          "default": "\"inputId\""
+        },
+        {
+          "name": "readonly",
+          "description": "If `true`, the user cannot modify the value.",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "required",
+          "description": "If `true`, the user must fill in a value before submitting a form.",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "spellcheck",
+          "description": "If `true`, the element will have its spelling and grammar checked.",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "type",
+          "description": "The type of control to display. The default type is text.",
+          "type": "string",
+          "default": "\"text\""
+        },
+        {
+          "name": "value",
+          "description": "The value of the input.",
+          "type": "string",
+          "default": "\"\""
+        },
+        {
+          "name": "onInput",
+          "type": "object"
+        },
+        {
+          "name": "onBlur",
+          "type": "object"
+        },
+        {
+          "name": "onFocus",
+          "type": "object"
+        },
+        {
+          "name": "onKeydown",
+          "type": "object"
+        },
+        {
+          "name": "clearTextOnEnter",
+          "type": "object"
+        },
+        {
+          "name": "clearTextInput",
+          "type": "object"
+        }
+      ],
+      "events": [
+        {
+          "name": "ionInputDidLoad"
+        },
+        {
+          "name": "ionInputDidUnload"
+        }
+      ]
+    }
+  ]
+}
