@@ -1,6 +1,6 @@
 {
   "name": "swag-tag",
-  "version": "0.0.19",
+  "version": "0.0.20",
   "description": "TBD",
   "main": "swag-tag-base.js",
   "module": "swag-tag-base.js",
