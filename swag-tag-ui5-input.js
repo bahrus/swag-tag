@@ -23,6 +23,7 @@ const initTransform = ({ self }) => ({
     'ui5-input': [{}, { input: self.handleInput }, , , ui5Input],
 });
 const updateInput = ({ readOnly, inputType, disabled, value, name, description }) => ({
+    [ui5Label]: [{ textContent: name }],
     [ui5Input]: [{ value: value, placeholder: 'Enter ' + name }]
 });
 export const linkInputType = ({ type, self }) => {

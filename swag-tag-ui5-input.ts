@@ -30,6 +30,7 @@ const initTransform = ({self}: SwagTagUI5Input) => ({
 });
 
 const updateInput = ({readOnly, inputType, disabled, value, name, description}: SwagTagUI5Input) => ({
+    [ui5Label]: [{textContent: name}],
     [ui5Input]: [{value: value, placeholder: 'Enter ' + name}]
 });
 
