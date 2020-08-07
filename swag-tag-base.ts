@@ -39,12 +39,6 @@ const mainTemplate = T(/* html */ `
   </component--holder>
 </section>
 <json-event-viewer -new-event></json-event-viewer>
-<!-- <events--viewer>
-  <details open>
-    <summary>Live Events</summary>
-    <json-viewer -object allowlist="detail,type,bubbles,cancelBubble,cancelable,composed,defaultPrevented,eventPhase,isTrusted,returnValue,timeStamp"></json-viewer>
-  </details>
-</events--viewer> -->
 <form>
   <fieldset data-open="true" data-guid="0f0d62e5-0d00-4e70-ad90-277fcd94c963">
     <legend>✏️Edit <var></var>'s properties</legend>

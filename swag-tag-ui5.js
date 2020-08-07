@@ -8,7 +8,9 @@ import { SwagTagJsonEditor } from './swag-tag-json-editor.js';
 import { SwagTagMWCSelect } from './swag-tag-mwc-select.js';
 export const addEditors = ({ massagedProps, name }) => ({
     // Loop over massagedProps, and insert dynamic editor via tag name (item.editor is the tag name)
-    [uiRefs.fFieldset]: [massagedProps || [], ({ item }) => item.editor, , {
+    [uiRefs.fFieldset]: [massagedProps || [], 
+        //Affirmative template generator
+        ({ item }) => item.editor, , {
             [`${SwagTagUI5Input.is},${SwagTagMWCCheckbox.is},${SwagTagJsonEditor.is},${SwagTagMWCSelect.is}`]: ({ item, target }) => {
                 Object.assign(target, item);
                 target.setAttribute('role', 'textbox');

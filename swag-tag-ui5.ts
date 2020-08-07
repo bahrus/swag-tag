@@ -14,7 +14,9 @@ import {
   
   export const addEditors =   ({massagedProps, name}: SwagTagBase) => ({
       // Loop over massagedProps, and insert dynamic editor via tag name (item.editor is the tag name)
-      [uiRefs.fFieldset]: [massagedProps || [], ({item}: RenderContext) => (<any>item).editor,, {
+      [uiRefs.fFieldset]: [massagedProps || [],
+        //Affirmative template generator
+        ({item}: RenderContext) => (<any>item).editor,, {
         [`${SwagTagUI5Input.is},${SwagTagMWCCheckbox.is},${SwagTagJsonEditor.is},${SwagTagMWCSelect.is}`]: ({item, target}: RenderContext<SwagTagUI5Input, PropertyInfo>) => {
           Object.assign(target, item);
           target!.setAttribute('role', 'textbox');

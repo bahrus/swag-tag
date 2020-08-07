@@ -11,13 +11,15 @@ import {SwagTagJsonEditor} from './swag-tag-json-editor.js';
 import {SwagTagMWCSelect} from './swag-tag-mwc-select.js';
 import { SelectiveUpdate} from "../xtal-element/types.js";
 
+const copyPropInfoIntoEditor = ({item, target}: RenderContext<SwagTagMWCTextField, PropertyInfo>) => {
+  Object.assign(target, item);
+  target!.setAttribute('role', 'textbox');
+};
+
 export const addEditors =   ({massagedProps, name}: SwagTagBase) => ({
     // Loop over massagedProps, and insert dynamic editor via tag name (item.editor is the tag name)
     [uiRefs.fFieldset]: [massagedProps || [], ({item}: RenderContext) => (<any>item).editor,, {
-      [`${SwagTagMWCTextField.is},${SwagTagMWCCheckbox.is},${SwagTagJsonEditor.is},${SwagTagMWCSelect.is}`]: ({item, target}: RenderContext<SwagTagMWCTextField, PropertyInfo>) => {
-        Object.assign(target, item);
-        target!.setAttribute('role', 'textbox');
-      },
+      [`${SwagTagMWCTextField.is},${SwagTagMWCCheckbox.is},${SwagTagJsonEditor.is},${SwagTagMWCSelect.is}`]: copyPropInfoIntoEditor,
     }]
 });
 

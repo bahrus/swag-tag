@@ -5,13 +5,14 @@ import { SwagTagMWCCheckbox } from './swag-tag-mwc-checkbox.js';
 //import {SwagTagMWCTextarea} from './swag-tag-mwc-textarea.js';
 import { SwagTagJsonEditor } from './swag-tag-json-editor.js';
 import { SwagTagMWCSelect } from './swag-tag-mwc-select.js';
+const copyPropInfoIntoEditor = ({ item, target }) => {
+    Object.assign(target, item);
+    target.setAttribute('role', 'textbox');
+};
 export const addEditors = ({ massagedProps, name }) => ({
     // Loop over massagedProps, and insert dynamic editor via tag name (item.editor is the tag name)
     [uiRefs.fFieldset]: [massagedProps || [], ({ item }) => item.editor, , {
-            [`${SwagTagMWCTextField.is},${SwagTagMWCCheckbox.is},${SwagTagJsonEditor.is},${SwagTagMWCSelect.is}`]: ({ item, target }) => {
-                Object.assign(target, item);
-                target.setAttribute('role', 'textbox');
-            },
+            [`${SwagTagMWCTextField.is},${SwagTagMWCCheckbox.is},${SwagTagJsonEditor.is},${SwagTagMWCSelect.is}`]: copyPropInfoIntoEditor,
         }]
 });
 const massaged = Symbol();
