@@ -1,44 +1,63 @@
-import { SwagTagBase, propInfo$ } from './swag-tag-base.js';
-import { define } from "trans-render/define.js";
-import { createTemplate } from "trans-render/createTemplate.js";
-import { init } from "trans-render/init.js";
-import { replaceElementWithTemplate as replace } from "trans-render/replaceElementWithTemplate.js";
-const stringInputTemplate = createTemplate(/* html */ `
-<ui5-input disabled></ui5-input>
-`);
-const objectInputTemplate = createTemplate(/* html */ `
-<ui5-textarea rows=8 cols=200 growing disabled style="width:100%"></ui5-textarea>
-`);
-const boolInputTemplate = createTemplate(/* html */ `
-<ui5-checkbox disabled></ui5-checkbox>
-`);
-import("@ui5/webcomponents/dist/Input.js");
-import("@ui5/webcomponents/dist/TextArea.js");
-import("@ui5/webcomponents/dist/CheckBox.js");
+import { SwagTagBase, uiRefs, bindName, addEventListeners, linkWcInfo, triggerImportReferencedModule, adjustValueAndType, bindSelf, showHideEditor, linkInnerTemplate } from './swag-tag-base.js';
+import { define } from 'xtal-element/XtalElement.js';
+//import {SwagTagMWCTextField} from './swag-tag-mwc-textfield.js';
+import { SwagTagUI5Input } from './swag-tag-ui5-input.js';
+import { SwagTagMWCCheckbox } from './swag-tag-mwc-checkbox.js';
+//import {SwagTagMWCTextarea} from './swag-tag-mwc-textarea.js';
+import { SwagTagJsonEditor } from './swag-tag-json-editor.js';
+import { SwagTagMWCSelect } from './swag-tag-mwc-select.js';
+export const addEditors = ({ massagedProps, name }) => ({
+    // Loop over massagedProps, and insert dynamic editor via tag name (item.editor is the tag name)
+    [uiRefs.fFieldset]: [massagedProps || [], ({ item }) => item.editor, , {
+            [`${SwagTagUI5Input.is},${SwagTagMWCCheckbox.is},${SwagTagJsonEditor.is},${SwagTagMWCSelect.is}`]: ({ item, target }) => {
+                Object.assign(target, item);
+                target.setAttribute('role', 'textbox');
+            },
+        }]
+});
+const massaged = Symbol();
+export const linkMassagedProps = ({ properties, self, block }) => {
+    if (properties === undefined || properties[massaged])
+        return;
+    properties.forEach(prop => {
+        adjustValueAndType(prop);
+        const anyProp = prop;
+        let defaultVal = anyProp.default;
+        switch (prop.type) {
+            case 'string':
+            case 'number':
+                anyProp.editor = SwagTagUI5Input.is;
+                break;
+            case 'boolean':
+                anyProp.editor = SwagTagMWCCheckbox.is;
+                break;
+            case 'object':
+                anyProp.editor = SwagTagJsonEditor.is;
+                break;
+            case 'stringArray':
+                anyProp.editor = SwagTagMWCSelect.is;
+                break;
+            default:
+                throw 'Not implemented';
+        }
+    });
+    properties[massaged] = true;
+    self.massagedProps = block !== undefined ? properties.filter(prop => !block.includes(prop.name)) : properties;
+};
+const updateTransforms = [
+    bindName,
+    addEventListeners,
+    addEditors,
+    bindSelf,
+];
 export class SwagTagUI5 extends SwagTagBase {
-    static get is() { return 'swag-tag-ui5'; }
-    get noShadow() {
-        return false;
-    }
-    initRenderCallback(ctx, target) {
-        super.initRenderCallback(ctx, target);
-        init(target, {
-            Transform: {
-                fieldset: {
-                    form: {
-                        div: ({ target }) => {
-                            const propInfo = target[propInfo$];
-                            return {
-                                textarea: ({ ctx, target }) => {
-                                    replace(target, ctx, objectInputTemplate);
-                                },
-                                'ui5-textarea': [{ value: propInfo.default }]
-                            };
-                        }
-                    }
-                },
-            }
-        });
+    constructor() {
+        super(...arguments);
+        this.updateTransforms = updateTransforms;
+        this.propActions = [
+            linkWcInfo, linkMassagedProps, triggerImportReferencedModule, showHideEditor, linkInnerTemplate
+        ];
     }
 }
+SwagTagUI5.is = 'swag-tag-ui5';
 define(SwagTagUI5);

@@ -1,12 +1,14 @@
 import { WCSuiteInfo, WCInfo, PropertyInfo, CustomEventInfo, SlotInfo, AttribInfo } from "wc-info/types.js";
 import {more} from 'trans-render/transform.js';
 import { createTemplate as T } from "trans-render/createTemplate.js";
-import {RenderContext, PEATSettings, PEATUnionSettings} from 'trans-render/types2.d.js';
-import { XtalFetchViewElement, define, mergeProps, AttributeProps, p, symbolize} from "xtal-element/XtalFetchViewElement.js";
+//import {RenderContext, PEATSettings, PEATUnionSettings} from 'trans-render/types2.d.js';
+import { 
+  XtalFetchViewElement, define, mergeProps, AttributeProps, p, symbolize, RenderContext, PEATSettings, TransformValueOptions,
+  SelectiveUpdate
+} from "xtal-element/XtalFetchViewElement.js";
 import {PD} from "p-et-alia/p-d.js";
 import { SwagTagPrimitiveBase, linkInputType } from './swag-tag-primitive-base.js';
 import {SwagTagObjectBase} from './swag-tag-object-base.js';
-import { SelectiveUpdate, TransformRules} from "../xtal-element/types.js";
 import {JsonEventViewer} from './json-event-viewer.js';
 //import('@power-elements/json-viewer/json-viewer.js');
 
@@ -91,7 +93,7 @@ const initTransform = ({self, tag}: SwagTagBase) => ({
     }
   }
 
-} as TransformRules);
+} as TransformValueOptions);
 
 
 

@@ -3,15 +3,13 @@ import {
   adjustValueAndType, bindSelf, showHideEditor, linkInnerTemplate} from './swag-tag-base.js';
 import { WCSuiteInfo, WCInfo, PropertyInfo, CustomEventInfo, SlotInfo, AttribInfo } from "wc-info/types.js";
 import {define} from 'xtal-element/XtalElement.js';
-import {RenderContext, PEATSettings} from 'trans-render/types2.d.js';
-import {PD} from "p-et-alia/p-d.js";
-import {PU} from 'p-et-alia/p-u.js';
+import {RenderContext, PEATSettings} from 'trans-render/types.d.js';
 import {SwagTagMWCTextField} from './swag-tag-mwc-textfield.js';
 import {SwagTagMWCCheckbox} from './swag-tag-mwc-checkbox.js';
 //import {SwagTagMWCTextarea} from './swag-tag-mwc-textarea.js';
 import {SwagTagJsonEditor} from './swag-tag-json-editor.js';
 import {SwagTagMWCSelect} from './swag-tag-mwc-select.js';
-import { SelectiveUpdate, TransformRules} from "../xtal-element/types.js";
+import { SelectiveUpdate} from "../xtal-element/types.js";
 
 export const addEditors =   ({massagedProps, name}: SwagTagBase) => ({
     // Loop over massagedProps, and insert dynamic editor via tag name (item.editor is the tag name)

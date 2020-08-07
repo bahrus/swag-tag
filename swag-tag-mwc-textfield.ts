@@ -10,9 +10,6 @@ const mainTemplate = createTemplate(/* html */`
       :host{
           display:block;
       }
-      label{
-          display:block;
-      }
       mwc-textfield{
           width: 100%;
       }

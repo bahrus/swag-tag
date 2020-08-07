@@ -1,24 +1,29 @@
 import { SwagTagPrimitiveBase } from './swag-tag-primitive-base.js';
 import { define } from 'xtal-element/XtalElement.js';
 import { createTemplate } from 'trans-render/createTemplate.js';
-import("@material/mwc-textfield/mwc-textfield.js");
+import("@ui5/webcomponents/dist/Input.js");
 const mainTemplate = createTemplate(/* html */ `
   <style>
       :host{
           display:block;
       }
-      mwc-textfield{
+      ui5-label{
+          display:block;
+      }
+      ui5-input{
           width: 100%;
       }
   </style>
-  <mwc-textfield part=textfield></mwc-textfield>
+  <ui5-label class="samples-big-margin-right" for="myInput" required>Name</ui5-label>
+  <ui5-input id="myInput" placeholder="Enter your Name" required></ui5-input>
 `);
-const [mwcTxtFld] = [Symbol('txtFld')];
+const [ui5Input, ui5Label] = [Symbol('ui5Input'), Symbol('ui5Label')];
 const initTransform = ({ self }) => ({
-    'mwc-textfield': [{}, { input: self.handleInput }, , , mwcTxtFld]
+    'ui5-input': [{}, { input: self.handleInput }, , , ui5Input],
+    'ui5-label': ui5Label,
 });
 const updateInput = ({ readOnly, inputType, disabled, value, name, description }) => ({
-    [mwcTxtFld]: [{ 'readonly': readOnly, type: inputType, disabled: disabled, value: value, label: name, helper: description }, ,]
+    [ui5Input]: [{ value: value }]
 });
 export const linkInputType = ({ type, self }) => {
     switch (type) {
@@ -33,7 +38,7 @@ export const linkInputType = ({ type, self }) => {
 export const linkEditedValue = ({ value, self }) => {
     self.editedValue = value;
 };
-export class SwagTagMWCTextField extends SwagTagPrimitiveBase {
+export class SwagTagUI5Input extends SwagTagPrimitiveBase {
     constructor() {
         super(...arguments);
         this.mainTemplate = mainTemplate;
@@ -46,5 +51,5 @@ export class SwagTagMWCTextField extends SwagTagPrimitiveBase {
         ];
     }
 }
-SwagTagMWCTextField.is = 'swag-tag-mwc-textfield';
-define(SwagTagMWCTextField);
+SwagTagUI5Input.is = 'swag-tag-ui5-input';
+define(SwagTagUI5Input);

@@ -1,5 +1,6 @@
 import { more } from 'trans-render/transform.js';
 import { createTemplate as T } from "trans-render/createTemplate.js";
+//import {RenderContext, PEATSettings, PEATUnionSettings} from 'trans-render/types2.d.js';
 import { XtalFetchViewElement, define, mergeProps, p, symbolize } from "xtal-element/XtalFetchViewElement.js";
 import { PD } from "p-et-alia/p-d.js";
 import { SwagTagPrimitiveBase } from './swag-tag-primitive-base.js';
