@@ -14,8 +14,8 @@ const mainTemplate = createTemplate(/* html */ `
           width: 100%;
       }
   </style>
-  <ui5-label class="samples-big-margin-right" for="myInput" required part=label>Name</ui5-label>
-  <ui5-input id="myInput" placeholder="Enter your Name" required part=input></ui5-input>
+  <ui5-label class="samples-big-margin-right" for="myInput" required part=label></ui5-label>
+  <ui5-input id="myInput"  part=input></ui5-input>
 `);
 const [ui5Input, ui5Label] = [Symbol('ui5Input'), Symbol('ui5Label')];
 const initTransform = ({ self }) => ({
@@ -23,7 +23,7 @@ const initTransform = ({ self }) => ({
     'ui5-input': [{}, { input: self.handleInput }, , , ui5Input],
 });
 const updateInput = ({ readOnly, inputType, disabled, value, name, description }) => ({
-    [ui5Input]: [{ value: value }]
+    [ui5Input]: [{ value: value, placeholder: 'Enter ' + name }]
 });
 export const linkInputType = ({ type, self }) => {
     switch (type) {

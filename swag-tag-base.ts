@@ -111,14 +111,27 @@ export const addEventListeners =   ({events, name}: SwagTagBase) => ({
     [PD.is]:({item}: RenderContext) => [{observe: name, on: item.name}]
   }]
 });
+
+export const copyPropInfoIntoEditor = ({item, target}: RenderContext<HTMLElement, PropertyInfo>) => {
+  Object.assign(target, item);
+  target!.setAttribute('role', 'textbox');
+};
+
+const copyPropInfoIntoEditors = {
+  [`${SwagTagPrimitiveBase.is},${SwagTagObjectBase.is}`]: copyPropInfoIntoEditor,
+}
+
 export const addEditors =   ({massagedProps, name}: SwagTagBase) => ({
   // Loop over massagedProps, and insert dynamic editor via tag name (item.editor is the tag name)
-  [uiRefs.fFieldset]: [massagedProps, ({item}: RenderContext) => (<any>item).editor,, {
-    [`${SwagTagPrimitiveBase.is},${SwagTagObjectBase.is}`]: ({item, target}: RenderContext<SwagTagPrimitiveBase, PropertyInfo>) => {
-      Object.assign(target, item);
-      target!.setAttribute('role', 'textbox');
-    },
-  }]
+  [uiRefs.fFieldset]: [
+    //Array to loop over
+    massagedProps || [],
+    //A **toTagOrTemplate** function that returns a string -- used to generate a (custom element) with the name of the string. 
+    ({item}: RenderContext) => (<any>item).editor,
+    //range could go here
+    , 
+    //now that document.createElement(tag) done, apply transform
+    copyPropInfoIntoEditors]
 });
 
 export const bindSelf = ({attribs, self}: SwagTagBase) => ({

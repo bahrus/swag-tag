@@ -98,14 +98,25 @@ export const addEventListeners = ({ events, name }) => ({
             [PD.is]: ({ item }) => [{ observe: name, on: item.name }]
         }]
 });
+export const copyPropInfoIntoEditor = ({ item, target }) => {
+    Object.assign(target, item);
+    target.setAttribute('role', 'textbox');
+};
+const copyPropInfoIntoEditors = {
+    [`${SwagTagPrimitiveBase.is},${SwagTagObjectBase.is}`]: copyPropInfoIntoEditor,
+};
 export const addEditors = ({ massagedProps, name }) => ({
     // Loop over massagedProps, and insert dynamic editor via tag name (item.editor is the tag name)
-    [uiRefs.fFieldset]: [massagedProps, ({ item }) => item.editor, , {
-            [`${SwagTagPrimitiveBase.is},${SwagTagObjectBase.is}`]: ({ item, target }) => {
-                Object.assign(target, item);
-                target.setAttribute('role', 'textbox');
-            },
-        }]
+    [uiRefs.fFieldset]: [
+        //Array to loop over
+        massagedProps || [],
+        //A **toTagOrTemplate** function that returns a string -- used to generate a (custom element) with the name of the string. 
+        ({ item }) => item.editor,
+        //range could go here
+        ,
+        //now that document.createElement(tag) done, apply transform
+        copyPropInfoIntoEditors
+    ]
 });
 export const bindSelf = ({ attribs, self }) => ({
     [uiRefs.adJsonViewer]: [{ object: self }]

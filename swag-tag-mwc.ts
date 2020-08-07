@@ -1,6 +1,6 @@
 import {
   SwagTagBase, uiRefs, bindName, addEventListeners, linkWcInfo, triggerImportReferencedModule, 
-  adjustValueAndType, bindSelf, showHideEditor, linkInnerTemplate} from './swag-tag-base.js';
+  adjustValueAndType, bindSelf, showHideEditor, linkInnerTemplate, copyPropInfoIntoEditor} from './swag-tag-base.js';
 import { WCSuiteInfo, WCInfo, PropertyInfo, CustomEventInfo, SlotInfo, AttribInfo } from "wc-info/types.js";
 import {define} from 'xtal-element/XtalElement.js';
 import {RenderContext, PEATSettings} from 'trans-render/types.d.js';
@@ -11,18 +11,23 @@ import {SwagTagJsonEditor} from './swag-tag-json-editor.js';
 import {SwagTagMWCSelect} from './swag-tag-mwc-select.js';
 import { SelectiveUpdate} from "../xtal-element/types.js";
 
-const copyPropInfoIntoEditor = ({item, target}: RenderContext<SwagTagMWCTextField, PropertyInfo>) => {
-  Object.assign(target, item);
-  target!.setAttribute('role', 'textbox');
-};
 
-const mapEditorsToCopyProp = {
+const copyPropInfoIntoEditors = {
   [`${SwagTagMWCTextField.is},${SwagTagMWCCheckbox.is},${SwagTagJsonEditor.is},${SwagTagMWCSelect.is}`]: copyPropInfoIntoEditor,
 };
 
 export const addEditors =   ({massagedProps, name}: SwagTagBase) => ({
     // Loop over massagedProps, and insert dynamic editor via tag name (item.editor is the tag name)
-    [uiRefs.fFieldset]: [massagedProps || [], ({item}: RenderContext) => (<any>item).editor,, mapEditorsToCopyProp]
+    [uiRefs.fFieldset]: [
+      //Array to loop over
+      massagedProps || [], 
+      //A **toTagOrTemplate** function that returns a string -- used to generate a (custom element) with the name of the string.
+      ({item}: RenderContext) => (<any>item).editor,
+      //empty range
+      ,
+      //now that document.createElement(tag) done, apply transform
+      copyPropInfoIntoEditors
+    ]
 });
 
 const massaged = Symbol();
