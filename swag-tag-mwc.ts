@@ -16,11 +16,13 @@ const copyPropInfoIntoEditor = ({item, target}: RenderContext<SwagTagMWCTextFiel
   target!.setAttribute('role', 'textbox');
 };
 
+const mapEditorsToCopyProp = {
+  [`${SwagTagMWCTextField.is},${SwagTagMWCCheckbox.is},${SwagTagJsonEditor.is},${SwagTagMWCSelect.is}`]: copyPropInfoIntoEditor,
+};
+
 export const addEditors =   ({massagedProps, name}: SwagTagBase) => ({
     // Loop over massagedProps, and insert dynamic editor via tag name (item.editor is the tag name)
-    [uiRefs.fFieldset]: [massagedProps || [], ({item}: RenderContext) => (<any>item).editor,, {
-      [`${SwagTagMWCTextField.is},${SwagTagMWCCheckbox.is},${SwagTagJsonEditor.is},${SwagTagMWCSelect.is}`]: copyPropInfoIntoEditor,
-    }]
+    [uiRefs.fFieldset]: [massagedProps || [], ({item}: RenderContext) => (<any>item).editor,, mapEditorsToCopyProp]
 });
 
 const massaged = Symbol();

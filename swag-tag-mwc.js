@@ -9,11 +9,12 @@ const copyPropInfoIntoEditor = ({ item, target }) => {
     Object.assign(target, item);
     target.setAttribute('role', 'textbox');
 };
+const mapEditorsToCopyProp = {
+    [`${SwagTagMWCTextField.is},${SwagTagMWCCheckbox.is},${SwagTagJsonEditor.is},${SwagTagMWCSelect.is}`]: copyPropInfoIntoEditor,
+};
 export const addEditors = ({ massagedProps, name }) => ({
     // Loop over massagedProps, and insert dynamic editor via tag name (item.editor is the tag name)
-    [uiRefs.fFieldset]: [massagedProps || [], ({ item }) => item.editor, , {
-            [`${SwagTagMWCTextField.is},${SwagTagMWCCheckbox.is},${SwagTagJsonEditor.is},${SwagTagMWCSelect.is}`]: copyPropInfoIntoEditor,
-        }]
+    [uiRefs.fFieldset]: [massagedProps || [], ({ item }) => item.editor, , mapEditorsToCopyProp]
 });
 const massaged = Symbol();
 export const linkMassagedProps = ({ properties, self, block }) => {
