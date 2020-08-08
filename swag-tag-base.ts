@@ -64,7 +64,7 @@ const eventListenerForJsonViewer = T(/* html */`
 `);
 
 export const uiRefs = {
-  fflVar: p, header: p, dComponentHolder: p, dchComponentListenersForJsonViewer: p, adJsonViewer: p, 
+  fflVar: p, header: p, componentHolder: p, componentListenersForJsonViewer: p, adJsonViewer: p, 
   fFieldset: p, ffScrollableArea: p
 };
 
@@ -75,9 +75,9 @@ const initTransform = ({self, tag}: SwagTagBase) => ({
     '[-care-of]': tag,
     header: uiRefs.header,
     section:{
-      componentHolderPart: uiRefs.dComponentHolder,
+      componentHolderPart: uiRefs.componentHolder,
       '"': {
-        componentListenersPart: uiRefs.dchComponentListenersForJsonViewer
+        componentListenersPart: uiRefs.componentListenersForJsonViewer
       }
     },
     form:{
@@ -85,7 +85,7 @@ const initTransform = ({self, tag}: SwagTagBase) => ({
         legend: [{},{click: self.toggleForm},,{
           var: uiRefs.fflVar
         }] as PEATSettings,
-        '[part="scrollableArea"]': uiRefs.ffScrollableArea
+        scrollableAreaPart: uiRefs.ffScrollableArea
       },
       '"': uiRefs.fFieldset
     },
@@ -103,9 +103,9 @@ const initTransform = ({self, tag}: SwagTagBase) => ({
 export const bindName = ({name, innerTemplate}: SwagTagBase) => ({
   [uiRefs.header]: `<${name}>`,
   [uiRefs.fflVar]: name,
-  [uiRefs.dComponentHolder]: [name, 'afterBegin'],
+  [uiRefs.componentHolder]: [name, 'afterBegin'],
   [more]:{
-    [uiRefs.dComponentHolder]: {
+    [uiRefs.componentHolder]: {
       [name!]: ({target}: RenderContext) => {
         if(innerTemplate !== undefined){
           target!.appendChild(innerTemplate!.content.cloneNode(true));
@@ -116,7 +116,7 @@ export const bindName = ({name, innerTemplate}: SwagTagBase) => ({
   }
 });
 export const addEventListeners =   ({events, name}: SwagTagBase) => ({
-  [uiRefs.dchComponentListenersForJsonViewer]: [events || [], eventListenerForJsonViewer,,{
+  [uiRefs.componentListenersForJsonViewer]: [events || [], eventListenerForJsonViewer,,{
     [PD.is]:({item}: RenderContext) => [{observe: name, on: item.name}]
   }]
 });

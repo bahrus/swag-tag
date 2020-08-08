@@ -57,7 +57,7 @@ const eventListenerForJsonViewer = T(/* html */ `
 <p-d from=section to=${JsonEventViewer.is}[-new-event] val=. skip-init m=1></p-d>
 `);
 export const uiRefs = {
-    fflVar: p, header: p, dComponentHolder: p, dchComponentListenersForJsonViewer: p, adJsonViewer: p,
+    fflVar: p, header: p, componentHolder: p, componentListenersForJsonViewer: p, adJsonViewer: p,
     fFieldset: p, ffScrollableArea: p
 };
 symbolize(uiRefs);
@@ -66,9 +66,9 @@ const initTransform = ({ self, tag }) => ({
         '[-care-of]': tag,
         header: uiRefs.header,
         section: {
-            componentHolderPart: uiRefs.dComponentHolder,
+            componentHolderPart: uiRefs.componentHolder,
             '"': {
-                componentListenersPart: uiRefs.dchComponentListenersForJsonViewer
+                componentListenersPart: uiRefs.componentListenersForJsonViewer
             }
         },
         form: {
@@ -76,7 +76,7 @@ const initTransform = ({ self, tag }) => ({
                 legend: [{}, { click: self.toggleForm }, , {
                         var: uiRefs.fflVar
                     }],
-                '[part="scrollableArea"]': uiRefs.ffScrollableArea
+                scrollableAreaPart: uiRefs.ffScrollableArea
             },
             '"': uiRefs.fFieldset
         },
@@ -90,9 +90,9 @@ const initTransform = ({ self, tag }) => ({
 export const bindName = ({ name, innerTemplate }) => ({
     [uiRefs.header]: `<${name}>`,
     [uiRefs.fflVar]: name,
-    [uiRefs.dComponentHolder]: [name, 'afterBegin'],
+    [uiRefs.componentHolder]: [name, 'afterBegin'],
     [more]: {
-        [uiRefs.dComponentHolder]: {
+        [uiRefs.componentHolder]: {
             [name]: ({ target }) => {
                 if (innerTemplate !== undefined) {
                     target.appendChild(innerTemplate.content.cloneNode(true));
@@ -102,7 +102,7 @@ export const bindName = ({ name, innerTemplate }) => ({
     }
 });
 export const addEventListeners = ({ events, name }) => ({
-    [uiRefs.dchComponentListenersForJsonViewer]: [events || [], eventListenerForJsonViewer, , {
+    [uiRefs.componentListenersForJsonViewer]: [events || [], eventListenerForJsonViewer, , {
             [PD.is]: ({ item }) => [{ observe: name, on: item.name }]
         }]
 });
