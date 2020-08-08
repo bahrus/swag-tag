@@ -31,9 +31,9 @@ const mainTemplate = T(/* html */ `
 <header>
 </header>
 <section>
-  <component--holder>
+  <div part=componentHolder>
     <div part=componentListeners></div>
-  </component--holder>
+  </div>
 </section>
 <json-event-viewer -new-event></json-event-viewer>
 <form>
@@ -66,7 +66,7 @@ const initTransform = ({ self, tag }) => ({
         '[-care-of]': tag,
         header: uiRefs.header,
         section: {
-            'component--holder': uiRefs.dComponentHolder,
+            componentHolderPart: uiRefs.dComponentHolder,
             '"': {
                 componentListenersPart: uiRefs.dchComponentListenersForJsonViewer
             }
