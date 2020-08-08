@@ -44,13 +44,11 @@ const mainTemplate = T(/* html */ `
   </fieldset>
 </form>
 
+<details part=viewSchema>
+  <summary>View Schema</summary>
+  <json-viewer part=jsonViewer allowlist="name,properties,attributes,slots,events"></json-viewer>
+</details>
 
-<aside>
-  <details>
-    <summary>View Schema</summary>
-    <json-viewer allowlist="name,properties,attributes,slots,events"></json-viewer>
-  </details>
-</aside>
 </main>
 `);
 const eventListenerForJsonViewer = T(/* html */ `
@@ -80,10 +78,8 @@ const initTransform = ({ self, tag }) => ({
             },
             '"': uiRefs.fFieldset
         },
-        aside: {
-            details: {
-                'json-viewer': uiRefs.adJsonViewer
-            }
+        viewSchemaPart: {
+            jsonViewerPart: uiRefs.adJsonViewer
         }
     }
 });
