@@ -32,7 +32,7 @@ const mainTemplate = T(/* html */ `
 </header>
 <section>
   <component--holder>
-    <component--listeners></component--listeners>
+    <div part=componentListeners></div>
   </component--holder>
 </section>
 <json-event-viewer -new-event></json-event-viewer>
@@ -68,7 +68,7 @@ const initTransform = ({ self, tag }) => ({
         section: {
             'component--holder': uiRefs.dComponentHolder,
             '"': {
-                'component--listeners': uiRefs.dchComponentListenersForJsonViewer
+                componentListenersPart: uiRefs.dchComponentListenersForJsonViewer
             }
         },
         form: {
