@@ -10,7 +10,7 @@ const copyPropInfoIntoEditors = {
 };
 export const addEditors = ({ massagedProps, name }) => ({
     // Loop over massagedProps, and insert dynamic editor via tag name (item.editor is the tag name)
-    [uiRefs.fFieldset]: [
+    [uiRefs.ffScrollableArea]: [
         //Array to loop over
         massagedProps || [],
         //A **toTagOrTemplate** function that returns a string -- used to generate a (custom element) with the name of the string.

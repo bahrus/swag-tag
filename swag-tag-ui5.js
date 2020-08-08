@@ -2,12 +2,12 @@ import { SwagTagBase, uiRefs, bindName, addEventListeners, linkWcInfo, triggerIm
 import { define } from 'xtal-element/XtalElement.js';
 //import {SwagTagMWCTextField} from './swag-tag-mwc-textfield.js';
 import { SwagTagUI5Input } from './swag-tag-ui5-input.js';
-import { SwagTagMWCCheckbox } from './swag-tag-mwc-checkbox.js';
+import { SwagTagUI5Checkbox } from './swag-tag-ui5-checkbox.js';
 //import {SwagTagMWCTextarea} from './swag-tag-mwc-textarea.js';
 import { SwagTagJsonEditor } from './swag-tag-json-editor.js';
 import { SwagTagMWCSelect } from './swag-tag-mwc-select.js';
 const copyPropInfoIntoEditors = {
-    [`${SwagTagUI5Input.is},${SwagTagMWCCheckbox.is},${SwagTagJsonEditor.is},${SwagTagMWCSelect.is}`]: copyPropInfoIntoEditor,
+    [`${SwagTagUI5Input.is},${SwagTagUI5Checkbox.is},${SwagTagJsonEditor.is},${SwagTagMWCSelect.is}`]: copyPropInfoIntoEditor,
 };
 export const addEditors = ({ massagedProps, name }) => ({
     // Loop over massagedProps, and insert dynamic editor via tag name (item.editor is the tag name)
@@ -36,7 +36,7 @@ export const linkMassagedProps = ({ properties, self, block }) => {
                 anyProp.editor = SwagTagUI5Input.is;
                 break;
             case 'boolean':
-                anyProp.editor = SwagTagMWCCheckbox.is;
+                anyProp.editor = SwagTagUI5Checkbox.is;
                 break;
             case 'object':
                 anyProp.editor = SwagTagJsonEditor.is;

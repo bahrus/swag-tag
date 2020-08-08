@@ -19,12 +19,14 @@ const mainTemplate = T(/* html */ `
   fieldset[data-guid="0f0d62e5-0d00-4e70-ad90-277fcd94c963"]>legend{
     cursor: pointer;
   }
-  fieldset[data-guid="0f0d62e5-0d00-4e70-ad90-277fcd94c963"][data-open="false"] [role]{
+  fieldset[data-guid="0f0d62e5-0d00-4e70-ad90-277fcd94c963"][data-open="false"]>scrollable--area{
     display: none;
   }
-  fieldset[data-guid="0f0d62e5-0d00-4e70-ad90-277fcd94c963"][data-open="true"]{
+  fieldset[data-guid="0f0d62e5-0d00-4e70-ad90-277fcd94c963"][data-open="true"]>[part="scrollableArea"]{
     max-height: 500px;
     overflow-y:auto;
+    display:flex;
+    flex-direction: column;
   }
 </style>
 <main>
@@ -42,6 +44,8 @@ const mainTemplate = T(/* html */ `
 <form>
   <fieldset data-open="true" data-guid="0f0d62e5-0d00-4e70-ad90-277fcd94c963">
     <legend>✏️Edit <var></var>'s properties</legend>
+    <div part=scrollableArea>
+    </div>
   </fieldset>
 </form>
 
@@ -59,7 +63,11 @@ const eventListenerForJsonViewer = T(/* html */`
 <p-d from=section to=${JsonEventViewer.is}[-new-event] val=. skip-init m=1></p-d>
 `);
 
-export const uiRefs = {fflVar: p, header: p, dComponentHolder: p, dchComponentListenersForJsonViewer: p, adJsonViewer: p, fFieldset: p,}
+export const uiRefs = {
+  fflVar: p, header: p, dComponentHolder: p, dchComponentListenersForJsonViewer: p, adJsonViewer: p, 
+  fFieldset: p, ffScrollableArea: p
+};
+
 symbolize(uiRefs);
 
 const initTransform = ({self, tag}: SwagTagBase) => ({
@@ -73,12 +81,13 @@ const initTransform = ({self, tag}: SwagTagBase) => ({
       }
     },
     form:{
-      fieldset: uiRefs.fFieldset,
-      '"':{
+      fieldset:{
         legend: [{},{click: self.toggleForm},,{
           var: uiRefs.fflVar
-        }] as PEATSettings
+        }] as PEATSettings,
+        '[part="scrollableArea"]': uiRefs.ffScrollableArea
       },
+      '"': uiRefs.fFieldset
     },
     aside:{
       details:{
@@ -123,7 +132,7 @@ const copyPropInfoIntoEditors = {
 
 export const addEditors =   ({massagedProps, name}: SwagTagBase) => ({
   // Loop over massagedProps, and insert dynamic editor via tag name (item.editor is the tag name)
-  [uiRefs.fFieldset]: [
+  [uiRefs.ffScrollableArea]: [
     //Array to loop over
     massagedProps || [],
     //A **toTagOrTemplate** function that returns a string -- used to generate a (custom element) with the name of the string. 

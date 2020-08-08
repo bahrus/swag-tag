@@ -14,7 +14,7 @@ const mainTemplate = createTemplate(/* html */ `
           width: 100%;
       }
   </style>
-  <ui5-label class="samples-big-margin-right" for="myInput" required part=label></ui5-label>
+  <ui5-label for="myInput" required part=label></ui5-label>
   <ui5-input id="myInput"  part=input></ui5-input>
 `);
 const [ui5Input, ui5Label] = [Symbol('ui5Input'), Symbol('ui5Label')];
