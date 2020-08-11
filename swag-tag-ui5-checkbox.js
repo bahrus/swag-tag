@@ -7,9 +7,9 @@ const mainTemplate = createTemplate(/* html */ `
       :host{
           display:block;
       }
-      ui5-checkbox{
+      /* ui5-checkbox{
           width: 100%;
-      }
+      } */
   </style>
   <ui5-checkbox part=checkbox></ui5-checkbox>
 `);

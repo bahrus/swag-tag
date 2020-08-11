@@ -1,12 +1,11 @@
 import { more } from 'trans-render/transform.js';
 import { createTemplate as T } from "trans-render/createTemplate.js";
-//import {RenderContext, PEATSettings, PEATUnionSettings} from 'trans-render/types2.d.js';
 import { XtalFetchViewElement, define, mergeProps, p, symbolize } from "xtal-element/XtalFetchViewElement.js";
 import { PD } from "p-et-alia/p-d.js";
 import { SwagTagPrimitiveBase } from './swag-tag-primitive-base.js';
 import { SwagTagObjectBase } from './swag-tag-object-base.js';
 import { JsonEventViewer } from './json-event-viewer.js';
-//import('@power-elements/json-viewer/json-viewer.js');
+//#region Templates 
 //Very little top level styling used, so consumers can take the first crack at styling.
 //So make what little styling there is  guaranteed to not affect anything else via guid.
 const mainTemplate = T(/* html */ `
@@ -14,7 +13,7 @@ const mainTemplate = T(/* html */ `
   fieldset[data-guid="0f0d62e5-0d00-4e70-ad90-277fcd94c963"]>legend{
     cursor: pointer;
   }
-  fieldset[data-guid="0f0d62e5-0d00-4e70-ad90-277fcd94c963"][data-open="false"]>scrollable--area{
+  fieldset[data-guid="0f0d62e5-0d00-4e70-ad90-277fcd94c963"][data-open="false"]>[part="scrollableArea"]{
     display: none;
   }
   fieldset[data-guid="0f0d62e5-0d00-4e70-ad90-277fcd94c963"][data-open="true"]>[part="scrollableArea"]{
@@ -28,16 +27,16 @@ const mainTemplate = T(/* html */ `
 <!-- pass down edited values / parsed objects to demo component -->
 <p-d on=edited-value-changed to=section -care-of val=target.editedValue prop-from-event=target.name m=1 skip-init></p-d>
 <p-d on=parsed-object-changed to=section -care-of val=target.parsedObject prop-from-event=target.name m=1 skip-init></p-d>
-<header>
+<header part=header>
 </header>
-<section>
+<section part=section>
   <div part=componentHolder>
     <div part=componentListeners></div>
   </div>
 </section>
 <json-event-viewer -new-event></json-event-viewer>
 <form>
-  <fieldset data-open="true" data-guid="0f0d62e5-0d00-4e70-ad90-277fcd94c963">
+  <fieldset data-open="true" data-guid="0f0d62e5-0d00-4e70-ad90-277fcd94c963" part=fieldset>
     <legend>✏️Edit <var></var>'s properties</legend>
     <div part=scrollableArea>
     </div>
@@ -54,9 +53,11 @@ const mainTemplate = T(/* html */ `
 const eventListenerForJsonViewer = T(/* html */ `
 <p-d from=section to=${JsonEventViewer.is}[-new-event] val=. skip-init m=1></p-d>
 `);
+//#endregion
+//#region Transforms
 export const uiRefs = {
     fflVar: p, header: p, componentHolder: p, componentListenersForJsonViewer: p, adJsonViewer: p,
-    fFieldset: p, ffScrollableArea: p
+    fieldset: p, scrollableArea: p
 };
 symbolize(uiRefs);
 const initTransform = ({ self, tag }) => ({
@@ -74,9 +75,9 @@ const initTransform = ({ self, tag }) => ({
                 legend: [{}, { click: self.toggleForm }, , {
                         var: uiRefs.fflVar
                     }],
-                scrollableAreaPart: uiRefs.ffScrollableArea
+                scrollableAreaPart: uiRefs.scrollableArea
             },
-            '"': uiRefs.fFieldset
+            '"': uiRefs.fieldset
         },
         viewSchemaPart: {
             jsonViewerPart: uiRefs.adJsonViewer
@@ -111,7 +112,7 @@ const copyPropInfoIntoEditors = {
 };
 export const addEditors = ({ massagedProps, name }) => ({
     // Loop over massagedProps, and insert dynamic editor via tag name (item.editor is the tag name)
-    [uiRefs.ffScrollableArea]: [
+    [uiRefs.scrollableArea]: [
         //Array to loop over
         massagedProps || [],
         //A **toTagOrTemplate** function that returns a string -- used to generate a (custom element) with the name of the string. 
@@ -131,6 +132,8 @@ const updateTransforms = [
     addEditors,
     bindSelf
 ];
+//#endregion
+//#region propActions
 export const linkWcInfo = ({ viewModel, tag, self }) => {
     if (tag === undefined || viewModel === undefined)
         return;
@@ -244,8 +247,12 @@ export const triggerImportReferencedModule = ({ path, self }) => {
     }
 };
 export const showHideEditor = ({ editOpen, self }) => {
-    self[uiRefs.fFieldset].dataset.open = (editOpen || false).toString();
+    self[uiRefs.fieldset].dataset.open = (editOpen || false).toString();
 };
+const propActions = [
+    linkWcInfo, linkMassagedProps, triggerImportReferencedModule, showHideEditor, linkInnerTemplate
+];
+//#endregion
 export class SwagTagBase extends XtalFetchViewElement {
     constructor() {
         super(...arguments);
