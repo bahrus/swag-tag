@@ -15,7 +15,7 @@ const mainTemplate = createTemplate(/* html */ `
 `);
 const [ui5Checkbox] = [Symbol('ui5Checkbox')];
 const initTransform = ({ self }) => ({
-    'ui5-checkbox': [{}, { change: self.handleInput }, , , ui5Checkbox],
+    checkboxPart: [{}, { change: self.handleInput }, , , ui5Checkbox],
 });
 const updateInput = ({ readOnly, inputType, disabled, value, name, description }) => ({
     [ui5Checkbox]: [{ value: value, text: name }]
