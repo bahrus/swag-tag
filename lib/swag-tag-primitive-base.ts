@@ -14,10 +14,8 @@ const mainTemplate = createTemplate(/* html */`
           display:block;
       }
   </style>
-  <div>
-    <label for=myInput part=fieldLabel></label>
-    <input id=myInput part=inputElement>
-  </div>
+  <label for=myInput part=label></label>
+  <input id=myInput part=input>
 `);
 
 const [label$, input$] = [Symbol('label'), Symbol('input')];
@@ -30,9 +28,16 @@ const updateLabel = ({name}: SwagTagPrimitiveBase) => ({
     [label$]: name + ':',
 });
 
+
+
 const updateInput = ({readOnly, inputType, disabled, value}: SwagTagPrimitiveBase) =>({
     [input$]: [{},,{'readonly': readOnly, type: inputType, disabled: disabled, value: value}]
 });
+
+const updateTransforms = [
+    updateLabel, updateInput
+]  as SelectiveUpdate<any>[];
+
 
 export const linkInputType = ({type, self}: SwagTagPrimitiveBase) => {
     switch(type){
@@ -89,9 +94,7 @@ export class SwagTagPrimitiveBase extends XtalElement {
         linkInputType, linkEditedValue
     ];
 
-    updateTransforms = [
-        updateLabel, updateInput
-    ]  as SelectiveUpdate<any>[];
+    updateTransforms = updateTransforms;
 
     name: string | undefined;
     description: string | undefined;
