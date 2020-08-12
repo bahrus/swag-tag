@@ -1,9 +1,6 @@
 import {XtalElement, AttributeProps, define} from 'xtal-element/XtalElement.js';
 import {SelectiveUpdate} from 'xtal-element/types.d.js';
-import {mergeProps} from 'xtal-element/xtal-latx';
 import {createTemplate} from 'trans-render/createTemplate.js';
-import { WCSuiteInfo, WCInfo, PropertyInfo } from "wc-info/types.js";
-import { SwagTagBase } from './swag-tag-base';
 
 const mainTemplate = createTemplate(/* html */`
   <style>
