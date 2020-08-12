@@ -42,7 +42,7 @@ export const appendToEventArchive = ({newEvent, self}: JsonEventViewer) =>{
 export const bindJsonViewer = ({eventArchive}: JsonEventViewer) => ({
      [jsonViewer]: [{object: eventArchive}] as PSettings<any>,
      [details]: [{style:{display:'block'}}]
-} as TransformRules);
+} as TransformValueOptions);
 
 export const updateTransforms = [bindJsonViewer] as SelectiveUpdate<any>[];
 

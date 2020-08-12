@@ -3,8 +3,9 @@ import { createTemplate as T } from "trans-render/createTemplate.js";
 import { XtalFetchViewElement, define, mergeProps, p, symbolize } from "xtal-element/XtalFetchViewElement.js";
 import { PD } from "p-et-alia/p-d.js";
 import { SwagTagPrimitiveBase } from './lib/swag-tag-primitive-base.js';
-import { SwagTagObjectBase } from './lib/swag-tag-object-base.js';
+//import { SwagTagObjectBase } from './lib/swag-tag-object-base.js';
 import { JsonEventViewer } from './lib/json-event-viewer.js';
+import { SwagTagJsonEditor } from "./lib/swag-tag-json-editor.js";
 //#region Templates 
 //Very little top level styling used, so consumers can take the first crack at styling.
 //So make what little styling there is  guaranteed to not affect anything else via guid.
@@ -108,7 +109,7 @@ export const copyPropInfoIntoEditor = ({ item, target }) => {
     target.setAttribute('role', 'textbox');
 };
 const copyPropInfoIntoEditors = {
-    [`${SwagTagPrimitiveBase.is},${SwagTagObjectBase.is}`]: copyPropInfoIntoEditor,
+    [`${SwagTagPrimitiveBase.is},${SwagTagJsonEditor.is}`]: copyPropInfoIntoEditor,
 };
 export const addEditors = ({ massagedProps, name }) => ({
     // Loop over massagedProps, and insert dynamic editor via tag name (item.editor is the tag name)
@@ -204,7 +205,7 @@ export const linkMassagedProps = ({ properties, self, block }) => {
                 anyProp.editor = SwagTagPrimitiveBase.is;
                 break;
             case 'object':
-                anyProp.editor = SwagTagObjectBase.is;
+                anyProp.editor = SwagTagJsonEditor.is;
                 break;
             default:
                 throw 'not implemented';

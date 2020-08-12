@@ -7,8 +7,9 @@ import {
 } from "xtal-element/XtalFetchViewElement.js";
 import {PD} from "p-et-alia/p-d.js";
 import { SwagTagPrimitiveBase } from './lib/swag-tag-primitive-base.js';
-import { SwagTagObjectBase } from './lib/swag-tag-object-base.js';
+//import { SwagTagObjectBase } from './lib/swag-tag-object-base.js';
 import { JsonEventViewer } from './lib/json-event-viewer.js';
+import { SwagTagJsonEditor } from "./lib/swag-tag-json-editor.js";
 
 //#region Templates 
 //Very little top level styling used, so consumers can take the first crack at styling.
@@ -125,7 +126,7 @@ export const copyPropInfoIntoEditor = ({item, target}: RenderContext<HTMLElement
 };
 
 const copyPropInfoIntoEditors = {
-  [`${SwagTagPrimitiveBase.is},${SwagTagObjectBase.is}`]: copyPropInfoIntoEditor,
+  [`${SwagTagPrimitiveBase.is},${SwagTagJsonEditor.is}`]: copyPropInfoIntoEditor,
 }
 
 export const addEditors =   ({massagedProps, name}: SwagTag) => ({
@@ -223,7 +224,7 @@ export const linkMassagedProps = ({properties, self, block}: SwagTag) => {
         anyProp.editor = SwagTagPrimitiveBase.is;
         break;
       case 'object':
-        anyProp.editor = SwagTagObjectBase.is;
+        anyProp.editor = SwagTagJsonEditor.is;
         break;
       default:
         throw 'not implemented';
