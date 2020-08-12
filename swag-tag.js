@@ -2,9 +2,9 @@ import { more } from 'trans-render/transform.js';
 import { createTemplate as T } from "trans-render/createTemplate.js";
 import { XtalFetchViewElement, define, mergeProps, p, symbolize } from "xtal-element/XtalFetchViewElement.js";
 import { PD } from "p-et-alia/p-d.js";
-import { SwagTagPrimitiveBase } from './swag-tag-primitive-base.js';
-import { SwagTagObjectBase } from './swag-tag-object-base.js';
-import { JsonEventViewer } from './json-event-viewer.js';
+import { SwagTagPrimitiveBase } from './lib/swag-tag-primitive-base.js';
+import { SwagTagObjectBase } from './lib/swag-tag-object-base.js';
+import { JsonEventViewer } from './lib/json-event-viewer.js';
 //#region Templates 
 //Very little top level styling used, so consumers can take the first crack at styling.
 //So make what little styling there is  guaranteed to not affect anything else via guid.
@@ -253,7 +253,7 @@ const propActions = [
     linkWcInfo, linkMassagedProps, triggerImportReferencedModule, showHideEditor, linkInnerTemplate
 ];
 //#endregion
-export class SwagTagBase extends XtalFetchViewElement {
+export class SwagTag extends XtalFetchViewElement {
     constructor() {
         super(...arguments);
         this.noShadow = true;
@@ -269,8 +269,8 @@ export class SwagTagBase extends XtalFetchViewElement {
         this.editOpen = !this.editOpen;
     }
 }
-SwagTagBase.is = "swag-tag-base";
-SwagTagBase.attributeProps = ({ tag, name, properties, path, events, slots, testCaseNames, attribs, editOpen, block, useInnerTemplate, innerTemplate }) => {
+SwagTag.is = "swag-tag";
+SwagTag.attributeProps = ({ tag, name, properties, path, events, slots, testCaseNames, attribs, editOpen, block, useInnerTemplate, innerTemplate }) => {
     const ap = {
         str: [tag, name, path],
         bool: [editOpen, useInnerTemplate],
@@ -280,4 +280,4 @@ SwagTagBase.attributeProps = ({ tag, name, properties, path, events, slots, test
     };
     return mergeProps(ap, XtalFetchViewElement.props);
 };
-define(SwagTagBase);
+define(SwagTag);

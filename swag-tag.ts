@@ -6,9 +6,9 @@ import {
   SelectiveUpdate
 } from "xtal-element/XtalFetchViewElement.js";
 import {PD} from "p-et-alia/p-d.js";
-import { SwagTagPrimitiveBase } from './swag-tag-primitive-base.js';
-import {SwagTagObjectBase} from './swag-tag-object-base.js';
-import {JsonEventViewer} from './json-event-viewer.js';
+import { SwagTagPrimitiveBase } from './lib/swag-tag-primitive-base.js';
+import { SwagTagObjectBase } from './lib/swag-tag-object-base.js';
+import { JsonEventViewer } from './lib/json-event-viewer.js';
 
 //#region Templates 
 //Very little top level styling used, so consumers can take the first crack at styling.
@@ -70,7 +70,7 @@ export const uiRefs = {
 
 symbolize(uiRefs);
 
-const initTransform = ({self, tag}: SwagTagBase) => ({
+const initTransform = ({self, tag}: SwagTag) => ({
   main:{
     '[-care-of]': tag,
     header: uiRefs.header,
@@ -98,7 +98,7 @@ const initTransform = ({self, tag}: SwagTagBase) => ({
 
 
 
-export const bindName = ({name, innerTemplate}: SwagTagBase) => ({
+export const bindName = ({name, innerTemplate}: SwagTag) => ({
   [uiRefs.header]: `<${name}>`,
   [uiRefs.fflVar]: name,
   [uiRefs.componentHolder]: [name, 'afterBegin'],
@@ -113,7 +113,7 @@ export const bindName = ({name, innerTemplate}: SwagTagBase) => ({
     }
   }
 });
-export const addEventListeners =   ({events, name}: SwagTagBase) => ({
+export const addEventListeners =   ({events, name}: SwagTag) => ({
   [uiRefs.componentListenersForJsonViewer]: [events || [], eventListenerForJsonViewer,,{
     [PD.is]:({item}: RenderContext) => [{observe: name, on: item.name}]
   }]
@@ -128,7 +128,7 @@ const copyPropInfoIntoEditors = {
   [`${SwagTagPrimitiveBase.is},${SwagTagObjectBase.is}`]: copyPropInfoIntoEditor,
 }
 
-export const addEditors =   ({massagedProps, name}: SwagTagBase) => ({
+export const addEditors =   ({massagedProps, name}: SwagTag) => ({
   // Loop over massagedProps, and insert dynamic editor via tag name (item.editor is the tag name)
   [uiRefs.scrollableArea]: [
     //Array to loop over
@@ -141,7 +141,7 @@ export const addEditors =   ({massagedProps, name}: SwagTagBase) => ({
     copyPropInfoIntoEditors]
 });
 
-export const bindSelf = ({attribs, self}: SwagTagBase) => ({
+export const bindSelf = ({attribs, self}: SwagTag) => ({
   [uiRefs.adJsonViewer]: [{object: self}]
 });
 
@@ -154,7 +154,7 @@ const updateTransforms = [
 //#endregion
 
 //#region propActions
-export const linkWcInfo = ({viewModel, tag, self} : SwagTagBase) => {
+export const linkWcInfo = ({viewModel, tag, self} : SwagTag) => {
   if(tag === undefined || viewModel === undefined) return;
   const wcInfo = viewModel.tags.find(t => t.name === tag)!;
   wcInfo.attribs = (<any>wcInfo).attributes;
@@ -211,7 +211,7 @@ export function adjustValueAndType(prop: PropertyInfo){
 }
 
 const massaged = Symbol();
-export const linkMassagedProps = ({properties, self, block}: SwagTagBase) => {
+export const linkMassagedProps = ({properties, self, block}: SwagTag) => {
   if(properties === undefined || (<any>properties)[massaged as any as string]) return;
   properties.forEach(prop =>{
     adjustValueAndType(prop);
@@ -233,7 +233,7 @@ export const linkMassagedProps = ({properties, self, block}: SwagTagBase) => {
   self.massagedProps = block !== undefined ? properties.filter(prop => !block.includes(prop.name!)) : properties;
 }
 
-export const linkInnerTemplate = ({useInnerTemplate, self}: SwagTagBase) =>{
+export const linkInnerTemplate = ({useInnerTemplate, self}: SwagTag) =>{
   if(!useInnerTemplate) return;
   const innerTemplate = self.querySelector('template');
   if(innerTemplate === null){
@@ -245,7 +245,7 @@ export const linkInnerTemplate = ({useInnerTemplate, self}: SwagTagBase) =>{
   self.innerTemplate = innerTemplate;
 }
 
-export const triggerImportReferencedModule = ({path, self}: SwagTagBase) => {
+export const triggerImportReferencedModule = ({path, self}: SwagTag) => {
   if(path !== undefined){
     if(self.href!.indexOf('//') > -1 && self.href!.indexOf('//') < 7){
       const selfResolvingModuleSplitPath = self.href!.split('/');
@@ -266,7 +266,7 @@ export const triggerImportReferencedModule = ({path, self}: SwagTagBase) => {
   }
 }
 
-export const showHideEditor = ({editOpen, self}: SwagTagBase) => {
+export const showHideEditor = ({editOpen, self}: SwagTag) => {
   (<any>self)[uiRefs.fieldset].dataset.open = (editOpen || false).toString();
 }
 
@@ -275,16 +275,16 @@ const propActions = [
 ];
 //#endregion
 
-export class SwagTagBase extends XtalFetchViewElement<WCSuiteInfo> implements WCInfo {
+export class SwagTag extends XtalFetchViewElement<WCSuiteInfo> implements WCInfo {
 
-  static is = "swag-tag-base";
+  static is = "swag-tag";
 
   noShadow = true;
 
   mainTemplate = mainTemplate;
   readyToRender = true;
 
-  static attributeProps: any = ({tag, name, properties, path, events, slots, testCaseNames, attribs, editOpen, block, useInnerTemplate, innerTemplate} : SwagTagBase) =>{
+  static attributeProps: any = ({tag, name, properties, path, events, slots, testCaseNames, attribs, editOpen, block, useInnerTemplate, innerTemplate} : SwagTag) =>{
     const ap = {
       str: [tag, name, path],
       bool: [editOpen, useInnerTemplate],
@@ -336,6 +336,6 @@ export class SwagTagBase extends XtalFetchViewElement<WCSuiteInfo> implements WC
 
 }
 
-define(SwagTagBase);
+define(SwagTag);
 
 
