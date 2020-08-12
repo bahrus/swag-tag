@@ -38,7 +38,7 @@ const mainTemplate = T(/* html */ `
 <json-event-viewer -new-event></json-event-viewer>
 <form>
   <fieldset data-open="true" data-guid="0f0d62e5-0d00-4e70-ad90-277fcd94c963" part=fieldset>
-    <legend>✏️Edit <var></var>'s properties</legend>
+    <legend><span part=action>Edit</span> <var part=componentName></var>'s properties</legend>
     <div part=scrollableArea>
     </div>
   </fieldset>
