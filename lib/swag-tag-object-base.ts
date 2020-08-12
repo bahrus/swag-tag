@@ -1,6 +1,5 @@
 import {SwagTagPrimitiveBase, linkInputType} from './swag-tag-primitive-base.js';
-import {SelectiveUpdate} from 'xtal-element/types.d.js';
-import {define, AttributeProps, mergeProps} from 'xtal-element/xtal-latx.js';
+import {define, AttributeProps, mergeProps, SelectiveUpdate} from 'xtal-element/xtal-latx.js';
 import {createTemplate} from 'trans-render/createTemplate.js';
 
 const mainTemplate = createTemplate(/* html */`

@@ -1,8 +1,6 @@
-import { XtalElement, define } from 'xtal-element/XtalElement';
+import { XtalElement, define, PSettings, TransformValueOptions, AttributeProps, SelectiveUpdate } from 'xtal-element/XtalElement';
 import('@power-elements/json-viewer/json-viewer.js');
 import { createTemplate} from "trans-render/createTemplate.js";
-import { SelectiveUpdate, TransformRules, AttributeProps } from 'xtal-element/types.js';
-import { PSettings } from '../trans-render/types2';
 
 const mainTemplate = createTemplate(/* html */`
 <style>
@@ -24,7 +22,7 @@ const initTransform = {
         'json-viewer': jsonViewer
     },
     '"': [{style:{display:'none'}},,,,details]
-} as TransformRules;
+} as TransformValueOptions;
 const allowList = ['detail', 'type', 'bubbles', 'cancelBubble', 'cancelable', 'composed', 'defaultPrevented', 'eventPhase', 'isTruted', 'returnValue', 'timeStamp'];
 export const appendToEventArchive = ({newEvent, self}: JsonEventViewer) =>{
     if(newEvent === undefined) return;
