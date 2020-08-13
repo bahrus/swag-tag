@@ -1,8 +1,9 @@
 import { WCSuiteInfo, WCInfo, PropertyInfo, CustomEventInfo, SlotInfo, AttribInfo } from "wc-info/types.js";
 import { more } from 'trans-render/transform.js';
+import { templStampSym} from 'trans-render/standardPlugins.js';
 import { createTemplate as T } from "trans-render/createTemplate.js";
 import { 
-  XtalFetchViewElement, define, mergeProps, AttributeProps, p, symbolize, RenderContext, PEATSettings, TransformValueOptions,
+  XtalFetchViewElement, define, mergeProps, AttributeProps, p, symbolize, RenderContext, PESettings, TransformValueOptions,
   SelectiveUpdate
 } from "xtal-element/XtalFetchViewElement.js";
 import {PD} from "p-et-alia/p-d.js";
@@ -43,7 +44,7 @@ const mainTemplate = T(/* html */ `
 <json-event-viewer -new-event part=jsonEventViewer></json-event-viewer>
 <form part=propsEditor>
   <fieldset data-open="true" data-guid="0f0d62e5-0d00-4e70-ad90-277fcd94c963" part=fieldset>
-    <legend><span part=action>Edit</span> <var part=componentName></var>'s properties</legend>
+    <legend part=legend><span part=action>Edit</span> <var part=componentName></var>'s properties</legend>
     <div part=scrollableArea>
     </div>
   </fieldset>
@@ -65,36 +66,18 @@ const eventListenerForJsonViewer = T(/* html */`
 
 //#region Transforms
 export const uiRefs = {
-  componentName: p, header: p, componentHolder: p, componentListenersForJsonViewer: p, adJsonViewer: p, 
-  fieldset: p, scrollableArea: p
+  componentName: p, header: p, componentHolder: p, componentListeners: p, jsonViewer: p, 
+  fieldset: p, scrollableArea: p, legend: p
 };
 
 symbolize(uiRefs);
 
 const initTransform = ({self, tag}: SwagTag) => ({
+  ':host': [templStampSym, uiRefs],
   main:{
+    [uiRefs.legend]: [{},{click: self.toggleForm}] as PESettings,
     '[-care-of]': tag,
-    header: uiRefs.header,
-    section:{
-      componentHolderPart: uiRefs.componentHolder,
-      '"': {
-        componentListenersPart: uiRefs.componentListenersForJsonViewer
-      }
-    },
-    form:{
-      fieldset:{
-        legend: [{},{click: self.toggleForm},,{
-          componentNamePart: uiRefs.componentName
-        }] as PEATSettings,
-        scrollableAreaPart: uiRefs.scrollableArea
-      },
-      '"': uiRefs.fieldset
-    },
-    viewSchemaPart:{
-      jsonViewerPart: uiRefs.adJsonViewer
-    }
   }
-
 } as TransformValueOptions);
 
 
@@ -115,7 +98,7 @@ export const bindName = ({name, innerTemplate}: SwagTag) => ({
   }
 });
 export const addEventListeners =   ({events, name}: SwagTag) => ({
-  [uiRefs.componentListenersForJsonViewer]: [events || [], eventListenerForJsonViewer,,{
+  [uiRefs.componentListeners]: [events || [], eventListenerForJsonViewer,,{
     [PD.is]:({item}: RenderContext) => [{observe: name, on: item.name}]
   }]
 });
@@ -143,7 +126,7 @@ export const addEditors =   ({massagedProps, name}: SwagTag) => ({
 });
 
 export const bindSelf = ({attribs, self}: SwagTag) => ({
-  [uiRefs.adJsonViewer]: [{object: self}]
+  [uiRefs.jsonViewer]: [{object: self}]
 });
 
 const updateTransforms = [
