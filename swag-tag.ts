@@ -40,8 +40,8 @@ const mainTemplate = T(/* html */ `
     <div part=componentListeners></div>
   </div>
 </section>
-<json-event-viewer -new-event></json-event-viewer>
-<form>
+<json-event-viewer -new-event part=jsonEventViewer></json-event-viewer>
+<form part=propsEditor>
   <fieldset data-open="true" data-guid="0f0d62e5-0d00-4e70-ad90-277fcd94c963" part=fieldset>
     <legend><span part=action>Edit</span> <var part=componentName></var>'s properties</legend>
     <div part=scrollableArea>
@@ -276,10 +276,27 @@ const propActions = [
 ];
 //#endregion
 
+/**
+ * @csspart header
+ * @csspart section
+ * @csspart componentHolder
+ * @csspart componentListeners
+ * @csspart jsonEventViewer
+ * @csspart propsEditor
+ * @csspart fieldset
+ * @csspart action
+ * @csspart componentName
+ * @csspart scrollableArea
+ * @csspart viewSchema
+ * @csspart jsonViewer
+ */
 export class SwagTag extends XtalFetchViewElement<WCSuiteInfo> implements WCInfo {
 
   static is = "swag-tag";
 
+  /**
+   * @private
+   */
   noShadow = true;
 
   mainTemplate = mainTemplate;
