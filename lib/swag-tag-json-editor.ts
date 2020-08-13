@@ -27,10 +27,8 @@ const uiRefs = {
 
 const initTransform = ({self, handleChange}: SwagTagJsonEditor) => ({
     ':host': [templStampSym, uiRefs],
-    main:{
-        //[uiRefs.jsonEditor]: [{},{'edited-result-changed': handleChange}]
-        'xtal-json-editor': [{},{'edited-result-changed': handleChange}]
-    }
+    [uiRefs.jsonEditor]: [{},{'edited-result-changed': handleChange}],
+    
 })
 
 const updateLabel = ({name}: SwagTagJsonEditor) => ({
