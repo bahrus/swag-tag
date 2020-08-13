@@ -74,8 +74,8 @@ symbolize(uiRefs);
 
 const initTransform = ({self, tag}: SwagTag) => ({
   ':host': [templStampSym, uiRefs],
+  [uiRefs.legend]: [{},{click: self.toggleForm}] as PESettings,
   main:{
-    [uiRefs.legend]: [{},{click: self.toggleForm}] as PESettings,
     '[-care-of]': tag,
   }
 } as TransformValueOptions);

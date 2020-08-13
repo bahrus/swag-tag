@@ -64,8 +64,8 @@ export const uiRefs = {
 symbolize(uiRefs);
 const initTransform = ({ self, tag }) => ({
     ':host': [templStampSym, uiRefs],
+    [uiRefs.legend]: [{}, { click: self.toggleForm }],
     main: {
-        [uiRefs.legend]: [{}, { click: self.toggleForm }],
         '[-care-of]': tag,
     }
 });
