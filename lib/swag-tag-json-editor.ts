@@ -35,8 +35,8 @@ const initTransform = ({self, handleChange}: SwagTagJsonEditor) => ({
 const updateLabel = ({name}: SwagTagJsonEditor) => ({
     [uiRefs.label]: [{textContent: name + ':'}]
 });
-const updateJsonEditor = ({value}: SwagTagPrimitiveBase) => ({
-    [uiRefs.jsonEditor]: [{options: {}, input: JSON.parse(value || {})}]
+const updateJsonEditor = ({value, name}: SwagTagPrimitiveBase) => ({
+    [uiRefs.jsonEditor]: [{options: {}, input: value===undefined ? {} : JSON.parse(value)}]
 });
 
 
