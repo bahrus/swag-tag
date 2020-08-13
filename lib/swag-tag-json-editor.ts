@@ -50,13 +50,10 @@ const propActions = [linkParsedObject, linkInputType] as SelectiveUpdate<any>[];
 export class SwagTagJsonEditor extends SwagTagPrimitiveBase {
     static is = 'swag-tag-json-editor';
 
-    static attributeProps = ({parsedObject}: SwagTagJsonEditor) =>{
-        const ap = {
-            obj: [parsedObject],
-            notify: [parsedObject]
-        } as AttributeProps;
-        return mergeProps(ap, SwagTagPrimitiveBase.props);
-    }
+    static attributeProps = ({parsedObject}: SwagTagJsonEditor) =>({
+        obj: [parsedObject],
+        notify: [parsedObject]
+    })
 
     propActions = propActions;
 
