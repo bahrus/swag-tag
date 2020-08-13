@@ -57,7 +57,7 @@ const eventListenerForJsonViewer = T(/* html */ `
 //#endregion
 //#region Transforms
 export const uiRefs = {
-    fflVar: p, header: p, componentHolder: p, componentListenersForJsonViewer: p, adJsonViewer: p,
+    componentName: p, header: p, componentHolder: p, componentListenersForJsonViewer: p, adJsonViewer: p,
     fieldset: p, scrollableArea: p
 };
 symbolize(uiRefs);
@@ -74,7 +74,7 @@ const initTransform = ({ self, tag }) => ({
         form: {
             fieldset: {
                 legend: [{}, { click: self.toggleForm }, , {
-                        var: uiRefs.fflVar
+                        componentNamePart: uiRefs.componentName
                     }],
                 scrollableAreaPart: uiRefs.scrollableArea
             },
@@ -87,7 +87,7 @@ const initTransform = ({ self, tag }) => ({
 });
 export const bindName = ({ name, innerTemplate }) => ({
     [uiRefs.header]: `<${name}>`,
-    [uiRefs.fflVar]: name,
+    [uiRefs.componentName]: name,
     [uiRefs.componentHolder]: [name, 'afterBegin'],
     [more]: {
         [uiRefs.componentHolder]: {

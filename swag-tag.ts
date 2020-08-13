@@ -65,7 +65,7 @@ const eventListenerForJsonViewer = T(/* html */`
 
 //#region Transforms
 export const uiRefs = {
-  fflVar: p, header: p, componentHolder: p, componentListenersForJsonViewer: p, adJsonViewer: p, 
+  componentName: p, header: p, componentHolder: p, componentListenersForJsonViewer: p, adJsonViewer: p, 
   fieldset: p, scrollableArea: p
 };
 
@@ -84,7 +84,7 @@ const initTransform = ({self, tag}: SwagTag) => ({
     form:{
       fieldset:{
         legend: [{},{click: self.toggleForm},,{
-          var: uiRefs.fflVar
+          componentNamePart: uiRefs.componentName
         }] as PEATSettings,
         scrollableAreaPart: uiRefs.scrollableArea
       },
@@ -101,7 +101,7 @@ const initTransform = ({self, tag}: SwagTag) => ({
 
 export const bindName = ({name, innerTemplate}: SwagTag) => ({
   [uiRefs.header]: `<${name}>`,
-  [uiRefs.fflVar]: name,
+  [uiRefs.componentName]: name,
   [uiRefs.componentHolder]: [name, 'afterBegin'],
   [more]:{
     [uiRefs.componentHolder]: {
