@@ -210,8 +210,8 @@ export const linkInnerTemplate = ({ useInnerTemplate, self }) => {
     }
     self.innerTemplate = innerTemplate;
 };
-export const triggerImportReferencedModule = ({ path, self }) => {
-    if (path !== undefined) {
+export const triggerImportReferencedModule = ({ path, self, skipImports }) => {
+    if (path !== undefined && !skipImports) {
         if (self.href.indexOf('//') > -1 && self.href.indexOf('//') < 7) {
             const selfResolvingModuleSplitPath = self.href.split('/');
             selfResolvingModuleSplitPath.pop();
@@ -266,16 +266,21 @@ export class SwagTag extends XtalFetchViewElement {
         ];
         this.initTransform = initTransform;
         this.updateTransforms = updateTransforms;
+        /**
+         * If test page contains needed imports, skip any imports contained in test script.
+         * @attr skip-imports
+         */
+        this.skipImports = false;
     }
     toggleForm(e) {
         this.editOpen = !this.editOpen;
     }
 }
 SwagTag.is = "swag-tag";
-SwagTag.attributeProps = ({ tag, name, properties, path, events, slots, testCaseNames, attribs, editOpen, block, useInnerTemplate, innerTemplate }) => {
+SwagTag.attributeProps = ({ tag, name, properties, path, events, slots, testCaseNames, attribs, editOpen, block, useInnerTemplate, innerTemplate, skipImports }) => {
     const ap = {
         str: [tag, name, path],
-        bool: [editOpen, useInnerTemplate],
+        bool: [editOpen, useInnerTemplate, skipImports],
         obj: [properties, events, slots, testCaseNames, attribs, block, innerTemplate],
         jsonProp: [block],
         reflect: [tag, editOpen]

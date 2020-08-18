@@ -229,8 +229,8 @@ export const linkInnerTemplate = ({useInnerTemplate, self}: SwagTag) =>{
   self.innerTemplate = innerTemplate;
 }
 
-export const triggerImportReferencedModule = ({path, self}: SwagTag) => {
-  if(path !== undefined){
+export const triggerImportReferencedModule = ({path, self, skipImports}: SwagTag) => {
+  if(path !== undefined && !skipImports){
     if(self.href!.indexOf('//') > -1 && self.href!.indexOf('//') < 7){
       const selfResolvingModuleSplitPath = self.href!.split('/');
       selfResolvingModuleSplitPath.pop();
@@ -285,10 +285,10 @@ export class SwagTag extends XtalFetchViewElement<WCSuiteInfo> implements WCInfo
   mainTemplate = mainTemplate;
   readyToRender = true;
 
-  static attributeProps: any = ({tag, name, properties, path, events, slots, testCaseNames, attribs, editOpen, block, useInnerTemplate, innerTemplate} : SwagTag) =>{
+  static attributeProps: any = ({tag, name, properties, path, events, slots, testCaseNames, attribs, editOpen, block, useInnerTemplate, innerTemplate, skipImports} : SwagTag) =>{
     const ap = {
       str: [tag, name, path],
-      bool: [editOpen, useInnerTemplate],
+      bool: [editOpen, useInnerTemplate, skipImports],
       obj: [properties, events, slots, testCaseNames, attribs, block, innerTemplate],
       jsonProp: [block],
       reflect: [tag, editOpen]
@@ -330,6 +330,12 @@ export class SwagTag extends XtalFetchViewElement<WCSuiteInfo> implements WCInfo
   useInnerTemplate: boolean | undefined;
 
   innerTemplate: HTMLTemplateElement | undefined;
+
+  /**
+   * If test page contains needed imports, skip any imports contained in test script.
+   * @attr skip-imports
+   */
+  skipImports = false;
 
   toggleForm(e: Event){
     this.editOpen = !this.editOpen;
