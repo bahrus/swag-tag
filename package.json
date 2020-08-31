@@ -15,14 +15,14 @@
   },
   "dependencies": {
     "trans-render": "0.0.255",
-    "xtal-element": "0.0.282",
-    "p-et-alia": "0.0.111",
-    "@power-elements/json-viewer": "2.0.3",
+    "xtal-element": "0.0.287",
+    "p-et-alia": "0.0.114",
+    "@power-elements/json-viewer": "2.1.0",
     "wc-info": "0.0.75",
     "xtal-json-editor": "0.0.44"
   },
   "devDependencies": {
-    "es-dev-server": "1.57.2",
+    "es-dev-server": "1.57.4",
     "es-module-shims": "0.5.2",
     "xtal-test": "0.0.46"
   },
