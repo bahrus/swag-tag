@@ -18,10 +18,10 @@
   "dependencies": {
     "@power-elements/json-viewer": "2.1.1",
     "p-et-alia": "0.0.115",
-    "trans-render": "0.0.265",
+    "trans-render": "0.0.267",
     "wc-info": "0.0.75",
     "xtal-editor": "0.0.6",
-    "xtal-element": "0.0.305"
+    "xtal-element": "0.0.310"
   },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^9.0.0",

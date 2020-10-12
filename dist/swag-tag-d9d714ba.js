@@ -73,6 +73,9 @@ function processSymbols(ctx) {
             case 'object':
                 ctx.customObjProcessor('', transformTemplateVal, ctx);
                 break;
+            case 'boolean':
+                if (transformTemplateVal === false)
+                    newTarget.remove();
         }
     }
 }
@@ -570,6 +573,7 @@ function XtallatX(superClass) {
                 }
                 return this.___processActionDebouncer;
             }
+            propActionsHub(propAction) { }
             __processActionQueue() {
                 if (this.propActions === undefined)
                     return;
@@ -579,6 +583,7 @@ function XtallatX(superClass) {
                     const dependencies = deconstruct(propAction);
                     const dependencySet = new Set(dependencies);
                     if (intersection(queue, dependencySet).size > 0) {
+                        this.propActionsHub(propAction);
                         propAction(this);
                     }
                 });
@@ -727,12 +732,19 @@ function symbolize(obj) {
 }
 const propCategories = ['bool', 'str', 'num', 'reflect', 'notify', 'obj', 'jsonProp', 'dry', 'log', 'debug', 'async'];
 const argList = Symbol('argList');
+function substrBefore(s, search) {
+    let returnS = s.trim();
+    let iPosOfColon = returnS.indexOf(search);
+    if (iPosOfColon > -1)
+        return returnS.substr(0, iPosOfColon);
+    return returnS;
+}
 function deconstruct(fn) {
     if (fn[argList] === undefined) {
         const fnString = fn.toString().trim();
         if (fnString.startsWith('({')) {
             const iPos = fnString.indexOf('})', 2);
-            fn[argList] = fnString.substring(2, iPos).split(',').map(s => s.trim());
+            fn[argList] = fnString.substring(2, iPos).split(',').map(s => substrBefore(s, ':'));
         }
         else {
             fn[argList] = [];
@@ -774,6 +786,7 @@ class XtalElement extends XtallatX(hydrate(HTMLElement)) {
     afterUpdateRenderCallback(ctx, target, renderOptions) { }
     async initRenderContext() {
         const plugins = await this.plugins();
+        this.transformHub(this.initTransform);
         const isInitTransformAFunction = typeof this.initTransform === 'function';
         if (isInitTransformAFunction && this.__initTransformArgs === undefined) {
             this.__initTransformArgs = new Set(deconstruct(this.initTransform));
@@ -789,7 +802,7 @@ class XtalElement extends XtallatX(hydrate(HTMLElement)) {
         return ctx;
     }
     async plugins() {
-        const { doObjectMatch, repeateth, interpolateSym, interpolatePlugin, templStampSym, templStampPlugin } = await import('./standardPlugins-43508c70.min.js');
+        const { doObjectMatch, repeateth, interpolateSym, interpolatePlugin, templStampSym, templStampPlugin } = await import('./standardPlugins-32de4021.js');
         return {
             customObjProcessor: doObjectMatch,
             repeatProcessor: repeateth,
@@ -804,6 +817,8 @@ class XtalElement extends XtallatX(hydrate(HTMLElement)) {
             }, 16);
         }
         return this[_transformDebouncer];
+    }
+    transformHub(transform) {
     }
     async transform() {
         if (this.__initRCIP)
@@ -859,6 +874,7 @@ class XtalElement extends XtallatX(hydrate(HTMLElement)) {
                 const dependencySet = new Set(dependencies);
                 if (evaluateAllUpdateTransforms || intersection(propChangeQueue, dependencySet).size > 0) {
                     this._renderOptions.updatedCallback = this.afterUpdateRenderCallback.bind(this);
+                    this.transformHub(selectiveUpdateTransform);
                     rc.Transform = selectiveUpdateTransform(this);
                     await transform(target, rc);
                     //rc!.update!(rc!, this.root);
@@ -974,7 +990,7 @@ class XtalFetchViewElement extends XtalRoomWithAView {
 XtalFetchViewElement.is = 'xtal-fetch-view-element';
 /**
  * @private
- * @param param0
+ *
  */
 XtalFetchViewElement.attributeProps = ({ href, reqInit, reqInitRequired, baseLinkId, viewModel }) => ({
     str: [href, baseLinkId],
@@ -1927,7 +1943,7 @@ SwagTagPrimitiveBase.attributeProps = ({ readOnly, type, testValues, value, disa
 });
 define(SwagTagPrimitiveBase);
 
-import('./json-viewer-89013c5c.min.js');
+import('./json-viewer-89013c5c.js');
 const mainTemplate$1 = createTemplate(/* html */ `
 <style>
 details{
@@ -2748,7 +2764,7 @@ class XtalElement$1 extends XtallatX$2(hydrate$2(HTMLElement)) {
         return ctx;
     }
     async plugins() {
-        const { doObjectMatch, repeateth, interpolateSym, interpolatePlugin, templStampSym, templStampPlugin } = await import('./standardPlugins-bbf23f7b.min.js');
+        const { doObjectMatch, repeateth, interpolateSym, interpolatePlugin, templStampSym, templStampPlugin } = await import('./standardPlugins-5d6be390.js');
         return {
             customObjProcessor: doObjectMatch,
             repeatProcessor: repeateth,
