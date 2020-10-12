@@ -24,6 +24,7 @@
     "xtal-editor": "0.0.6"
   },
   "devDependencies": {
+    "@rollup/plugin-node-resolve": "^9.0.0",
     "es-dev-server": "1.57.5",
     "es-module-shims": "0.6.0",
     "xtal-test": "0.0.48"
