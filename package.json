@@ -14,17 +14,18 @@
     "url": "git+https://github.com/bahrus/swag-tag.git"
   },
   "dependencies": {
-    "trans-render": "0.0.255",
-    "xtal-element": "0.0.287",
-    "p-et-alia": "0.0.114",
-    "@power-elements/json-viewer": "2.1.0",
+    "trans-render": "0.0.265",
+    "xtal-element": "0.0.305",
+    "p-et-alia": "0.0.115",
+    "@power-elements/json-viewer": "2.1.1",
     "wc-info": "0.0.75",
-    "xtal-json-editor": "0.0.44"
+    "xtal-json-editor": "0.0.44",
+    "xtal-editor": "0.0.5"
   },
   "devDependencies": {
-    "es-dev-server": "1.57.4",
-    "es-module-shims": "0.5.2",
-    "xtal-test": "0.0.46"
+    "es-dev-server": "1.57.5",
+    "es-module-shims": "0.6.0",
+    "xtal-test": "0.0.48"
   },
   "author": "",
   "license": "MIT",

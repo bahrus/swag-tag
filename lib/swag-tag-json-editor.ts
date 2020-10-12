@@ -3,6 +3,7 @@ import {SelectiveUpdate} from 'xtal-element/types.d.js';
 import {define, AttributeProps, mergeProps} from 'xtal-element/xtal-latx.js';
 import {createTemplate} from 'trans-render/createTemplate.js';
 import 'xtal-json-editor/xtal-json-editor.js';
+import 'xtal-editor/src/xtal-editor-base-primitive.js';
 import {templStampSym} from 'trans-render/plugins/templStamp.js';
 
 const mainTemplate = createTemplate(/* html */`
@@ -16,18 +17,18 @@ const mainTemplate = createTemplate(/* html */`
   </style>
   <main>
     <label for=myInput part=label></label>
-    <xtal-json-editor as=json part=jsonEditor></xtal-json-editor>
+    <xtal-editor-base-primitive key=root part=xtalEditor></xtal-editor-base-primitive>
   </main>
 `);
 
 const uiRefs = {
     label: Symbol('label'),
-    jsonEditor: Symbol('jsonEditor')
+    xtalEditor: Symbol('xtalEditor')
 }
 
 const initTransform = ({self, handleChange}: SwagTagJsonEditor) => ({
     ':host': [templStampSym, uiRefs],
-    [uiRefs.jsonEditor]: [{},{'edited-result-changed': handleChange}],
+    [uiRefs.xtalEditor]: [{}, {'parsed-object-changed': handleChange}]
     
 })
 
@@ -35,7 +36,7 @@ const updateLabel = ({name}: SwagTagJsonEditor) => ({
     [uiRefs.label]: [{textContent: name + ':'}]
 });
 const updateJsonEditor = ({value, name}: SwagTagPrimitiveBase) => ({
-    [uiRefs.jsonEditor]: [{options: {}, input: value===undefined ? {} : JSON.parse(value)}]
+    [uiRefs.xtalEditor]: [{value: value}]
 });
 
 
@@ -62,7 +63,7 @@ export class SwagTagJsonEditor extends SwagTagPrimitiveBase {
     initTransform = initTransform;
 
     handleChange(e: CustomEvent){
-        this.parsedObject = e.detail.value;
+        this.parsedObject = (<any>e.target!).parsedObject;
     }
 
     updateTransforms = [
