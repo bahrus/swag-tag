@@ -1,7 +1,7 @@
 import { WCSuiteInfo, WCInfo, PropertyInfo, CustomEventInfo, SlotInfo, AttribInfo } from "wc-info/types.js";
 import { more } from 'trans-render/transform.js';
 import { templStampSym} from 'trans-render/standardPlugins.js';
-import { createTemplate as T } from "trans-render/createTemplate.js";
+import { createTemplate} from "trans-render/createTemplate.js";
 import { 
   XtalFetchViewElement, define, mergeProps, AttributeProps, p, symbolize, RenderContext, PESettings, TransformValueOptions,
   SelectiveUpdate
@@ -15,7 +15,7 @@ import { SwagTagJsonEditor } from "./lib/swag-tag-json-editor.js";
 //#region Templates 
 //Very little top level styling used, so consumers can take the first crack at styling.
 //So make what little styling there is  guaranteed to not affect anything else via guid.
-const mainTemplate = T(/* html */ `
+const mainTemplate = createTemplate(/* html */ `
 <style id=0f0d62e5-0d00-4e70-ad90-277fcd94c963>
   fieldset[data-guid="0f0d62e5-0d00-4e70-ad90-277fcd94c963"]>legend{
     cursor: pointer;

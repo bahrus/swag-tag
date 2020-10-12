@@ -1,7 +1,7 @@
 {
   "name": "swag-tag",
   "version": "0.0.34",
-  "description": "TBD",
+  "description": "Edit properties of web component",
   "main": "swag-tag.js",
   "module": "swag-tag.js",
   "scripts": {
