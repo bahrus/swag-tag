@@ -789,7 +789,7 @@ class XtalElement extends XtallatX(hydrate(HTMLElement)) {
         return ctx;
     }
     async plugins() {
-        const { doObjectMatch, repeateth, interpolateSym, interpolatePlugin, templStampSym, templStampPlugin } = await import('./standardPlugins-43508c70.js');
+        const { doObjectMatch, repeateth, interpolateSym, interpolatePlugin, templStampSym, templStampPlugin } = await import('./standardPlugins-43508c70.min.js');
         return {
             customObjProcessor: doObjectMatch,
             repeatProcessor: repeateth,
@@ -1927,7 +1927,7 @@ SwagTagPrimitiveBase.attributeProps = ({ readOnly, type, testValues, value, disa
 });
 define(SwagTagPrimitiveBase);
 
-import('./json-viewer-89013c5c.js');
+import('./json-viewer-89013c5c.min.js');
 const mainTemplate$1 = createTemplate(/* html */ `
 <style>
 details{
@@ -2748,7 +2748,7 @@ class XtalElement$1 extends XtallatX$2(hydrate$2(HTMLElement)) {
         return ctx;
     }
     async plugins() {
-        const { doObjectMatch, repeateth, interpolateSym, interpolatePlugin, templStampSym, templStampPlugin } = await import('./standardPlugins-bbf23f7b.js');
+        const { doObjectMatch, repeateth, interpolateSym, interpolatePlugin, templStampSym, templStampPlugin } = await import('./standardPlugins-bbf23f7b.min.js');
         return {
             customObjProcessor: doObjectMatch,
             repeatProcessor: repeateth,
