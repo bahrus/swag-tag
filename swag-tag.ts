@@ -58,7 +58,7 @@ const mainTemplate = createTemplate(/* html */ `
 </main>
 `);
 
-const eventListenerForJsonViewer = T(/* html */`
+const eventListenerForJsonViewer = createTemplate(/* html */`
 <p-d from=section to=${JsonEventViewer.is}[-new-event] val=. skip-init m=1></p-d>
 `);
 

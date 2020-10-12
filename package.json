@@ -9,7 +9,7 @@
     "serve": "node node_modules/xtal-test/serve.js",
     "start": "es-dev-server --app-index demo/dev.html --node-resolve --watch --open",
     "bundle": "rollup --config",
-    "compress": "terser dist/es6bundle.js > dist/es6bundle.min.js"
+    "compress": "terser --keep-fnames dist/es6bundle.js > dist/es6bundle.min.js"
   },
   "repository": {
     "type": "git",
