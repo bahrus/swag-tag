@@ -1,6 +1,6 @@
 {
   "name": "swag-tag",
-  "version": "0.0.34",
+  "version": "0.0.35",
   "description": "Edit properties of web component",
   "main": "swag-tag.js",
   "module": "swag-tag.js",
