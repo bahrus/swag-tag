@@ -19,8 +19,7 @@
     "p-et-alia": "0.0.115",
     "@power-elements/json-viewer": "2.1.1",
     "wc-info": "0.0.75",
-    "xtal-json-editor": "0.0.44",
-    "xtal-editor": "0.0.5"
+    "xtal-editor": "0.0.6"
   },
   "devDependencies": {
     "es-dev-server": "1.57.5",
