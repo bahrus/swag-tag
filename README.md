@@ -14,7 +14,7 @@ It requires that the web component exposes a json definition file for the web co
 
 <swag-tag-mwc href=../mwc-textfield-example1.json tag=mwc-textfield-example1></swag-tag-mwc>
 
-## Demo
+## [Demo](https://jsfiddle.net/bahrus/mdysp1ab/1/)
 
 
 
