@@ -2,7 +2,7 @@ import {SwagTagPrimitiveBase, linkInputType} from './swag-tag-primitive-base.js'
 import {SelectiveUpdate} from 'xtal-element/types.d.js';
 import {define, AttributeProps, mergeProps} from 'xtal-element/xtal-latx.js';
 import {createTemplate} from 'trans-render/createTemplate.js';
-import 'xtal-editor/src/xtal-editor-base-primitive.js';
+import 'xtal-editor/src/xtal-editor.js';
 import {templStampSym} from 'trans-render/plugins/templStamp.js';
 
 const mainTemplate = createTemplate(/* html */`
@@ -16,7 +16,7 @@ const mainTemplate = createTemplate(/* html */`
   </style>
   <main>
     <label for=myInput part=label></label>
-    <xtal-editor-base-primitive key=root part=xtalEditor></xtal-editor-base-primitive>
+    <xtal-editor key=root part=xtalEditor></xtal-editor>
   </main>
 `);
 

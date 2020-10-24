@@ -20,8 +20,9 @@
     "p-et-alia": "0.0.116",
     "trans-render": "0.0.267",
     "wc-info": "0.0.75",
-    "xtal-editor": "0.0.8",
-    "xtal-element": "0.0.310"
+    "xtal-editor": "0.0.12",
+    "xtal-element": "0.0.310",
+    "xtal-sip": "0.0.98"
   },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^9.0.0",

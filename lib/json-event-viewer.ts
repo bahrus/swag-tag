@@ -1,6 +1,13 @@
 import { XtalElement, define, PSettings, TransformValueOptions, AttributeProps, SelectiveUpdate } from 'xtal-element/XtalElement';
-import('@power-elements/json-viewer/json-viewer.js');
+import {preemptiveImport} from 'xtal-sip/preemptiveImport.js';
+//import('@power-elements/json-viewer/json-viewer.js');
 import { createTemplate} from "trans-render/createTemplate.js";
+
+preemptiveImport([
+    '@power-elements/json-viewer/json-viewer.js', 
+    () => import('@power-elements/json-viewer/json-viewer.js'),
+    ({path}) => `//unpkg.com/${path}?module`,,
+]);
 
 const mainTemplate = createTemplate(/* html */`
 <style>
