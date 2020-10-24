@@ -7,6 +7,7 @@ import { SwagTagPrimitiveBase } from './lib/swag-tag-primitive-base.js';
 //import { SwagTagObjectBase } from './lib/swag-tag-object-base.js';
 import { JsonEventViewer } from './lib/json-event-viewer.js';
 import { SwagTagJsonEditor } from "./lib/swag-tag-json-editor.js";
+import { conditionalImport } from 'xtal-sip/conditionalImport.js';
 //#region Templates 
 //Very little top level styling used, so consumers can take the first crack at styling.
 //So make what little styling there is  guaranteed to not affect anything else via guid.
@@ -122,6 +123,15 @@ const updateTransforms = [
 export const linkWcInfo = ({ viewModel, tag, self }) => {
     if (tag === undefined || viewModel === undefined)
         return;
+    conditionalImport(self, {
+        'json-viewer': [
+            [
+                '@power-elements/json-viewer/json-viewer.js',
+                () => import('@power-elements/json-viewer/json-viewer.js'),
+                ({ path }) => `//unpkg.com/${path}?module`, ,
+            ]
+        ]
+    });
     const wcInfo = viewModel.tags.find(t => t.name === tag);
     wcInfo.attribs = wcInfo.attributes;
     delete wcInfo.attributes;
