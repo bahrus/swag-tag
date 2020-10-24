@@ -22,7 +22,7 @@
     "wc-info": "0.0.75",
     "xtal-editor": "0.0.12",
     "xtal-element": "0.0.310",
-    "xtal-sip": "0.0.100"
+    "xtal-sip": "0.0.104"
   },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^9.0.0",

@@ -148,7 +148,7 @@ export const linkWcInfo = ({viewModel, tag, self} : SwagTag) => {
             () => import('@power-elements/json-viewer/json-viewer.js'),
             ({path}) => `//unpkg.com/${path}?module`,,
         ]
-    ]
+    ],
 });
   const wcInfo = viewModel.tags.find(t => t.name === tag)!;
   wcInfo.attribs = (<any>wcInfo).attributes;

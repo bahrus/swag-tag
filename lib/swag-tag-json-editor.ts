@@ -1,8 +1,8 @@
 import {SwagTagPrimitiveBase, linkInputType} from './swag-tag-primitive-base.js';
 import {SelectiveUpdate} from 'xtal-element/types.d.js';
-import {define, AttributeProps, mergeProps} from 'xtal-element/xtal-latx.js';
+import {conditionalImport} from 'xtal-sip/conditionalImport.js';
+import {define, AttributeProps, mergeProps, RenderContext} from 'xtal-element/xtal-latx.js';
 import {createTemplate} from 'trans-render/createTemplate.js';
-import 'xtal-editor/src/xtal-editor.js';
 import {templStampSym} from 'trans-render/plugins/templStamp.js';
 
 const mainTemplate = createTemplate(/* html */`
@@ -27,6 +27,17 @@ const uiRefs = {
 
 const initTransform = ({self, handleChange}: SwagTagJsonEditor) => ({
     ':host': [templStampSym, uiRefs],
+    '"': ({target}: RenderContext<SwagTagJsonEditor>) => {
+        conditionalImport(target as any as HTMLElement, {
+            'xtal-editor':[
+                [
+                    'xtal-editor/src/xtal-editor.js',
+                    () => import('xtal-editor/src/xtal-editor.js'),
+                    ({path}) => `//unpkg.com/${path}?module`,,
+                ]
+            ]
+        });
+    }
     [uiRefs.xtalEditor]: [{}, {'parsed-object-changed': handleChange}]
     
 })
@@ -40,6 +51,7 @@ const updateJsonEditor = ({value, name}: SwagTagPrimitiveBase) => ({
 
 
 const linkParsedObject = ({value, self}: SwagTagJsonEditor) =>{
+
     try{
         const parsed = JSON.parse(value);
         self.parsedObject = parsed;

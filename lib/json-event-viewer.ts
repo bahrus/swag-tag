@@ -29,7 +29,7 @@ const allowList = ['detail', 'type', 'bubbles', 'cancelBubble', 'cancelable', 'c
 export const appendToEventArchive = ({newEvent, self}: JsonEventViewer) =>{
     console.log(newEvent);
     const aSelf = self as any;
-    conditionalImport(self, {
+    conditionalImport(self.shadowRoot!, {
         [json_viewer]:[
             [
                 '@power-elements/json-viewer/json-viewer.js',
