@@ -18,16 +18,16 @@
   "dependencies": {
     "@power-elements/json-viewer": "2.1.1",
     "p-et-alia": "0.0.118",
-    "trans-render": "0.0.267",
+    "trans-render": "0.0.269",
     "wc-info": "0.0.75",
     "xtal-editor": "0.0.13",
-    "xtal-element": "0.0.310",
-    "xtal-sip": "0.0.105"
+    "xtal-element": "0.0.314",
+    "xtal-sip": "0.0.113"
   },
   "devDependencies": {
-    "@rollup/plugin-node-resolve": "^9.0.0",
-    "es-dev-server": "1.57.5",
-    "es-module-shims": "0.6.0",
+    "@rollup/plugin-node-resolve": "10.0.0",
+    "es-dev-server": "1.57.8",
+    "es-module-shims": "0.7.1",
     "xtal-test": "0.0.48"
   },
   "author": "",
