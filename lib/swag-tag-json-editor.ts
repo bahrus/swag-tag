@@ -10,12 +10,8 @@ const mainTemplate = createTemplate(/* html */`
       :host{
           display:block;
       }
-      label{
-          display:block
-      }
   </style>
   <main>
-    <label for=myInput part=label></label>
     <xtal-editor key=root part=xtalEditor></xtal-editor>
   </main>
 `);
@@ -25,7 +21,7 @@ const uiRefs = {
     xtalEditor: Symbol('xtalEditor')
 }
 
-const initTransform = ({self, handleChange}: SwagTagJsonEditor) => ({
+const initTransform = ({self}: SwagTagJsonEditor) => ({
     ':host': [templStampSym, uiRefs],
     '"': ({target}: RenderContext<SwagTagJsonEditor>) => {
         conditionalImport(target as any as HTMLElement, {
@@ -37,13 +33,13 @@ const initTransform = ({self, handleChange}: SwagTagJsonEditor) => ({
                 ]
             ]
         });
-    }
-    [uiRefs.xtalEditor]: [{}, {'parsed-object-changed': handleChange}]
+    },
+    [uiRefs.xtalEditor]: [{}, {'parsed-object-changed': self.handleChange}]
     
 })
 
 const updateLabel = ({name}: SwagTagJsonEditor) => ({
-    [uiRefs.label]: [{textContent: name + ':'}]
+    [uiRefs.xtalEditor]: [{key: name}]
 });
 const updateJsonEditor = ({value, name}: SwagTagPrimitiveBase) => ({
     [uiRefs.xtalEditor]: [{value: value}]

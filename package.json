@@ -17,10 +17,10 @@
   },
   "dependencies": {
     "@power-elements/json-viewer": "2.1.1",
-    "p-et-alia": "0.0.118",
+    "p-et-alia": "0.0.120",
     "trans-render": "0.0.269",
     "wc-info": "0.0.75",
-    "xtal-editor": "0.0.13",
+    "xtal-editor": "0.0.16",
     "xtal-element": "0.0.314",
     "xtal-sip": "0.0.113"
   },
