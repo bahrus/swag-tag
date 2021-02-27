@@ -7,10 +7,10 @@ import {
   SelectiveUpdate
 } from "xtal-element/XtalFetchViewElement.js";
 import {PD} from "p-et-alia/p-d.js";
-import { SwagTagPrimitiveBase } from './lib/swag-tag-primitive-base.js';
+import { SwagTagPrimitiveBase } from './swag-tag-primitive-base.js';
 //import { SwagTagObjectBase } from './lib/swag-tag-object-base.js';
-import { JsonEventViewer } from './lib/json-event-viewer.js';
-import { SwagTagJsonEditor } from "./lib/swag-tag-json-editor.js";
+import { JsonEventViewer } from './json-event-viewer.js';
+import { SwagTagJsonEditor } from "./swag-tag-json-editor.js";
 import { conditionalImport } from 'xtal-sip/conditionalImport.js';
 
 //#region Templates 
