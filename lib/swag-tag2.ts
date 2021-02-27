@@ -5,15 +5,16 @@ import { RxSuppl } from 'xtal-element/lib/RxSuppl.js';
 import {DOMKeyPEA} from 'xtal-element/lib/DOMKeyPEA.js';
 import('k-fetch/k-fetch.js');
 import('@power-elements/json-viewer/json-viewer.js');
+import('on-to-me/on-to-me.js');
 
 
 const mainTemplate = html `
-<k-fetch as=json></k-fetch>
-<on-to-me on=fetch-complete></on-to-me>
+<k-fetch disabled as=json></k-fetch>
+<on-to-me on=fetch-complete to=details care-of=[-object] val=target.value></on-to-me>
 
 <details part=viewSchema>
   <summary>View Schema</summary>
-  <json-viewer -data part=jsonViewer allowlist="name,properties,attributes,slots,events"></json-viewer>
+  <json-viewer -object part=jsonViewer allowlist="name,properties,attributes,slots,events,tags,version"></json-viewer>
 </details>
 `;
 const refs = {
