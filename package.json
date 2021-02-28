@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@power-elements/json-viewer": "2.1.1",
+    "ib-id": "0.0.16",
     "k-fetch": "0.0.4",
     "on-to-me": "0.0.9",
     "p-et-alia": "0.0.120",
