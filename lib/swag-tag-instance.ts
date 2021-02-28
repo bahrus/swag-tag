@@ -6,15 +6,23 @@ import { DOMKeyPEA } from 'xtal-element/lib/DOMKeyPEA.js';
 
 const mainTemplate = html`
 <section part=section>
-  <div part=componentHolder>
+  <place-holder></place-holder>
+  <div part=component-holder>
+    
     <div part=componentListeners>I am here</div>
   </div>
 </section>
 `;
-const refs = {};
+const refs = {componentHolderPart:'',placeHolderElement:''};
 const propActions = [
   xp.manageMainTemplate,
-  xp.createShadow
+  ({domCache, name}: SwagTagInstance) => [
+    {[refs.componentHolderPart]: name}
+  ],
+  xp.createShadow,
+  ({domCache, name}: SwagTagInstance) => [
+    {[refs.placeHolderElement]: Symbol(name)}
+  ],
 ] as PropAction[];
 /**
  * @element swag-tag-instance
@@ -34,7 +42,7 @@ export class SwagTagInstance extends HTMLElement implements XtalPattern{
   mainTemplate = mainTemplate;
   clonedTemplate: DocumentFragment | undefined;
   
-  href: string | undefined;
+  name: string | undefined;
 
   connectedCallback(){
     xc.hydrate<SwagTagInstance>(this, slicedPropDefs);
@@ -45,10 +53,10 @@ export class SwagTagInstance extends HTMLElement implements XtalPattern{
 }
 const propDefMap : PropDefMap<SwagTagInstance> = {
   ...xp.props,
-  href: {
+  name:{
     type: String,
-    dry: true,
-    async: true,
+    //async: true,
+    dry: true
   }
 };
 const slicedPropDefs = xc.getSlicedPropDefs(propDefMap);

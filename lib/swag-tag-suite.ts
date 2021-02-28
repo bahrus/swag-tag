@@ -32,7 +32,8 @@ const propActions = [
   ({domCache}: SwagTagSuite) => [
     {[refs.iBidElement]: [{
       map: (item: any, idx: number) => ({
-        attrs: item.attributes
+        attrs: item.attributes,
+        name: item.name
       })
     }]}
   ],
