@@ -11,6 +11,13 @@ details{
     max-height: 300px;
     overflow-y:auto;
 }
+@media (prefers-color-scheme: dark) {
+    summary{
+        color: white;
+    }
+}
+
+
 </style>
 <details open>
     <summary>Event History</summary>
