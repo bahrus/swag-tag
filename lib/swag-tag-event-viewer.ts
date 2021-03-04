@@ -16,8 +16,6 @@ details{
         color: white;
     }
 }
-
-
 </style>
 <details open>
     <summary>Event History</summary>
@@ -26,10 +24,10 @@ details{
 `;
 const refs = {jsonViewerElement:'', detailsElement: ''};
 
-export const bindNewEvent = ({domCache, eventArchive}: EventViewer) => [
+export const bindNewEvent = ({domCache, eventArchive}: SwagTagEventViewer) => [
     {[refs.jsonViewerElement]: [{object:eventArchive}]}
 ];
-export const appendToEventArchive = ({newEvent, self}: EventViewer) => {
+export const appendToEventArchive = ({newEvent, self}: SwagTagEventViewer) => {
     console.log(newEvent);
     const aSelf = self as any;
     const safeEvent: any = {};
@@ -56,8 +54,8 @@ const allowList = ['detail', 'type', 'bubbles', 'cancelBubble', 'cancelable', 'c
 /**
  * @element event-viewer
  */
-export class EventViewer extends HTMLElement implements XtalPattern{
-    static is = 'event-viewer';
+export class SwagTagEventViewer extends HTMLElement implements XtalPattern{
+    static is = 'swag-tag-event-viewer';
 
     self = this;
     propActions = propActions;
@@ -72,7 +70,7 @@ export class EventViewer extends HTMLElement implements XtalPattern{
     mainTemplate = mainTemplate;
     clonedTemplate: DocumentFragment | undefined;
     connectedCallback(){
-        xc.hydrate<EventViewer>(this, slicedPropDefs);
+        xc.hydrate<SwagTagEventViewer>(this, slicedPropDefs);
     }
     onPropChange(n: string, prop: PropDef, nv: any){
         this.reactor.addToQueue(prop, nv);
@@ -89,10 +87,10 @@ const obj: PropDef = {
     stopReactionsIfFalsy: true,
 };
 
-const propDefMap: PropDefMap<EventViewer> = {
+const propDefMap: PropDefMap<SwagTagEventViewer> = {
     ...xp.props,
     newEvent: obj, eventArchive: obj,
 }
 const slicedPropDefs = xc.getSlicedPropDefs(propDefMap);
-xc.letThereBeProps(EventViewer, slicedPropDefs.propDefs, 'onPropChange');
-xc.define(EventViewer);
+xc.letThereBeProps(SwagTagEventViewer, slicedPropDefs.propDefs, 'onPropChange');
+xc.define(SwagTagEventViewer);
