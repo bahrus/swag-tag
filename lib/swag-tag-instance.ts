@@ -36,6 +36,16 @@ const propActions = [
   ],
   ({domCache, properties}: SwagTagInstance) => {
     console.log(domCache[refs.placeHolderElement]);
+    for(const prop of properties!){
+      if(prop.default!== undefined){
+        try{
+          const parsedProp = JSON.parse(prop.default);
+          domCache[refs.placeHolderElement][prop.name] = parsedProp;
+        }catch(e){
+          console.error(e);
+        }
+      }
+    }
     console.log(properties);
   },
 ] as PropAction[];
