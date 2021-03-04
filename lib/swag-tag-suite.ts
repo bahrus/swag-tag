@@ -10,7 +10,7 @@ import('ib-id/i-bid.js');
 import('./swag-tag-instance.js');
 
 const mainTemplate = html `
-<k-fetch disabled as=json></k-fetch>
+<k-fetch disabled=2 as=json></k-fetch>
 <on-to-me on=fetch-complete to=details me=1 care-of=[-object] val=target.value></on-to-me>
 <on-to-me on=fetch-complete to=[-list] me=1 val=target.value.tags></on-to-me>
 <json-event-viewer -new-event part=jsonEventViewer></json-event-viewer>
@@ -33,16 +33,20 @@ const propActions = [
     {[refs.iBidElement]: [{
       map: (item: any, idx: number) => ({
         attrs: item.attributes,
-        name: item.name
+        name: item.name,
+        events: item.events,
       })
     }]}
   ],
-  ({domCache, href}: SwagTagSuite) => [
-    {[refs.kFetchElement]: [,,{href: href}]},
+  ({domCache, href, self}: SwagTagSuite) => [
+    {[refs.kFetchElement]: [,{'fetch-complete': [self.importModules, 'value']},{href: href}]},
   ],
   xp.createShadow
 ] as PropAction[];
 
+/**
+ * @element swag-tag-suite
+ */
 export class SwagTagSuite extends HTMLElement implements XtalPattern{
   static is = 'swag-tag-suite';
   self = this;
@@ -59,6 +63,34 @@ export class SwagTagSuite extends HTMLElement implements XtalPattern{
   clonedTemplate: DocumentFragment | undefined;
   
   href: string | undefined;
+  skipImports: boolean | undefined;
+
+  importModules(wcInfo: any){
+    if(this.skipImports) return;
+    const tags = wcInfo.tags;
+    for(const item of tags){
+      const path = item.path;
+      if(path !== undefined){
+        const iPosOfDblSlash = this.href!.indexOf('//');
+        if(iPosOfDblSlash > -1 && iPosOfDblSlash < 7){
+          const selfResolvingModuleSplitPath = this.href!.split('/');
+          selfResolvingModuleSplitPath.pop();
+          const selfResolvingModulePath = selfResolvingModuleSplitPath.join('/') + path!.substring(1) + '?module';
+          import(selfResolvingModulePath);
+        }else{
+          const splitPath = (location.origin + location.pathname).split('/');
+          splitPath.pop();
+          // let path = self.path!;
+          // while(path.startsWith('../')){
+          //   splitPath.pop();
+          //   path = path.substr(3);
+          // }
+          const importPath = splitPath.join('/') + '/' + path;
+          import(importPath);
+        }
+      }
+    }
+  }
 
   connectedCallback(){
     xc.hydrate<SwagTagSuite>(this, slicedPropDefs);
@@ -72,6 +104,11 @@ const propDefMap : PropDefMap<SwagTagSuite> = {
   ...xp.props,
   href: {
     type: String,
+    dry: true,
+    async: true,
+  },
+  skipImports: {
+    type: Boolean,
     dry: true,
     async: true,
   }

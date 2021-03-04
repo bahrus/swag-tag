@@ -3,27 +3,46 @@ import { xc, PropAction, PropDefMap, PropDef } from 'xtal-element/lib/XtalCore.j
 import { xp, XtalPattern } from 'xtal-element/lib/XtalPattern.js';
 import { RxSuppl } from 'xtal-element/lib/RxSuppl.js';
 import { DOMKeyPEA } from 'xtal-element/lib/DOMKeyPEA.js';
+import('ib-id/i-bid.js');
+import('on-to-me/on-to-me.js');
 
 const mainTemplate = html`
 <section part=section>
+  <h2></h2>
   <place-holder></place-holder>
-  <div part=component-holder>
-    
-    <div part=componentListeners>I am here</div>
-  </div>
+  <i-bid>
+    <on-to-me></on-to-me>
+  </i-bid>
+
 </section>
 `;
-const refs = {componentHolderPart:'',placeHolderElement:''};
+const refs = {h2Element:'', iBidElement:'', placeHolderElement:''};
+
 const propActions = [
   xp.manageMainTemplate,
   ({domCache, name}: SwagTagInstance) => [
-    {[refs.componentHolderPart]: name}
+    {[refs.h2Element]: name}
   ],
   xp.createShadow,
   ({domCache, name}: SwagTagInstance) => [
     {[refs.placeHolderElement]: Symbol(name)}
   ],
+  ({domCache, events}: SwagTagInstance) => [
+    {[refs.iBidElement]: [{
+      map: (event: IEvent) => ([,,
+        {
+          on: event.name,
+        }
+      ]),
+      list: events,
+    }]}
+  ],
 ] as PropAction[];
+
+interface IEvent {
+  name: string,
+  description?: string,
+}
 /**
  * @element swag-tag-instance
  */
@@ -43,6 +62,7 @@ export class SwagTagInstance extends HTMLElement implements XtalPattern{
   clonedTemplate: DocumentFragment | undefined;
   
   name: string | undefined;
+  events: IEvent[] | undefined;
 
   connectedCallback(){
     xc.hydrate<SwagTagInstance>(this, slicedPropDefs);
@@ -55,7 +75,12 @@ const propDefMap : PropDefMap<SwagTagInstance> = {
   ...xp.props,
   name:{
     type: String,
-    //async: true,
+    async: true,
+    dry: true
+  },
+  events:{
+    type: Object,
+    async: true,
     dry: true
   }
 };
