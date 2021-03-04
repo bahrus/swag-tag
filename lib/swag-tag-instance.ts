@@ -11,13 +11,13 @@ const mainTemplate = html`
 <section part=section>
   <h2></h2>
   <place-holder></place-holder>
-  <i-bid>
+  <i-bid id=component-listeners>
     <on-to-me></on-to-me>
   </i-bid>
   <swag-tag-event-viewer -new-event></swag-tag-event-viewer>
 </section>
 `;
-const refs = {h2Element:'', iBidElement:'', placeHolderElement:''};
+const refs = {h2Element:'', componentListenersId:'', placeHolderElement:''};
 
 const propActions = [
   xp.manageMainTemplate,
@@ -29,7 +29,7 @@ const propActions = [
     {[refs.placeHolderElement]: Symbol(name)},
   ],
   ({domCache, events, name}: SwagTagInstance) => [
-    {[refs.iBidElement]: [{
+    {[refs.componentListenersId]: [{
       list: events,
       map: (event: IEvent) => ([,,{ observe:name, on: event.name, to: '[-new-event]', me: '1', val: '.'}]),
     }]}
