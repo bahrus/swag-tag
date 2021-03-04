@@ -35,6 +35,7 @@ const propActions = [
         attrs: item.attributes,
         name: item.name,
         events: item.events,
+        properties: item.properties
       })
     }]}
   ],

@@ -26,7 +26,7 @@ const propActions = [
   ],
   xp.createShadow,
   ({domCache, name}: SwagTagInstance) => [
-    {[refs.placeHolderElement]: Symbol(name)}
+    {[refs.placeHolderElement]: Symbol(name)},
   ],
   ({domCache, events}: SwagTagInstance) => [
     {[refs.iBidElement]: [{
@@ -34,11 +34,20 @@ const propActions = [
       map: (event: IEvent) => ([,,{ on: event.name, to: '[-new-event]', me: '1', val: '.'}]),
     }]}
   ],
+  ({domCache, properties}: SwagTagInstance) => {
+    console.log(domCache[refs.placeHolderElement]);
+    console.log(properties);
+  },
 ] as PropAction[];
 
 interface IEvent {
   name: string,
   description?: string,
+}
+interface IProperty{
+  name: string,
+  type: string,
+  default: string,
 }
 /**
  * @element swag-tag-instance
@@ -60,6 +69,7 @@ export class SwagTagInstance extends HTMLElement implements XtalPattern{
   
   name: string | undefined;
   events: IEvent[] | undefined;
+  properties: IProperty[] | undefined;
 
   connectedCallback(){
     xc.hydrate<SwagTagInstance>(this, slicedPropDefs);
@@ -72,8 +82,12 @@ const propDefMap : PropDefMap<SwagTagInstance> = {
   ...xp.props,
   name:{
     type: String,
-    async: true,
     dry: true
+  },
+  properties:{
+    type: Object,
+    dry: true,
+    stopReactionsIfFalsy: true
   },
   events:{
     type: Object,
