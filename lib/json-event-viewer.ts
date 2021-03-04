@@ -25,7 +25,7 @@ const initTransform = {
     },
     '"': [{style:{display:'none'}},,,,details]
 } as TransformValueOptions;
-const allowList = ['detail', 'type', 'bubbles', 'cancelBubble', 'cancelable', 'composed', 'defaultPrevented', 'eventPhase', 'isTruted', 'returnValue', 'timeStamp'];
+const allowList = ['detail', 'type', 'bubbles', 'cancelBubble', 'cancelable', 'composed', 'defaultPrevented', 'eventPhase', 'isTrusted', 'returnValue', 'timeStamp'];
 export const appendToEventArchive = ({newEvent, self}: JsonEventViewer) =>{
     console.log(newEvent);
     const aSelf = self as any;

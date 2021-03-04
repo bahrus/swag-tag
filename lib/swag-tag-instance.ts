@@ -5,6 +5,7 @@ import { RxSuppl } from 'xtal-element/lib/RxSuppl.js';
 import { DOMKeyPEA } from 'xtal-element/lib/DOMKeyPEA.js';
 import('ib-id/i-bid.js');
 import('on-to-me/on-to-me.js');
+import('./event-viewer.js');
 
 const mainTemplate = html`
 <section part=section>
@@ -13,7 +14,7 @@ const mainTemplate = html`
   <i-bid>
     <on-to-me></on-to-me>
   </i-bid>
-
+  <event-viewer -new-event></event-viewer>
 </section>
 `;
 const refs = {h2Element:'', iBidElement:'', placeHolderElement:''};
@@ -32,6 +33,9 @@ const propActions = [
       map: (event: IEvent) => ([,,
         {
           on: event.name,
+          to: '[-new-event]',
+          me: '1',
+          val: '.'
         }
       ]),
       list: events,
