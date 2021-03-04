@@ -28,10 +28,10 @@ const propActions = [
   ({domCache, name}: SwagTagInstance) => [
     {[refs.placeHolderElement]: Symbol(name)},
   ],
-  ({domCache, events}: SwagTagInstance) => [
+  ({domCache, events, name}: SwagTagInstance) => [
     {[refs.iBidElement]: [{
       list: events,
-      map: (event: IEvent) => ([,,{ on: event.name, to: '[-new-event]', me: '1', val: '.'}]),
+      map: (event: IEvent) => ([,,{ observe:name, on: event.name, to: '[-new-event]', me: '1', val: '.'}]),
     }]}
   ],
   ({domCache, properties}: SwagTagInstance) => {
