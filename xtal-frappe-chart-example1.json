@@ -3,7 +3,7 @@
     "tags": [
       {
         "name": "xtal-frappe-chart",
-        "path": "./xtal-frappe-chart-example1.js",
+        "path": "https://unpkg.com/xtal-frappe-chart@0.0.81/xtal-frappe-chart.js?module",
         "attributes": [
           {
             "name": "disabled",

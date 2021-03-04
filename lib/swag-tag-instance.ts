@@ -30,15 +30,8 @@ const propActions = [
   ],
   ({domCache, events}: SwagTagInstance) => [
     {[refs.iBidElement]: [{
-      map: (event: IEvent) => ([,,
-        {
-          on: event.name,
-          to: '[-new-event]',
-          me: '1',
-          val: '.'
-        }
-      ]),
       list: events,
+      map: (event: IEvent) => ([,,{ on: event.name, to: '[-new-event]', me: '1', val: '.'}]),
     }]}
   ],
 ] as PropAction[];

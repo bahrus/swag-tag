@@ -14,7 +14,7 @@ details{
 </style>
 <details open>
     <summary>Event History</summary>
-    <json-viewer -object></json-viewer>
+    <json-viewer></json-viewer>
 </details>
 `;
 const refs = {jsonViewerElement:'', detailsElement: ''};
@@ -78,7 +78,6 @@ export class EventViewer extends HTMLElement implements XtalPattern{
 }
 const obj: PropDef = {
     type: Object, 
-    dry: true,
     async: true,
     stopReactionsIfFalsy: true,
 };
