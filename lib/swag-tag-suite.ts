@@ -115,6 +115,6 @@ const propDefMap : PropDefMap<SwagTagSuite> = {
   }
 };
 const slicedPropDefs = xc.getSlicedPropDefs(propDefMap);
-xc.letThereBeProps(SwagTagSuite, slicedPropDefs.propDefs, 'onPropChange');
+xc.letThereBeProps(SwagTagSuite, slicedPropDefs, 'onPropChange');
 xc.define(SwagTagSuite);
 

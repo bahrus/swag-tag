@@ -2,7 +2,8 @@ import { html } from 'xtal-element/lib/html.js';
 import { xc, PropAction, PropDefMap, PropDef } from 'xtal-element/lib/XtalCore.js';
 import { xp, XtalPattern } from 'xtal-element/lib/XtalPattern.js';
 import { RxSuppl } from 'xtal-element/lib/RxSuppl.js';
-import { DOMKeyPEA } from 'xtal-element/lib/DOMKeyPEA.js';
+import { DOMKeyPEA, PEASettings as Tag } from 'xtal-element/lib/DOMKeyPEA.js';
+import {OnToMeProps} from 'on-to-me/types.d.js';
 import('ib-id/i-bid.js');
 import('on-to-me/on-to-me.js');
 import('./swag-tag-event-viewer.js');
@@ -13,13 +14,13 @@ const mainTemplate = html`
   <place-holder></place-holder>
   <i-bid id=prop-editor>
   </i-bid>
-  <i-bid id=component-listeners>
+  <i-bid id=repeat-listeners>
     <on-to-me></on-to-me>
   </i-bid>
   <swag-tag-event-viewer -new-event></swag-tag-event-viewer>
 </section>
 `;
-const refs = {h2Element:'', componentListenersId:'', placeHolderElement:''};
+const refs = {h2Element:'', repeatListenersId:'', placeHolderElement:''};
 
 const propActions = [
   xp.manageMainTemplate,
@@ -28,16 +29,15 @@ const propActions = [
   ],
   xp.createShadow,
   ({domCache, name}: SwagTagInstance) => [
-    {[refs.placeHolderElement]: Symbol(name)},
+    {[refs.placeHolderElement]: [{localName: name}]},
   ],
   ({domCache, events, name}: SwagTagInstance) => [
-    {[refs.componentListenersId]: [{
+    {[refs.repeatListenersId]: [{
       list: events,
-      map: (event: IEvent) => ([,,{ observe:name, on: event.name, to: '[-new-event]', me: '1', val: '.'}]),
+      map: (event: IEvent) => (<Tag<OnToMeProps>>[,,{ observe:name, on: event.name, to: '[-new-event]', me: '1', val: '.'}]),
     }]}
   ],
   ({domCache, properties}: SwagTagInstance) => {
-    console.log(domCache[refs.placeHolderElement]);
     for(const prop of properties!){
       if(prop.default!== undefined){
         try{
@@ -104,9 +104,10 @@ const propDefMap : PropDefMap<SwagTagInstance> = {
   events:{
     type: Object,
     async: true,
-    dry: true
+    dry: true,
+    stopReactionsIfFalsy: true
   }
 };
 const slicedPropDefs = xc.getSlicedPropDefs(propDefMap);
-xc.letThereBeProps(SwagTagInstance, slicedPropDefs.propDefs, 'onPropChange');
+xc.letThereBeProps(SwagTagInstance, slicedPropDefs, 'onPropChange');
 xc.define(SwagTagInstance);

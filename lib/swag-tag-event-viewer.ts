@@ -92,5 +92,5 @@ const propDefMap: PropDefMap<SwagTagEventViewer> = {
     newEvent: obj, eventArchive: obj,
 }
 const slicedPropDefs = xc.getSlicedPropDefs(propDefMap);
-xc.letThereBeProps(SwagTagEventViewer, slicedPropDefs.propDefs, 'onPropChange');
+xc.letThereBeProps(SwagTagEventViewer, slicedPropDefs, 'onPropChange');
 xc.define(SwagTagEventViewer);
