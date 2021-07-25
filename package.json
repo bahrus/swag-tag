@@ -17,21 +17,18 @@
   },
   "dependencies": {
     "@power-elements/json-viewer": "2.1.1",
-    "ib-id": "0.0.21",
-    "k-fetch": "0.0.4",
-    "on-to-me": "0.0.10",
+    "ib-id": "0.0.58",
+    "k-fetch": "0.0.5",
+    "on-to-me": "0.0.32",
     "p-et-alia": "0.0.120",
-    "trans-render": "0.0.276",
-    "wc-info": "0.0.75",
-    "xtal-editor": "0.0.22",
-    "xtal-element": "0.0.365",
-    "xtal-sip": "0.0.113"
+    "trans-render": "0.0.291",
+    "wc-info": "0.0.110",
+    "xtal-editor": "0.0.47",
+    "xtal-element": "0.0.418",
+    "xtal-sip": "0.0.117"
   },
   "devDependencies": {
-    "@rollup/plugin-node-resolve": "10.0.0",
-    "es-dev-server": "1.57.8",
-    "es-module-shims": "0.7.1",
-    "xtal-test": "0.0.48"
+    "xtal-test": "0.0.51"
   },
   "author": "",
   "license": "MIT",
