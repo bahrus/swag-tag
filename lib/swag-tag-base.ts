@@ -1,5 +1,5 @@
 import {xc, IReactor, PropAction, PropDef, PropDefMap, ReactiveSurface} from 'xtal-element/lib/XtalCore.js';
-import {xp} from 'xtal-element/lib/XtalPattern.js';
+import {xp, XtalPattern} from 'xtal-element/lib/XtalPattern.js';
 import {html} from 'xtal-element/lib/html.js';
 import {Package, Declaration, ClassDeclaration, ClassField, CustomElement} from '../node_modules/custom-elements-manifest/schema.d.js';
 import {SwagTagBaseProps} from '../types.d.js';
@@ -21,7 +21,7 @@ const mainTemplate = html`
     </script></ag-fn>
 `;
 
-export class SwagTagBase extends HTMLElement implements ReactiveSurface{
+export class SwagTagBase extends HTMLElement implements ReactiveSurface, XtalPattern{
     static is='swag-tag-base';
     constructor(){
         super();
@@ -32,6 +32,7 @@ export class SwagTagBase extends HTMLElement implements ReactiveSurface{
     reactor: IReactor = new xp.RxSuppl(this, [
 
     ]);
+    mainTemplate = mainTemplate;
 
     onPropChange(n: string, prop: PropDef, nv: any){
 
@@ -67,7 +68,10 @@ export class SwagTagBase extends HTMLElement implements ReactiveSurface{
 export interface SwagTagBase extends SwagTagBaseProps{}
 
 type S = SwagTagBase;
-const propActions = [] as PropAction[];
+const propActions = [
+    xp.attachShadow,
+    xp.manageMainTemplate
+] as PropAction[];
 const baseProp: PropDef = {
     dry: true,
     async: true,
@@ -77,6 +81,7 @@ const strProp1: PropDef = {
     type: String,
 }
 const propDefMap: PropDefMap<S> = {
+    ...xp.props,
     href: strProp1,
     tag: strProp1,
 };
