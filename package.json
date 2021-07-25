@@ -2,8 +2,8 @@
   "name": "swag-tag",
   "version": "0.0.42",
   "description": "Edit properties of web component",
-  "main": "swag-tag.js",
-  "module": "swag-tag.js",
+  "main": "lib/swag-tag-base.js",
+  "module": "lib/swag-tag-base.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "serve": "node node_modules/xtal-test/serve.js",
