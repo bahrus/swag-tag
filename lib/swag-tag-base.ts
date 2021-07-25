@@ -25,7 +25,7 @@ export class SwagTagBase extends HTMLElement implements ReactiveSurface, XtalPat
     static is='swag-tag-base';
     constructor(){
         super();
-        this.attachShadow({mode: 'open'});
+        //this.attachShadow({mode: 'open'});
     }
     self = this;
     propActions = propActions;
@@ -34,8 +34,12 @@ export class SwagTagBase extends HTMLElement implements ReactiveSurface, XtalPat
     ]);
     mainTemplate = mainTemplate;
 
-    onPropChange(n: string, prop: PropDef, nv: any){
+    connectedCallback(){
+        xc.mergeProps(this, slicedPropDefs);
+    }
 
+    onPropChange(n: string, prop: PropDef, nv: any){
+        this.reactor.addToQueue(prop, nv);
     }
     
     getTagNameToDeclarationsMap(pack: Package){
@@ -69,8 +73,9 @@ export interface SwagTagBase extends SwagTagBaseProps{}
 
 type S = SwagTagBase;
 const propActions = [
-    xp.attachShadow,
-    xp.manageMainTemplate
+    xp.manageMainTemplate,
+    xp.createShadow,
+    
 ] as PropAction[];
 const baseProp: PropDef = {
     dry: true,
