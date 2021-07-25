@@ -19,6 +19,10 @@
     "@power-elements/json-viewer": "2.1.1",
     "ib-id": "0.0.58",
     "k-fetch": "0.0.5",
+    "xtal-fetch": "0.0.92",
+    "pass-prop": "0.0.19",
+    "pass-down": "0.0.72",
+    "aggregator-fn": "0.0.37",
     "on-to-me": "0.0.32",
     "p-et-alia": "0.0.120",
     "trans-render": "0.0.291",
@@ -28,9 +32,10 @@
     "xtal-sip": "0.0.117"
   },
   "devDependencies": {
-    "xtal-test": "0.0.51"
+    "xtal-test": "0.0.51",
+    "custom-elements-manifest": "1.0.0"
   },
-  "author": "",
+  "author": "anderson.bruce.b@gmail.com",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/bahrus/swag-tag/issues"
