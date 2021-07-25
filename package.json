@@ -29,6 +29,7 @@
     "wc-info": "0.0.110",
     "xtal-editor": "0.0.47",
     "xtal-element": "0.0.418",
+    "xtal-fragment": "0.0.8",
     "xtal-sip": "0.0.117"
   },
   "devDependencies": {

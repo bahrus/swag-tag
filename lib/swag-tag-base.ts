@@ -7,6 +7,7 @@ import('xtal-fetch/xtal-fetch-get.js');
 import('pass-prop/p-p.js');
 import('pass-down/p-d.js');
 import('aggregator-fn/ag-fn.js');
+import('xtal-fragment/xtal-fragment.js');
 
 const mainTemplate = html`
     <p-p from-host observe-prop=href to=[-href] m=1></p-p>
@@ -16,9 +17,15 @@ const mainTemplate = html`
         ({pack, host, self}) => {
             if(pack === undefined || host.tag === undefined) return;
             const mapping = host.getTagNameToDeclarationsMap(pack);
+
             return mapping[host.tag];
         }
     </script></ag-fn>
+    <template id=editor>
+        <div>Create a template in super classes, and set the editor property equally to the template you want displayed</div>
+    </template>
+    <xtal-fragment copy from=editor></xtal-fragment>
+
 `;
 
 export class SwagTagBase extends HTMLElement implements ReactiveSurface, XtalPattern{
@@ -85,10 +92,15 @@ const strProp1: PropDef = {
     ...baseProp,
     type: String,
 }
+const objProp1: PropDef = {
+    ...baseProp,
+    type: Object,
+};
 const propDefMap: PropDefMap<S> = {
     ...xp.props,
     href: strProp1,
     tag: strProp1,
+    customElement: objProp1,
 };
 const slicedPropDefs = xc.getSlicedPropDefs(propDefMap);
 xc.letThereBeProps(SwagTagBase, slicedPropDefs, 'onPropChange');
