@@ -9,7 +9,8 @@
 		"watch": true
 	},
 	"files":[
-		"lib/swag-tag-base.ts"
+		"lib/swag-tag-base.ts",
+		"lib/swag-tag-demo.ts"
 	],
 	"exclude":[
 		"build",

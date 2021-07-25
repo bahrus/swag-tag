@@ -8,6 +8,9 @@ import('pass-prop/p-p.js');
 import('pass-down/p-d.js');
 import('aggregator-fn/ag-fn.js');
 import('xtal-fragment/xtal-fragment.js');
+export {xp} from 'xtal-element/lib/XtalPattern.js';
+export {xc} from 'xtal-element/lib/XtalCore.js';
+export {html} from 'xtal-element/lib/html.js';
 
 const mainTemplate = html`
     <p-p from-host observe-prop=href to=[-href] m=1></p-p>
