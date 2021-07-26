@@ -7,6 +7,6 @@ export interface SwagTagBaseProps extends XtalPattern, HTMLElement {
     editor: HTMLTemplateElement | undefined;
     fields: EnhancedClassField[];
 }
-export interface EnhancedClassField extends ClassField{
-    val: any;
-}
+// export interface EnhancedClassField extends ClassField{
+//     val: any;
+// }
