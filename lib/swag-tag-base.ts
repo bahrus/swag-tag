@@ -2,7 +2,7 @@ import {xc, IReactor, PropAction, PropDef, PropDefMap, ReactiveSurface} from 'xt
 import {xp, XtalPattern} from 'xtal-element/lib/XtalPattern.js';
 import {html} from 'xtal-element/lib/html.js';
 import {Package, Declaration, ClassDeclaration, ClassField, CustomElement, CustomElementDeclaration} from '../node_modules/custom-elements-manifest/schema.d.js';
-import {SwagTagBaseProps} from '../types.d.js';
+import {EnhancedClassField, SwagTagBaseProps} from '../types.d.js';
 import('xtal-fetch/xtal-fetch-get.js');
 import('pass-prop/p-p.js');
 import('pass-down/p-d.js');
@@ -99,7 +99,31 @@ export class SwagTagBase extends HTMLElement implements ReactiveSurface, XtalPat
             } 
 
         }
-        this.fields = fields;
+        this.fields = fields.map(field => {
+            if(field.default !== undefined){
+                let val = field.default;
+                if(field.type !== undefined && field.type.text !== undefined){
+                    switch(field.type.text){
+                        case 'boolean':
+                        case 'number':
+                            val = JSON.parse(val);
+                            break;
+                        case 'string':
+                        case 'object':
+                            val = eval('(' + val + ')'); //yikes
+                            break;
+                    }
+                }
+                return {
+                    ...field,
+                    val: val,
+                };
+            }else{
+                return {
+                    ...field
+                } as EnhancedClassField
+            }            
+        })
     }
 }
 export interface SwagTagBase extends SwagTagBaseProps{}
