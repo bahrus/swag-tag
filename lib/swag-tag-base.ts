@@ -9,19 +9,26 @@ export {html} from 'xtal-element/lib/html.js';
 import {def} from 'd-fine/def.js';
 
 const mainTemplate = html`
+    <header>
+        <h1 part=title>Demo of {{tag}}</h1>
+    </header>
     <wc-info-fetch href={{href}} tag={{tag}}></wc-info-fetch>
     <template id=editor>
         <div>Create a template in sub-classes, and <a href=https://github.com/bahrus/swag-tag/blob/baseline/lib/swag-tag-demo.js>set the "editor" property</a> equal to the template you want displayed.</div>
     </template>
     <xtal-fragment copy from=editor></xtal-fragment>
-    <!-- <a href= -->
+    <a href={{href}}>View Manifest File</a>
 `;
 
-export const SwagTagBase = def(mainTemplate, {
+export const SwagTagBase = def<SwagTagBaseProps>(mainTemplate, {
     as:'swag-tag-base',
     sp:['tag', 'href'],
 });
 export interface SwagTagBase extends SwagTagBaseProps{};
 
-
+declare global {
+    interface HTMLElementTagNameMap {
+        "swag-tag-base": SwagTagBase,
+    }
+}
 
