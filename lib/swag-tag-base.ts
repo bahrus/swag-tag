@@ -1,13 +1,9 @@
-//import {xc, IReactor, PropAction, PropDef, PropDefMap, ReactiveSurface} from 'xtal-element/lib/XtalCore.js';
-//import {xp, XtalPattern} from 'xtal-element/lib/XtalPattern.js';
 import {html} from 'xtal-element/lib/html.js';
-//import {Package, Declaration, ClassDeclaration, ClassField, CustomElement, CustomElementDeclaration} from '../node_modules/custom-elements-manifest/schema.d.js';
 import {SwagTagBaseProps} from '../types.d.js';
 import('wc-info/wc-info-fetch.js');
 import('pass-prop/p-p.js');
 import('pass-down/p-d.js');
 import('xtal-fragment/xtal-fragment.js');
-//export {xp} from 'xtal-element/lib/XtalPattern.js';
 export {xc} from 'xtal-element/lib/XtalCore.js';
 export {html} from 'xtal-element/lib/html.js';
 import {def} from 'd-fine/def.js';
