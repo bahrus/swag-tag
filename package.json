@@ -19,7 +19,7 @@
     "wc-info": "0.0.142",
     "xtal-editor": "0.0.99",
     "be-definitive": "0.0.15",
-    "be-hive": "0.0.10"
+    "be-hive": "0.0.11"
   },
   "devDependencies": {
     "xtal-test": "0.0.52",
