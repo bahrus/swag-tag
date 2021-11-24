@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <be-hive></be-hive>
+</head>
+<body>
+    <swag-tag be-definitive='{
+        "config":{
+            "tagName":"swag-tag",
+            "propDefaults":{
+                "href": "https://cdn.skypack.dev/xtal-editor/custom-elements.json",
+                "tag": "xtal-frappe-chart"
+            }
+        }
+    }'>
+        <template shadowroot="open">
+            <form be-reformable-as-wc-info='{
+                "autoSubmit": true,
+                "emitEvents": ["declarations"],
+                "url": {
+                    "onSet": "href",
+                    "vft": "href"
+                },
+                "tag":{
+                    "onSet": "tag",
+                    "vft": "tag"
+                }
+            }'></form>
+            <be-hive></be-hive>
+        </template>
+    </swag-tag>
+    
+    <script type=importmap>
+        {
+            "imports":{
+                "trans-render/": "../node_modules/trans-render/",
+                "be-definitive/": "../node_modules/be-definitive/",
+                "be-decorated/": "../node_modules/be-decorated/",
+                "be-deslotted/": "../node_modules/be-deslotted/",
+                "be-hive/": "../node_modules/be-hive/",
+                "be-reformable/": "../node_modules/be-reformable/",
+                "be-observant/": "../node_modules/be-observant/",
+                "be-repeated/": "../node_modules/be-repeated/",
+                "be-switched/": "../node_modules/be-switched/",
+                "on-to-me/": "../node_modules/on-to-me/",
+                "xtal-element/": "../node_modules/xtal-element/",
+                "xodus/": "../node_modules/xodus/",
+                "wc-info/": "../node_modules/wc-info/"
+                
+            }
+        }
+    </script>
+    <script type=module>
+        import 'wc-info/be-reformable-as-wc-info.js';
+        import 'be-definitive/be-definitive.js';
+        import 'be-hive/be-hive.js';
+    </script>
+</body>
+</html>

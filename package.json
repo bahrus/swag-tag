@@ -16,22 +16,13 @@
     "url": "git+https://github.com/bahrus/swag-tag.git"
   },
   "dependencies": {
-    "@power-elements/json-viewer": "2.1.1",
-    "d-fine": "0.0.8",
-    "ib-id": "0.0.59",
-    "pass-prop": "0.0.19",
-    "pass-down": "0.0.74",
-    "on-to-me": "0.0.32",
-    "p-et-alia": "0.0.120",
-    "trans-render": "0.0.291",
-    "wc-info": "0.0.119",
-    "xtal-editor": "0.0.47",
-    "xtal-element": "0.0.419",
-    "xtal-fragment": "0.0.8",
-    "xtal-sip": "0.0.117"
+    "wc-info": "0.0.142",
+    "xtal-editor": "0.0.99",
+    "be-definitive": "0.0.15",
+    "be-hive": "0.0.10"
   },
   "devDependencies": {
-    "xtal-test": "0.0.51",
+    "xtal-test": "0.0.52",
     "custom-elements-manifest": "1.0.0"
   },
   "author": "anderson.bruce.b@gmail.com",
