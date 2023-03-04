@@ -22,7 +22,7 @@
     "be-hive": "0.0.13"
   },
   "devDependencies": {
-    "xtal-test": "0.0.52",
+    "xtal-test": "0.0.57",
     "custom-elements-manifest": "1.0.0"
   },
   "author": "anderson.bruce.b@gmail.com",
